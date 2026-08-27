@@ -1176,3 +1176,227 @@ footer {
     }
 
 }
+/* =========================================================
+   SUCCESS PAGE
+========================================================= */
+
+.success-page {
+    min-height: calc(100vh - 140px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+}
+
+.success-card {
+    width: 100%;
+    max-width: 650px;
+    text-align: center;
+    padding: 55px 45px;
+    border-radius: 28px;
+
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.12);
+
+    animation: successCardIn 0.6s ease;
+}
+
+.success-icon {
+    width: 90px;
+    height: 90px;
+
+    margin: 0 auto 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #e8f8ee;
+    color: #159447;
+
+    font-size: 48px;
+    font-weight: 700;
+
+    box-shadow:
+        0 12px 30px rgba(21, 148, 71, 0.15);
+
+    animation: successPop 0.5s ease;
+}
+
+.success-card h1 {
+    margin-bottom: 15px;
+
+    font-size: 34px;
+    line-height: 1.2;
+
+    color: #171717;
+}
+
+.success-card > p {
+    max-width: 520px;
+
+    margin: 0 auto 30px;
+
+    color: #666;
+
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   COMPLAINT ID BOX
+========================================================= */
+
+.complaint-id-box {
+    margin: 30px auto;
+
+    padding: 25px;
+
+    border-radius: 20px;
+
+    background: #f7f9fb;
+
+    border: 1px solid #e4e8ec;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.complaint-id-box span {
+    font-size: 14px;
+
+    color: #777;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+}
+
+.complaint-id-box strong {
+    font-size: 28px;
+
+    color: #111;
+
+    letter-spacing: 2px;
+
+    font-weight: 800;
+}
+
+.complaint-id-box small {
+    color: #888;
+
+    font-size: 13px;
+
+    margin-top: 5px;
+}
+
+
+/* =========================================================
+   SUCCESS BUTTONS
+========================================================= */
+
+.success-actions {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    margin-top: 30px;
+
+    flex-wrap: wrap;
+}
+
+.success-actions .primary-btn,
+.success-actions .secondary-btn {
+    text-decoration: none;
+
+    min-width: 180px;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes successCardIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+@keyframes successPop {
+
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .success-page {
+        padding: 35px 15px;
+    }
+
+    .success-card {
+        padding: 40px 22px;
+        border-radius: 22px;
+    }
+
+    .success-card h1 {
+        font-size: 27px;
+    }
+
+    .success-icon {
+        width: 75px;
+        height: 75px;
+
+        font-size: 40px;
+    }
+
+    .complaint-id-box strong {
+        font-size: 22px;
+    }
+
+    .success-actions {
+        flex-direction: column;
+    }
+
+    .success-actions .primary-btn,
+    .success-actions .secondary-btn {
+        width: 100%;
+    }
+
+}
