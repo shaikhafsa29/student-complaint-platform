@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Track Complaint | VEMU Voice</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+
+        <a href="index.html" class="logo">
+            VEMU<span>VOICE</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Submit Complaint</a>
+            <a href="track.html" class="active">Track Complaint</a>
+            <a href="admin-login.html">Admin</a>
+        </div>
+
+    </nav>
+
+
+    <!-- MAIN -->
+    <main class="track-page">
+
+        <section class="track-intro">
+
+            <p class="badge">COMPLAINT TRACKING</p>
+
+            <h1>Track Your Complaint</h1>
+
+            <p>
+                Enter the complaint ID you received after submitting
+                your concern to check its current status.
+            </p>
+
+        </section>
+
+
+        <!-- TRACKING CARD -->
+        <section class="track-card">
+
+            <form id="trackForm">
+
+                <div class="input-group">
+
+                    <label for="trackComplaintId">
+                        Complaint ID
+                    </label>
+
+                    <input
+                        type="text"
+                        id="trackComplaintId"
+                        placeholder="Example: CMP-B84893F6"
+                        autocomplete="off"
+                        required
+                    >
+
+                </div>
+
+
+                <button type="submit" class="submit-btn">
+                    Track Status 🔍
+                </button>
+
+            </form>
+
+
+            <!-- RESULT BOX -->
+            <div id="trackingResult" class="tracking-result hidden">
+
+                <div class="result-icon">🔍</div>
+
+                <h2>Complaint Found</h2>
+
+
+                <div class="result-details">
+
+                    <div class="result-row">
+                        <span>Complaint ID</span>
+                        <strong id="resultComplaintId"></strong>
+                    </div>
+
+
+                    <div class="result-row">
+                        <span>Category</span>
+                        <strong id="resultCategory"></strong>
+                    </div>
+
+
+                    <div class="result-row">
+                        <span>Status</span>
+                        <strong id="resultStatus"></strong>
+                    </div>
+
+
+                    <div class="result-row">
+                        <span>Submitted On</span>
+                        <strong id="resultDate"></strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ERROR BOX -->
+            <div id="trackingError" class="tracking-error hidden">
+
+                <h3>Complaint Not Found</h3>
+
+                <p>
+                    Please check your Complaint ID and try again.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 VEMU Voice • Student Support Platform</p>
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
