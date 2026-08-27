@@ -145,9 +145,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
 window.location.href =
-    `success.html?id=${encodeURIComponent(
-        result.complaint_id
-    )}`;
+    "success.html?id=" +
+    encodeURIComponent(result.complaint_id);
 
 
                 } catch (error) {
