@@ -144,25 +144,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     }
 
-
-                    if (complaintIdElement) {
-
-                        complaintIdElement.textContent =
-                            result.complaint_id;
-
-                    }
-
-
-                    complaintForm.style.display =
-                        "none";
-
-
-                    if (successBox) {
-
-                        successBox.style.display =
-                            "block";
-
-                    }
+window.location.href =
+    `success.html?id=${encodeURIComponent(
+        result.complaint_id
+    )}`;
 
 
                 } catch (error) {
