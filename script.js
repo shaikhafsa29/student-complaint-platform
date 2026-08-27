@@ -1,6 +1,14 @@
+```javascript
 document.addEventListener("DOMContentLoaded", () => {
 
-    const API_BASE = "http://127.0.0.1:5000";
+    /* =========================================================
+       API CONFIGURATION
+       
+       Frontend and Flask backend are on the same Railway
+       deployment, so we use relative API URLs.
+    ========================================================= */
+
+    const API_BASE = "";
 
 
     /* =========================================================
@@ -167,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     alert(
                         error.message ||
-                        "Something went wrong. Please make sure the backend is running."
+                        "Something went wrong. Please try again."
                     );
 
 
@@ -1539,7 +1547,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             class="empty-table"
                         >
                             Unable to load complaints.
-                            Make sure Flask is running.
+                            Please try again.
                         </td>
                     </tr>
                 `;
@@ -1558,3 +1566,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+```
