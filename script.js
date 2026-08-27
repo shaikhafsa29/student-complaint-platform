@@ -11,170 +11,213 @@ document.addEventListener("DOMContentLoaded", () => {
     const API_BASE = "";
 
 
-    /* =========================================================
-       COMPLAINT SUBMISSION
-    ========================================================= */
+   /* =========================================================
+   COMPLAINT SUBMISSION
+========================================================= */
 
-    const complaintForm =
-        document.getElementById("complaintForm");
+const complaintForm =
+    document.getElementById("complaintForm");
 
+if (complaintForm) {
 
-    if (complaintForm) {
+    const message =
+        document.getElementById("message");
 
-        const message =
-            document.getElementById("message");
+    const charCount =
+        document.getElementById("charCount");
 
-        const charCount =
-            document.getElementById("charCount");
+    if (message && charCount) {
 
-        const successBox =
-            document.getElementById("successBox");
+        message.addEventListener(
+            "input",
+            () => {
 
-        const complaintIdElement =
-            document.getElementById("complaintId");
-
-
-        if (message && charCount) {
-
-            message.addEventListener(
-                "input",
-                () => {
-
-                    charCount.textContent =
-                        `${message.value.length} / 1000`;
-
-                }
-            );
-
-        }
-
-
-        complaintForm.addEventListener(
-            "submit",
-            async (event) => {
-
-                event.preventDefault();
-
-
-                const year =
-                    document.getElementById(
-                        "year"
-                    ).value;
-
-                const branch =
-                    document.getElementById(
-                        "branch"
-                    ).value;
-
-                const category =
-                    document.getElementById(
-                        "category"
-                    ).value;
-
-                const complaintMessage =
-                    message.value.trim();
-
-
-                if (
-                    !year ||
-                    !branch ||
-                    !category ||
-                    !complaintMessage
-                ) {
-
-                    alert(
-                        "Please fill in all required fields."
-                    );
-
-                    return;
-                }
-
-
-                const submitButton =
-                    complaintForm.querySelector(
-                        ".submit-btn"
-                    );
-
-
-                submitButton.disabled =
-                    true;
-
-                submitButton.textContent =
-                    "Submitting...";
-
-
-                try {
-
-                    const response =
-                        await fetch(
-                            `${API_BASE}/api/complaints`,
-                            {
-                                method: "POST",
-
-                                headers: {
-                                    "Content-Type":
-                                        "application/json"
-                                },
-
-                                body:
-                                    JSON.stringify({
-                                        year,
-                                        branch,
-                                        category,
-                                        message:
-                                            complaintMessage
-                                    })
-                            }
-                        );
-
-
-                    const result =
-                        await response.json();
-
-
-                    if (
-                        !response.ok ||
-                        !result.success
-                    ) {
-
-                        throw new Error(
-                            result.message ||
-                            "Failed to submit complaint."
-                        );
-
-                    }
-
-window.location.href =
-    "success.html?id=" +
-    encodeURIComponent(result.complaint_id);
-
-
-                } catch (error) {
-
-                    console.error(
-                        "Submission error:",
-                        error
-                    );
-
-
-                    alert(
-                        error.message ||
-                        "Something went wrong. Please try again."
-                    );
-
-
-                    submitButton.disabled =
-                        false;
-
-                    submitButton.textContent =
-                        "Submit Complaint →";
-
-                }
+                charCount.textContent =
+                    `${message.value.length} / 1000`;
 
             }
         );
 
     }
+
+
+    complaintForm.addEventListener(
+        "submit",
+        async (event) => {
+
+            event.preventDefault();
+
+
+            const year =
+                document.getElementById("year").value;
+
+            const branch =
+                document.getElementById("branch").value;
+
+            const category =
+                document.getElementById("category").value;
+
+            const complaintMessage =
+                message.value.trim();
+
+
+            /* -----------------------------
+               VALIDATION
+            ----------------------------- */
+
+            if (
+                !year ||
+                !branch ||
+                !category ||
+                !complaintMessage
+            ) {
+
+                alert(
+                    "Please fill in all required fields."
+                );
+
+                return;
+            }
+
+
+            /* -----------------------------
+               BUTTON
+            ----------------------------- */
+
+            const submitButton =
+                complaintForm.querySelector(
+                    ".submit-btn"
+                );
+
+
+            submitButton.disabled = true;
+
+            submitButton.textContent =
+                "Submitting...";
+
+
+            /* -----------------------------
+               SEND TO FLASK
+            ----------------------------- */
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/complaints",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    year: year,
+                                    branch: branch,
+                                    category: category,
+                                    message: complaintMessage
+                                })
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                console.log(
+                    "Complaint response:",
+                    result
+                );
+
+
+                /* -----------------------------
+                   CHECK RESPONSE
+                ----------------------------- */
+
+                if (
+                    !response.ok ||
+                    !result.success
+                ) {
+
+                    throw new Error(
+                        result.message ||
+                        "Failed to submit complaint."
+                    );
+
+                }
+
+
+                /* -----------------------------
+                   GET COMPLAINT ID
+                ----------------------------- */
+
+                const complaintId =
+                    result.complaint_id;
+
+
+                if (!complaintId) {
+
+                    throw new Error(
+                        "Complaint was submitted, but the server did not return a Complaint ID."
+                    );
+
+                }
+
+
+                console.log(
+                    "Complaint ID:",
+                    complaintId
+                );
+
+
+                /* -----------------------------
+                   SAVE ID
+                ----------------------------- */
+
+                sessionStorage.setItem(
+                    "complaintId",
+                    complaintId
+                );
+
+
+                /* -----------------------------
+                   GO TO SUCCESS PAGE
+                ----------------------------- */
+
+                window.location.href =
+                    "success.html";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Submission error:",
+                    error
+                );
+
+
+                alert(
+                    error.message ||
+                    "Something went wrong. Please try again."
+                );
+
+
+                submitButton.disabled =
+                    false;
+
+                submitButton.textContent =
+                    "Submit Complaint →";
+
+            }
+
+        }
+    );
+
+}
 
 
     /* =========================================================
