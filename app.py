@@ -181,7 +181,12 @@ def admin_dashboard_page():
         PROJECT_DIR,
         "admin-dashboard.html"
     )
-
+@app.route("/success.html")
+def success_page():
+    return send_from_directory(
+        PROJECT_DIR,
+        "success.html"
+    )
 
 # =========================================================
 # FRONTEND CSS / JS
