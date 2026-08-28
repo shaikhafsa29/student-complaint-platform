@@ -1400,3 +1400,90 @@ footer {
     }
 
 }
+/* =========================================================
+STUDENT LOGIN
+========================================================= */
+
+.login-page {
+min-height: 100vh;
+}
+
+.student-login-container {
+min-height: calc(100vh - 90px);
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 40px 20px;
+}
+
+.student-login-card {
+width: 100%;
+max-width: 480px;
+padding: 45px;
+border-radius: 24px;
+background: rgba(255, 255, 255, 0.08);
+border: 1px solid rgba(255, 255, 255, 0.15);
+backdrop-filter: blur(18px);
+text-align: center;
+box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.login-icon {
+font-size: 52px;
+margin-bottom: 15px;
+}
+
+.login-badge {
+font-size: 12px;
+font-weight: 700;
+letter-spacing: 2px;
+margin-bottom: 15px;
+}
+
+.student-login-card h1 {
+margin-bottom: 12px;
+}
+
+.student-login-card h1 span {
+color: #6c63ff;
+}
+
+.login-description {
+margin-bottom: 30px;
+opacity: 0.75;
+}
+
+.student-login-card form {
+text-align: left;
+}
+
+.student-login-card input {
+width: 100%;
+padding: 15px;
+border-radius: 10px;
+border: 1px solid rgba(128, 128, 128, 0.3);
+margin-top: 8px;
+margin-bottom: 20px;
+font-size: 15px;
+}
+
+.student-login-card .submit-btn {
+width: 100%;
+cursor: pointer;
+}
+
+.login-note {
+margin-top: 20px;
+font-size: 13px;
+opacity: 0.65;
+}
+
+.login-error {
+color: #e74c3c;
+margin-bottom: 15px;
+text-align: left;
+}
+
+.hidden {
+display: none !important;
+}
