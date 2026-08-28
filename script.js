@@ -48,36 +48,24 @@ if (complaintForm) {
 
 
             const year =
-                document.getElementById(
-                    "year"
-                ).value;
-
+                document.getElementById("year").value;
 
             const branch =
-                document.getElementById(
-                    "branch"
-                ).value;
-
+                document.getElementById("branch").value;
 
             const category =
-                document.getElementById(
-                    "category"
-                ).value;
-
+                document.getElementById("category").value;
 
             const recipient =
-                document.getElementById(
-                    "recipient"
-                ).value;
-
+                document.getElementById("recipient").value;
 
             const complaintMessage =
                 message.value.trim();
 
 
-            /* =================================================
+            /* -----------------------------
                VALIDATION
-            ================================================= */
+            ----------------------------- */
 
             if (
                 !year ||
@@ -96,9 +84,9 @@ if (complaintForm) {
             }
 
 
-            /* =================================================
-               SUBMIT BUTTON
-            ================================================= */
+            /* -----------------------------
+               BUTTON
+            ----------------------------- */
 
             const submitButton =
                 complaintForm.querySelector(
@@ -106,17 +94,15 @@ if (complaintForm) {
                 );
 
 
-            submitButton.disabled =
-                true;
-
+            submitButton.disabled = true;
 
             submitButton.textContent =
                 "Submitting...";
 
 
-            /* =================================================
-               SEND COMPLAINT TO FLASK
-            ================================================= */
+            /* -----------------------------
+               SEND TO FLASK
+            ----------------------------- */
 
             try {
 
@@ -124,30 +110,28 @@ if (complaintForm) {
                     await fetch(
                         `${API_BASE}/api/complaints`,
                         {
+
                             method: "POST",
 
                             headers: {
+
                                 "Content-Type":
                                     "application/json"
+
                             },
 
                             body:
                                 JSON.stringify({
 
-                                    year:
-                                        year,
+                                    year: year,
 
-                                    branch:
-                                        branch,
+                                    branch: branch,
 
-                                    category:
-                                        category,
+                                    category: category,
 
-                                    recipient:
-                                        recipient,
+                                    recipient: recipient,
 
-                                    message:
-                                        complaintMessage
+                                    message: complaintMessage
 
                                 })
 
@@ -165,9 +149,9 @@ if (complaintForm) {
                 );
 
 
-                /* =============================================
+                /* -----------------------------
                    CHECK RESPONSE
-                ============================================= */
+                ----------------------------- */
 
                 if (
                     !response.ok ||
@@ -182,9 +166,9 @@ if (complaintForm) {
                 }
 
 
-                /* =============================================
+                /* -----------------------------
                    GET COMPLAINT ID
-                ============================================= */
+                ----------------------------- */
 
                 const complaintId =
                     result.complaint_id;
@@ -199,9 +183,9 @@ if (complaintForm) {
                 }
 
 
-                /* =============================================
+                /* -----------------------------
                    SAVE COMPLAINT ID
-                ============================================= */
+                ----------------------------- */
 
                 sessionStorage.setItem(
                     "complaintId",
@@ -209,19 +193,9 @@ if (complaintForm) {
                 );
 
 
-                /* =============================================
-                   SAVE RECIPIENT
-                ============================================= */
-
-                sessionStorage.setItem(
-                    "complaintRecipient",
-                    recipient
-                );
-
-
-                /* =============================================
+                /* -----------------------------
                    GO TO SUCCESS PAGE
-                ============================================= */
+                ----------------------------- */
 
                 window.location.href =
                     "success.html";
@@ -244,7 +218,6 @@ if (complaintForm) {
                 submitButton.disabled =
                     false;
 
-
                 submitButton.textContent =
                     "Submit Complaint →";
 
@@ -261,7 +234,9 @@ if (complaintForm) {
 ========================================================= */
 
 const trackForm =
-    document.getElementById("trackForm");
+    document.getElementById(
+        "trackForm"
+    );
 
 
 if (trackForm) {
@@ -461,6 +436,7 @@ if (trackForm) {
                     date.toLocaleString(
                         "en-IN",
                         {
+
                             day: "numeric",
 
                             month: "short",
@@ -470,6 +446,7 @@ if (trackForm) {
                             hour: "numeric",
 
                             minute: "2-digit"
+
                         }
                     );
 
@@ -567,11 +544,14 @@ if (adminLoginForm) {
                     await fetch(
                         `${API_BASE}/api/admin/login`,
                         {
+
                             method: "POST",
 
                             headers: {
+
                                 "Content-Type":
                                     "application/json"
+
                             },
 
                             body:
@@ -662,6 +642,11 @@ const complaintsContainer =
 
 if (complaintsContainer) {
 
+
+    /* =====================================================
+       LOGIN CHECK
+    ===================================================== */
+
     if (
         sessionStorage.getItem(
             "adminLoggedIn"
@@ -675,6 +660,10 @@ if (complaintsContainer) {
 
     }
 
+
+    /* =====================================================
+       DASHBOARD ELEMENTS
+    ===================================================== */
 
     const totalComplaints =
         document.getElementById(
@@ -751,6 +740,11 @@ if (complaintsContainer) {
             "modalCategory"
         );
 
+    const modalRecipient =
+        document.getElementById(
+            "modalRecipient"
+        );
+
     const modalStatus =
         document.getElementById(
             "modalStatus"
@@ -765,7 +759,6 @@ if (complaintsContainer) {
         document.getElementById(
             "modalMessage"
         );
-
 
     const statusSelect =
         document.getElementById(
@@ -810,6 +803,7 @@ if (complaintsContainer) {
         return date.toLocaleString(
             "en-IN",
             {
+
                 day: "numeric",
 
                 month: "short",
@@ -819,6 +813,7 @@ if (complaintsContainer) {
                 hour: "numeric",
 
                 minute: "2-digit"
+
             }
         );
 
@@ -880,21 +875,15 @@ if (complaintsContainer) {
         ) {
 
             complaintsContainer.innerHTML = `
-
                 <tr>
-
                     <td
-                        colspan="6"
+                        colspan="7"
                         class="empty-table"
                     >
-
                         No complaints found.
-
                     </td>
-
                 </tr>
-
-            `;
+            ;
 
             return;
 
@@ -981,6 +970,11 @@ if (complaintsContainer) {
 
 
                     <td>
+                        ${complaint.recipient || "-"}
+                    </td>
+
+
+                    <td>
 
                         <span
                             class="status-badge ${statusClass}"
@@ -1004,9 +998,7 @@ if (complaintsContainer) {
                             class="view-btn"
                             data-id="${complaint.complaint_id}"
                         >
-
                             View
-
                         </button>
 
                     </td>
@@ -1114,6 +1106,14 @@ if (complaintsContainer) {
             complaint.category;
 
 
+        if (modalRecipient) {
+
+            modalRecipient.textContent =
+                complaint.recipient || "-";
+
+        }
+
+
         modalStatus.textContent =
             complaint.status;
 
@@ -1153,8 +1153,6 @@ if (complaintsContainer) {
 
     /* =====================================================
        VIEW COMPLAINT
-
-       Submitted → Under Review
     ===================================================== */
 
     async function viewComplaint(
@@ -1247,6 +1245,7 @@ if (complaintsContainer) {
                 "Unable to open complaint."
             );
 
+
         } finally {
 
             if (viewButton) {
@@ -1306,11 +1305,14 @@ if (complaintsContainer) {
                         await fetch(
                             `${API_BASE}/api/admin/complaints/${selectedComplaintId}/status`,
                             {
+
                                 method: "PUT",
 
                                 headers: {
+
                                     "Content-Type":
                                         "application/json"
+
                                 },
 
                                 body:
@@ -1564,20 +1566,14 @@ if (complaintsContainer) {
     async function loadComplaints() {
 
         complaintsContainer.innerHTML = `
-
             <tr>
-
                 <td
-                    colspan="6"
+                    colspan="7"
                     class="empty-table"
                 >
-
                     Loading complaints...
-
                 </td>
-
             </tr>
-
         `;
 
 
@@ -1619,22 +1615,15 @@ if (complaintsContainer) {
 
 
             complaintsContainer.innerHTML = `
-
                 <tr>
-
                     <td
-                        colspan="6"
+                        colspan="7"
                         class="empty-table"
                     >
-
                         Unable to load complaints.
-
                         Please try again.
-
                     </td>
-
                 </tr>
-
             `;
 
         }
@@ -1649,5 +1638,6 @@ if (complaintsContainer) {
     loadComplaints();
 
 }
+
 
 });
