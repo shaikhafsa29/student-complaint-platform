@@ -1,23 +1,24 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
-    <title>Admin Dashboard | Complaint Management</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet"
-          href="admin-dashboard.css">
+<title>Admin Dashboard | Complaint Management</title>
+
+<link rel="stylesheet"
+      href="admin-dashboard.css">
+
 
 </head>
 
-
 <body>
-
 
 <!-- =========================================================
      SIDEBAR
@@ -25,73 +26,73 @@
 
 <aside class="sidebar">
 
-    <div class="sidebar-logo">
 
-        <div class="logo-icon">
-            Vv
+<div class="sidebar-logo">
+
+    <div class="logo-icon">
+        Vv
+    </div>
+
+    <div>
+        <h2>VemuVoice</h2>
+        <span>Admin Panel</span>
+    </div>
+
+</div>
+
+
+<nav class="sidebar-nav">
+
+    <a href="admin-dashboard.html"
+       class="nav-item active">
+
+        <span>📊</span>
+        Dashboard
+
+    </a>
+
+
+    <a href="index.html"
+       class="nav-item">
+
+        <span>🏠</span>
+        Main Website
+
+    </a>
+
+</nav>
+
+
+<div class="sidebar-bottom">
+
+    <div class="admin-profile">
+
+        <div class="admin-avatar">
+            A
         </div>
 
         <div>
-            <h2>VemuVoice</h2>
-            <span>Admin Panel</span>
+
+            <strong>Administrator</strong>
+
+            <span>System Admin</span>
+
         </div>
 
     </div>
 
 
-    <nav class="sidebar-nav">
+    <button id="logoutButton"
+            class="logout-btn">
 
-        <a href="admin-dashboard.html"
-           class="nav-item active">
+        🚪 Logout
 
-            <span>📊</span>
-            Dashboard
+    </button>
 
-        </a>
+</div>
 
-
-        <a href="index.html"
-           class="nav-item">
-
-            <span>🏠</span>
-            Main Website
-
-        </a>
-
-    </nav>
-
-
-    <div class="sidebar-bottom">
-
-        <div class="admin-profile">
-
-            <div class="admin-avatar">
-                A
-            </div>
-
-            <div>
-
-                <strong>Administrator</strong>
-
-                <span>System Admin</span>
-
-            </div>
-
-        </div>
-
-
-        <button id="logoutButton"
-                class="logout-btn">
-
-            🚪 Logout
-
-        </button>
-
-    </div>
 
 </aside>
-
-
 
 <!-- =========================================================
      MAIN CONTENT
@@ -100,288 +101,289 @@
 <main class="main-content">
 
 
-    <!-- TOP BAR -->
+<!-- TOP BAR -->
 
-    <header class="topbar">
+<header class="topbar">
+
+    <div>
+
+        <p class="eyebrow">
+            ADMINISTRATION
+        </p>
+
+        <h1>
+            Complaint Dashboard
+        </h1>
+
+        <p class="subtitle">
+            Monitor, review and manage student complaints.
+        </p>
+
+    </div>
+
+
+    <button id="refreshComplaints"
+            class="refresh-btn">
+
+        🔄 Refresh
+
+    </button>
+
+</header>
+
+
+
+<!-- =====================================================
+     STATISTICS
+===================================================== -->
+
+<section class="stats-grid">
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon total">
+            📋
+        </div>
 
         <div>
 
-            <p class="eyebrow">
-                ADMINISTRATION
-            </p>
+            <span>
+                Total Complaints
+            </span>
 
-            <h1>
-                Complaint Dashboard
-            </h1>
+            <strong id="totalComplaints">
+                0
+            </strong>
 
-            <p class="subtitle">
-                Monitor, review and manage student complaints.
+        </div>
+
+    </div>
+
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon submitted">
+            🟡
+        </div>
+
+        <div>
+
+            <span>
+                Submitted
+            </span>
+
+            <strong id="submittedCount">
+                0
+            </strong>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon review">
+            🔵
+        </div>
+
+        <div>
+
+            <span>
+                Under Review
+            </span>
+
+            <strong id="reviewCount">
+                0
+            </strong>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon resolved">
+            🟢
+        </div>
+
+        <div>
+
+            <span>
+                Resolved
+            </span>
+
+            <strong id="resolvedCount">
+                0
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     COMPLAINT SECTION
+===================================================== -->
+
+<section class="complaints-section">
+
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>
+                All Complaints
+            </h2>
+
+            <p>
+                Review and manage submitted complaints.
             </p>
 
         </div>
 
-
-        <button id="refreshComplaints"
-                class="refresh-btn">
-
-            🔄 Refresh
-
-        </button>
-
-    </header>
+    </div>
 
 
 
-    <!-- =====================================================
-         STATISTICS
-    ===================================================== -->
+    <!-- =================================================
+         SEARCH + FILTER
+    ================================================= -->
 
-    <section class="stats-grid">
+    <div class="controls">
 
 
-        <div class="stat-card">
+        <div class="search-box">
 
-            <div class="stat-icon total">
-                📋
-            </div>
+            <span>
+                🔍
+            </span>
 
-            <div>
-
-                <span>
-                    Total Complaints
-                </span>
-
-                <strong id="totalComplaints">
-                    0
-                </strong>
-
-            </div>
+            <input
+                type="text"
+                id="searchComplaint"
+                placeholder="Search Complaint ID..."
+                autocomplete="off"
+            >
 
         </div>
 
 
 
-        <div class="stat-card">
+        <div class="filter-box">
 
-            <div class="stat-icon submitted">
-                🟡
-            </div>
+            <label for="statusFilter">
+                Status
+            </label>
 
-            <div>
+            <select id="statusFilter">
 
-                <span>
+                <option value="All">
+                    All Status
+                </option>
+
+                <option value="Submitted">
                     Submitted
-                </span>
+                </option>
 
-                <strong id="submittedCount">
-                    0
-                </strong>
-
-            </div>
-
-        </div>
-
-
-
-        <div class="stat-card">
-
-            <div class="stat-icon review">
-                🔵
-            </div>
-
-            <div>
-
-                <span>
+                <option value="Under Review">
                     Under Review
-                </span>
+                </option>
 
-                <strong id="reviewCount">
-                    0
-                </strong>
+                <option value="In Progress">
+                    In Progress
+                </option>
 
-            </div>
-
-        </div>
-
-
-
-        <div class="stat-card">
-
-            <div class="stat-icon resolved">
-                🟢
-            </div>
-
-            <div>
-
-                <span>
+                <option value="Resolved">
                     Resolved
-                </span>
+                </option>
 
-                <strong id="resolvedCount">
-                    0
-                </strong>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         COMPLAINT SECTION
-    ===================================================== -->
-
-    <section class="complaints-section">
-
-
-        <!-- SECTION HEADER -->
-
-        <div class="section-header">
-
-            <div>
-
-                <h2>
-                    All Complaints
-                </h2>
-
-                <p>
-                    Review and manage submitted complaints.
-                </p>
-
-            </div>
+            </select>
 
         </div>
 
 
-
-        <!-- =================================================
-             SEARCH + FILTER
-        ================================================= -->
-
-        <div class="controls">
-
-
-            <div class="search-box">
-
-                <span>
-                    🔍
-                </span>
-
-                <input
-                    type="text"
-                    id="searchComplaint"
-                    placeholder="Search Complaint ID..."
-                    autocomplete="off"
-                >
-
-            </div>
+    </div>
 
 
 
-            <div class="filter-box">
+    <!-- =================================================
+         TABLE
+    ================================================= -->
 
-                <label for="statusFilter">
-                    Status
-                </label>
+    <div class="table-wrapper">
 
-                <select id="statusFilter">
+        <table>
 
-                    <option value="All">
-                        All Status
-                    </option>
+            <thead>
 
-                    <option value="Submitted">
+                <tr>
+
+                    <th>
+                        Complaint ID
+                    </th>
+
+                    <th>
+                        Class / Branch
+                    </th>
+
+                    <th>
+                        Category
+                    </th>
+
+                    <th>
+                        Sent To
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
                         Submitted
-                    </option>
+                    </th>
 
-                    <option value="Under Review">
-                        Under Review
-                    </option>
+                    <th>
+                        Action
+                    </th>
 
-                    <option value="In Progress">
-                        In Progress
-                    </option>
+                </tr>
 
-                    <option value="Resolved">
-                        Resolved
-                    </option>
-
-                </select>
-
-            </div>
+            </thead>
 
 
-        </div>
+            <tbody id="complaintsContainer">
 
+                <tr>
 
+                    <td
+                        colspan="7"
+                        class="empty-table"
+                    >
+                        Loading complaints...
+                    </td>
 
-        <!-- =================================================
-             TABLE
-        ================================================= -->
+                </tr>
 
-        <div class="table-wrapper">
+            </tbody>
 
-            <table>
+        </table>
 
-                <thead>
+    </div>
 
-                    <tr>
+</section>
 
-                        <th>
-                            Complaint ID
-                        </th>
-
-                        <th>
-                            Class / Branch
-                        </th>
-
-                        <th>
-                            Category
-                        </th>
-
-                        <th>
-                            Status
-                        </th>
-
-                        <th>
-                            Submitted
-                        </th>
-
-                        <th>
-                            Action
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody id="complaintsContainer">
-
-                    <tr>
-
-                        <td
-                            colspan="6"
-                            class="empty-table"
-                        >
-                            Loading complaints...
-                        </td>
-
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </section>
 
 </main>
-
-
 
 <!-- =========================================================
      COMPLAINT MODAL
@@ -391,195 +393,206 @@
      class="modal">
 
 
-    <div class="modal-content">
+<div class="modal-content">
 
 
-        <!-- MODAL HEADER -->
+    <!-- MODAL HEADER -->
 
-        <div class="modal-header">
+    <div class="modal-header">
 
-            <div>
+        <div>
 
-                <span class="modal-eyebrow">
-                    COMPLAINT DETAILS
-                </span>
+            <span class="modal-eyebrow">
+                COMPLAINT DETAILS
+            </span>
 
-                <h2 id="modalComplaintId">
-                    CMP-XXXXXXXX
-                </h2>
+            <h2 id="modalComplaintId">
+                CMP-XXXXXXXX
+            </h2>
 
-            </div>
+        </div>
 
 
-            <button id="closeModal"
-                    class="close-modal">
+        <button id="closeModal"
+                class="close-modal">
 
-                ×
+            ×
+
+        </button>
+
+    </div>
+
+
+
+    <!-- =================================================
+         COMPLAINT INFORMATION
+    ================================================= -->
+
+    <div class="complaint-info-grid">
+
+
+        <div class="info-item">
+
+            <span>
+                Year
+            </span>
+
+            <strong id="modalYear">
+                -
+            </strong>
+
+        </div>
+
+
+        <div class="info-item">
+
+            <span>
+                Branch
+            </span>
+
+            <strong id="modalBranch">
+                -
+            </strong>
+
+        </div>
+
+
+        <div class="info-item">
+
+            <span>
+                Category
+            </span>
+
+            <strong id="modalCategory">
+                -
+            </strong>
+
+        </div>
+
+
+        <div class="info-item">
+
+            <span>
+                Sent To
+            </span>
+
+            <strong id="modalRecipient">
+                -
+            </strong>
+
+        </div>
+
+
+        <div class="info-item">
+
+            <span>
+                Submitted
+            </span>
+
+            <strong id="modalDate">
+                -
+            </strong>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         STATUS MANAGEMENT
+    ================================================= -->
+
+    <div class="status-management">
+
+
+        <div class="current-status">
+
+            <span>
+                Current Status
+            </span>
+
+            <strong id="modalStatus">
+                Submitted
+            </strong>
+
+        </div>
+
+
+        <div class="status-control">
+
+            <label for="statusSelect">
+                Change Status
+            </label>
+
+            <select id="statusSelect">
+
+                <option value="Submitted">
+                    Submitted
+                </option>
+
+                <option value="Under Review">
+                    Under Review
+                </option>
+
+                <option value="In Progress">
+                    In Progress
+                </option>
+
+                <option value="Resolved">
+                    Resolved
+                </option>
+
+            </select>
+
+
+            <button
+                id="updateStatusButton"
+                class="update-status-btn"
+            >
+
+                ✓ Update Status
 
             </button>
 
-        </div>
 
-
-
-        <!-- =================================================
-             COMPLAINT INFORMATION
-        ================================================= -->
-
-        <div class="complaint-info-grid">
-
-
-            <div class="info-item">
-
-                <span>
-                    Year
-                </span>
-
-                <strong id="modalYear">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="info-item">
-
-                <span>
-                    Branch
-                </span>
-
-                <strong id="modalBranch">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="info-item">
-
-                <span>
-                    Category
-                </span>
-
-                <strong id="modalCategory">
-                    -
-                </strong>
-
-            </div>
-
-
-            <div class="info-item">
-
-                <span>
-                    Submitted
-                </span>
-
-                <strong id="modalDate">
-                    -
-                </strong>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             STATUS MANAGEMENT
-        ================================================= -->
-
-        <div class="status-management">
-
-
-            <div class="current-status">
-
-                <span>
-                    Current Status
-                </span>
-
-                <strong id="modalStatus">
-                    Submitted
-                </strong>
-
-            </div>
-
-
-            <div class="status-control">
-
-                <label for="statusSelect">
-                    Change Status
-                </label>
-
-                <select id="statusSelect">
-
-                    <option value="Submitted">
-                        Submitted
-                    </option>
-
-                    <option value="Under Review">
-                        Under Review
-                    </option>
-
-                    <option value="In Progress">
-                        In Progress
-                    </option>
-
-                    <option value="Resolved">
-                        Resolved
-                    </option>
-
-                </select>
-
-
-                <button
-                    id="updateStatusButton"
-                    class="update-status-btn"
-                >
-
-                    ✓ Update Status
-
-                </button>
-
-
-                <p id="statusUpdateMessage"
-                   class="status-update-message">
-                </p>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             DESCRIPTION
-        ================================================= -->
-
-        <div class="description-box">
-
-            <span>
-                Complaint Description
-            </span>
-
-            <p id="modalMessage">
-                -
+            <p id="statusUpdateMessage"
+               class="status-update-message">
             </p>
 
         </div>
 
+    </div>
+
+
+
+    <!-- =================================================
+         DESCRIPTION
+    ================================================= -->
+
+    <div class="description-box">
+
+        <span>
+            Complaint Description
+        </span>
+
+        <p id="modalMessage">
+            -
+        </p>
 
     </div>
+
 
 </div>
 
 
+</div>
 
 <!-- =========================================================
      JAVASCRIPT
 ========================================================= -->
 
 <script src="script.js"></script>
-
 
 </body>
 
