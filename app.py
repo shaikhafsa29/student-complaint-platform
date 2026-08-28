@@ -19,7 +19,6 @@ CORS(app)
 # PROJECT PATHS
 # =========================================================
 
-# app.py and all frontend files are in the SAME folder
 PROJECT_DIR = Path(__file__).resolve().parent
 
 
@@ -27,7 +26,6 @@ PROJECT_DIR = Path(__file__).resolve().parent
 # DATABASE CONFIGURATION
 # =========================================================
 
-# Railway Volume support
 RAILWAY_VOLUME = os.environ.get("RAILWAY_VOLUME_MOUNT_PATH")
 
 if RAILWAY_VOLUME:
@@ -74,7 +72,7 @@ def get_db_connection():
 
 
 # =========================================================
-# CREATE DATABASE
+# CREATE / UPDATE DATABASE
 # =========================================================
 
 def create_database():
@@ -82,12 +80,19 @@ def create_database():
     database_directory = os.path.dirname(DATABASE)
 
     if database_directory:
+
         os.makedirs(
             database_directory,
             exist_ok=True
         )
 
+
     conn = get_db_connection()
+
+
+    # =====================================================
+    # CREATE TABLE IF IT DOES NOT EXIST
+    # =====================================================
 
     conn.execute("""
         CREATE TABLE IF NOT EXISTS complaints (
@@ -96,11 +101,15 @@ def create_database():
 
             complaint_id TEXT UNIQUE NOT NULL,
 
+            roll_number TEXT,
+
             year TEXT NOT NULL,
 
             branch TEXT NOT NULL,
 
             category TEXT NOT NULL,
+
+            recipient TEXT,
 
             message TEXT NOT NULL,
 
@@ -110,6 +119,37 @@ def create_database():
 
         )
     """)
+
+
+    # =====================================================
+    # SAFELY ADD NEW COLUMNS TO EXISTING DATABASE
+    # =====================================================
+
+    columns = conn.execute(
+        "PRAGMA table_info(complaints)"
+    ).fetchall()
+
+    column_names = [
+        column["name"]
+        for column in columns
+    ]
+
+
+    if "roll_number" not in column_names:
+
+        conn.execute("""
+            ALTER TABLE complaints
+            ADD COLUMN roll_number TEXT
+        """)
+
+
+    if "recipient" not in column_names:
+
+        conn.execute("""
+            ALTER TABLE complaints
+            ADD COLUMN recipient TEXT
+        """)
+
 
     conn.commit()
 
@@ -181,12 +221,16 @@ def admin_dashboard_page():
         PROJECT_DIR,
         "admin-dashboard.html"
     )
+
+
 @app.route("/success.html")
 def success_page():
+
     return send_from_directory(
         PROJECT_DIR,
         "success.html"
     )
+
 
 # =========================================================
 # FRONTEND CSS / JS
@@ -236,17 +280,23 @@ def admin_login():
     if not data:
 
         return jsonify({
+
             "success": False,
+
             "message": "No login data received"
+
         }), 400
+
 
     username = str(
         data.get("username", "")
     ).strip()
 
+
     password = str(
         data.get("password", "")
     )
+
 
     if (
         username == ADMIN_USERNAME
@@ -260,6 +310,7 @@ def admin_login():
             "message": "Login successful"
 
         }), 200
+
 
     return jsonify({
 
@@ -284,6 +335,7 @@ def submit_complaint():
         silent=True
     )
 
+
     if not data:
 
         return jsonify({
@@ -294,30 +346,51 @@ def submit_complaint():
 
         }), 400
 
+
+    # =====================================================
+    # GET DATA
+    # =====================================================
+
+    roll_number = str(
+        data.get("roll_number", "")
+    ).strip().upper()
+
+
     year = str(
         data.get("year", "")
     ).strip()
+
 
     branch = str(
         data.get("branch", "")
     ).strip()
 
+
     category = str(
         data.get("category", "")
     ).strip()
 
+
+    recipient = str(
+        data.get("recipient", "")
+    ).strip()
+
+
     message = str(
         data.get("message", "")
     ).strip()
+
 
     # =====================================================
     # VALIDATION
     # =====================================================
 
     if (
-        not year
+        not roll_number
+        or not year
         or not branch
         or not category
+        or not recipient
         or not message
     ):
 
@@ -329,6 +402,33 @@ def submit_complaint():
 
         }), 400
 
+
+    # =====================================================
+    # VALIDATE RECIPIENT
+    # =====================================================
+
+    allowed_recipients = [
+
+        "Class Teacher",
+
+        "HOD",
+
+        "Principal"
+
+    ]
+
+
+    if recipient not in allowed_recipients:
+
+        return jsonify({
+
+            "success": False,
+
+            "message": "Invalid complaint recipient"
+
+        }), 400
+
+
     # =====================================================
     # GENERATE UNIQUE COMPLAINT ID
     # =====================================================
@@ -336,6 +436,7 @@ def submit_complaint():
     complaint_id = (
         f"CMP-{uuid.uuid4().hex[:8].upper()}"
     )
+
 
     # =====================================================
     # CURRENT DATE AND TIME
@@ -345,11 +446,13 @@ def submit_complaint():
         "%Y-%m-%d %H:%M:%S"
     )
 
+
     # =====================================================
     # SAVE COMPLAINT
     # =====================================================
 
     conn = get_db_connection()
+
 
     try:
 
@@ -357,45 +460,59 @@ def submit_complaint():
             INSERT INTO complaints
             (
                 complaint_id,
+                roll_number,
                 year,
                 branch,
                 category,
+                recipient,
                 message,
                 status,
                 created_at
             )
 
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 
         """, (
 
             complaint_id,
+
+            roll_number,
+
             year,
+
             branch,
+
             category,
+
+            recipient,
+
             message,
+
             "Submitted",
+
             created_at
 
         ))
 
+
         conn.commit()
 
-    except sqlite3.IntegrityError:
 
-        conn.close()
+    except sqlite3.IntegrityError:
 
         return jsonify({
 
             "success": False,
 
-            "message": "Could not generate complaint ID. Please try again."
+            "message": "Could not submit complaint. Please try again."
 
         }), 500
+
 
     finally:
 
         conn.close()
+
 
     return jsonify({
 
@@ -424,21 +541,38 @@ def get_complaints():
 
     conn = get_db_connection()
 
+
     complaints = conn.execute("""
         SELECT
+
             id,
+
             complaint_id,
+
+            roll_number,
+
             year,
+
             branch,
+
             category,
+
+            recipient,
+
             message,
+
             status,
+
             created_at
+
         FROM complaints
+
         ORDER BY id DESC
     """).fetchall()
 
+
     conn.close()
+
 
     complaint_list = [
 
@@ -447,6 +581,7 @@ def get_complaints():
         for complaint in complaints
 
     ]
+
 
     return jsonify(
         complaint_list
@@ -467,22 +602,34 @@ def track_complaint(complaint_id):
         complaint_id.strip().upper()
     )
 
+
     conn = get_db_connection()
+
 
     complaint = conn.execute("""
         SELECT
+
             complaint_id,
+
             category,
+
+            recipient,
+
             status,
+
             created_at
+
         FROM complaints
+
         WHERE complaint_id = ?
 
     """, (
         complaint_id,
     )).fetchone()
 
+
     conn.close()
+
 
     if complaint is None:
 
@@ -493,6 +640,7 @@ def track_complaint(complaint_id):
             "message": "Complaint ID not found"
 
         }), 404
+
 
     return jsonify({
 
@@ -521,23 +669,39 @@ def admin_view_complaint(complaint_id):
         complaint_id.strip().upper()
     )
 
+
     conn = get_db_connection()
+
 
     complaint = conn.execute("""
         SELECT
+
             complaint_id,
+
+            roll_number,
+
             year,
+
             branch,
+
             category,
+
+            recipient,
+
             message,
+
             status,
+
             created_at
+
         FROM complaints
+
         WHERE complaint_id = ?
 
     """, (
         complaint_id,
     )).fetchone()
+
 
     if complaint is None:
 
@@ -550,6 +714,7 @@ def admin_view_complaint(complaint_id):
             "message": "Complaint ID not found"
 
         }), 404
+
 
     # =====================================================
     # AUTOMATIC STATUS CHANGE
@@ -572,7 +737,9 @@ def admin_view_complaint(complaint_id):
 
         ))
 
+
         conn.commit()
+
 
     # =====================================================
     # GET UPDATED COMPLAINT
@@ -580,21 +747,36 @@ def admin_view_complaint(complaint_id):
 
     updated_complaint = conn.execute("""
         SELECT
+
             complaint_id,
+
+            roll_number,
+
             year,
+
             branch,
+
             category,
+
+            recipient,
+
             message,
+
             status,
+
             created_at
+
         FROM complaints
+
         WHERE complaint_id = ?
 
     """, (
         complaint_id,
     )).fetchone()
 
+
     conn.close()
+
 
     return jsonify({
 
@@ -611,12 +793,6 @@ def admin_view_complaint(complaint_id):
 
 # =========================================================
 # UPDATE COMPLAINT STATUS
-#
-# Allowed:
-# Submitted
-# Under Review
-# In Progress
-# Resolved
 # =========================================================
 
 @app.route(
@@ -629,9 +805,11 @@ def update_complaint_status(complaint_id):
         complaint_id.strip().upper()
     )
 
+
     data = request.get_json(
         silent=True
     )
+
 
     if not data:
 
@@ -643,9 +821,11 @@ def update_complaint_status(complaint_id):
 
         }), 400
 
+
     new_status = str(
         data.get("status", "")
     ).strip()
+
 
     allowed_statuses = [
 
@@ -659,6 +839,7 @@ def update_complaint_status(complaint_id):
 
     ]
 
+
     if new_status not in allowed_statuses:
 
         return jsonify({
@@ -669,16 +850,21 @@ def update_complaint_status(complaint_id):
 
         }), 400
 
+
     conn = get_db_connection()
+
 
     complaint = conn.execute("""
         SELECT complaint_id
+
         FROM complaints
+
         WHERE complaint_id = ?
 
     """, (
         complaint_id,
     )).fetchone()
+
 
     if complaint is None:
 
@@ -691,6 +877,7 @@ def update_complaint_status(complaint_id):
             "message": "Complaint ID not found"
 
         }), 404
+
 
     # =====================================================
     # UPDATE STATUS
@@ -711,7 +898,9 @@ def update_complaint_status(complaint_id):
 
     ))
 
+
     conn.commit()
+
 
     # =====================================================
     # GET UPDATED COMPLAINT
@@ -719,21 +908,36 @@ def update_complaint_status(complaint_id):
 
     updated_complaint = conn.execute("""
         SELECT
+
             complaint_id,
+
+            roll_number,
+
             year,
+
             branch,
+
             category,
+
+            recipient,
+
             message,
+
             status,
+
             created_at
+
         FROM complaints
+
         WHERE complaint_id = ?
 
     """, (
         complaint_id,
     )).fetchone()
 
+
     conn.close()
+
 
     return jsonify({
 
@@ -776,7 +980,6 @@ def health_check():
 @app.errorhandler(404)
 def page_not_found(error):
 
-    # API 404
     if request.path.startswith("/api/"):
 
         return jsonify({
@@ -787,7 +990,7 @@ def page_not_found(error):
 
         }), 404
 
-    # Any unknown frontend route
+
     return send_from_directory(
         PROJECT_DIR,
         "index.html"
@@ -829,6 +1032,7 @@ if __name__ == "__main__":
             5000
         )
     )
+
 
     app.run(
 
