@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>Student Login | VEMU Voice</title>
+
+<link rel="stylesheet" href="style.css">
+```
+
+</head>
+
+<body class="login-page">
+
+```
+<nav class="navbar">
+
+    <a href="login.html" class="logo">
+        VEMU<span>VOICE</span>
+    </a>
+
+</nav>
+
+
+<main class="student-login-container">
+
+    <section class="student-login-card">
+
+        <div class="login-icon">
+            🎓
+        </div>
+
+        <p class="login-badge">
+            STUDENT ACCESS
+        </p>
+
+        <h1>
+            Welcome to <span>VEMU Voice</span>
+        </h1>
+
+        <p class="login-description">
+            Enter your Roll Number to continue.
+        </p>
+
+
+        <form id="studentLoginForm">
+
+            <div class="form-group">
+
+                <label for="studentRollNumber">
+                    Roll Number
+                </label>
+
+                <input
+                    type="text"
+                    id="studentRollNumber"
+                    placeholder="Enter your Roll Number"
+                    autocomplete="off"
+                    required
+                >
+
+            </div>
+
+
+            <p
+                id="studentLoginError"
+                class="login-error hidden"
+            ></p>
+
+
+            <button
+                type="submit"
+                class="submit-btn"
+            >
+                Continue →
+            </button>
+
+        </form>
+
+
+        <p class="login-note">
+            Your roll number is used only to identify your submissions.
+        </p>
+
+    </section>
+
+</main>
+
+
+<script src="script.js"></script>
+```
+
+</body>
+
+</html>
