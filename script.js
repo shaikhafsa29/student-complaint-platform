@@ -12,220 +12,96 @@ const API_BASE = "";
    COMPLAINT SUBMISSION
 ========================================================= */
 
-const complaintForm =
-    document.getElementById("complaintForm");
-
+const complaintForm = document.getElementById("complaintForm");
 
 if (complaintForm) {
 
-    const message =
-        document.getElementById("message");
-
-    const charCount =
-        document.getElementById("charCount");
-
+    const message = document.getElementById("message");
+    const charCount = document.getElementById("charCount");
 
     if (message && charCount) {
-
-        message.addEventListener(
-            "input",
-            () => {
-
-                charCount.textContent =
-                    `${message.value.length} / 1000`;
-
-            }
-        );
-
+        message.addEventListener("input", () => {
+            charCount.textContent = `${message.value.length} / 1000`;
+        });
     }
 
-
-    complaintForm.addEventListener(
-        "submit",
-        async (event) => {
-
-            event.preventDefault();
-
-
-            const year =
-                document.getElementById("year").value;
-
-            const branch =
-                document.getElementById("branch").value;
-
-            const category =
-                document.getElementById("category").value;
-
-            const recipient =
-                document.getElementById("recipient").value;
-
-            const complaintMessage =
-                message.value.trim();
-
-
-            /* -----------------------------
-               VALIDATION
-            ----------------------------- */
-
-            if (
-                !year ||
-                !branch ||
-                !category ||
-                !recipient ||
-                !complaintMessage
-            ) {
-
-                alert(
-                    "Please fill in all required fields."
-                );
-
-                return;
-
-            }
-
-
-            /* -----------------------------
-               BUTTON
-            ----------------------------- */
-
-            const submitButton =
-                complaintForm.querySelector(
-                    ".submit-btn"
-                );
-
-
-            submitButton.disabled = true;
-
-            submitButton.textContent =
-                "Submitting...";
-
-
-            /* -----------------------------
-               SEND TO FLASK
-            ----------------------------- */
-
-            try {
-
-                const response =
-                    await fetch(
-                        `${API_BASE}/api/complaints`,
-                        {
-
-                            method: "POST",
-
-                            headers: {
-
-                                "Content-Type":
-                                    "application/json"
-
-                            },
-
-                            body:
-                                JSON.stringify({
-
-                                    year: year,
-
-                                    branch: branch,
-
-                                    category: category,
-
-                                    recipient: recipient,
-
-                                    message: complaintMessage
-
-                                })
-
-                        }
-                    );
-
-
-                const result =
-                    await response.json();
-
-
-                console.log(
-                    "Complaint response:",
-                    result
-                );
-
-
-                /* -----------------------------
-                   CHECK RESPONSE
-                ----------------------------- */
-
-                if (
-                    !response.ok ||
-                    !result.success
-                ) {
-
-                    throw new Error(
-                        result.message ||
-                        "Failed to submit complaint."
-                    );
-
-                }
-
-
-                /* -----------------------------
-                   GET COMPLAINT ID
-                ----------------------------- */
-
-                const complaintId =
-                    result.complaint_id;
-
-
-                if (!complaintId) {
-
-                    throw new Error(
-                        "Complaint was submitted, but the server did not return a Complaint ID."
-                    );
-
-                }
-
-
-                /* -----------------------------
-                   SAVE COMPLAINT ID
-                ----------------------------- */
-
-                sessionStorage.setItem(
-                    "complaintId",
-                    complaintId
-                );
-
-
-                /* -----------------------------
-                   GO TO SUCCESS PAGE
-                ----------------------------- */
-
-                window.location.href =
-                    "success.html";
-
-
-            } catch (error) {
-
-                console.error(
-                    "Submission error:",
-                    error
-                );
-
-
-                alert(
-                    error.message ||
-                    "Something went wrong. Please try again."
-                );
-
-
-                submitButton.disabled =
-                    false;
-
-                submitButton.textContent =
-                    "Submit Complaint →";
-
-            }
-
+    complaintForm.addEventListener("submit", async (event) => {
+
+        event.preventDefault();
+
+        const year = document.getElementById("year").value;
+        const branch = document.getElementById("branch").value;
+        const category = document.getElementById("category").value;
+        const recipient = document.getElementById("recipient").value;
+        const complaintMessage = message.value.trim();
+
+        if (!year || !branch || !category || !recipient || !complaintMessage) {
+            alert("Please fill in all required fields.");
+            return;
         }
-    );
 
+        const submitButton = complaintForm.querySelector(".submit-btn");
+
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = "Submitting...";
+        }
+
+        try {
+
+            const response = await fetch(`${API_BASE}/api/complaints`, {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    year: year,
+                    branch: branch,
+                    category: category,
+                    recipient: recipient,
+                    message: complaintMessage
+                })
+            });
+
+            const result = await response.json();
+
+            console.log("Complaint response:", result);
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message || "Failed to submit complaint."
+                );
+            }
+
+            const complaintId = result.complaint_id;
+
+            if (!complaintId) {
+                throw new Error(
+                    "Complaint submitted, but no Complaint ID was received."
+                );
+            }
+
+            sessionStorage.setItem("complaintId", complaintId);
+
+            window.location.href = "success.html";
+
+        } catch (error) {
+
+            console.error("Submission error:", error);
+
+            alert(
+                error.message ||
+                "Something went wrong. Please try again."
+            );
+
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.textContent = "Submit Complaint →";
+            }
+        }
+    });
 }
 
 
@@ -233,255 +109,160 @@ if (complaintForm) {
    COMPLAINT TRACKING
 ========================================================= */
 
-const trackForm =
-    document.getElementById(
-        "trackForm"
-    );
-
+const trackForm = document.getElementById("trackForm");
 
 if (trackForm) {
 
     const complaintIdInput =
-        document.getElementById(
-            "trackComplaintId"
-        );
+        document.getElementById("trackComplaintId");
 
     const trackingResult =
-        document.getElementById(
-            "trackingResult"
-        );
+        document.getElementById("trackingResult");
 
     const trackingError =
-        document.getElementById(
-            "trackingError"
-        );
+        document.getElementById("trackingError");
 
     const resultComplaintId =
-        document.getElementById(
-            "resultComplaintId"
-        );
+        document.getElementById("resultComplaintId");
 
     const resultCategory =
-        document.getElementById(
-            "resultCategory"
-        );
+        document.getElementById("resultCategory");
 
     const resultStatus =
-        document.getElementById(
-            "resultStatus"
-        );
+        document.getElementById("resultStatus");
 
     const resultDate =
-        document.getElementById(
-            "resultDate"
-        );
+        document.getElementById("resultDate");
 
+    trackForm.addEventListener("submit", async (event) => {
 
-    trackForm.addEventListener(
-        "submit",
-        async (event) => {
+        event.preventDefault();
 
-            event.preventDefault();
+        const complaintId =
+            complaintIdInput.value.trim().toUpperCase();
 
+        if (!complaintId) {
+            alert("Please enter your Complaint ID.");
+            return;
+        }
 
-            const complaintId =
-                complaintIdInput.value
-                    .trim()
-                    .toUpperCase();
+        if (trackingResult) {
+            trackingResult.classList.add("hidden");
+        }
 
+        if (trackingError) {
+            trackingError.classList.add("hidden");
+        }
 
-            if (!complaintId) {
+        const trackButton =
+            trackForm.querySelector(".submit-btn");
 
-                alert(
-                    "Please enter your Complaint ID."
-                );
+        if (trackButton) {
+            trackButton.disabled = true;
+            trackButton.textContent = "Searching...";
+        }
+
+        try {
+
+            const response = await fetch(
+                `${API_BASE}/api/complaints/${complaintId}`
+            );
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+
+                if (trackingError) {
+                    trackingError.classList.remove("hidden");
+                }
 
                 return;
-
             }
 
+            const complaint = result.complaint;
 
-            trackingResult.classList.add(
-                "hidden"
-            );
-
-            trackingError.classList.add(
-                "hidden"
-            );
-
-
-            const trackButton =
-                trackForm.querySelector(
-                    ".submit-btn"
-                );
-
-
-            trackButton.disabled =
-                true;
-
-            trackButton.textContent =
-                "Searching...";
-
-
-            try {
-
-                const response =
-                    await fetch(
-                        `${API_BASE}/api/complaints/${complaintId}`
-                    );
-
-
-                const result =
-                    await response.json();
-
-
-                if (
-                    !response.ok ||
-                    !result.success
-                ) {
-
-                    trackingError.classList.remove(
-                        "hidden"
-                    );
-
-                    return;
-
-                }
-
-
-                const complaint =
-                    result.complaint;
-
-
+            if (resultComplaintId) {
                 resultComplaintId.textContent =
                     complaint.complaint_id;
-
-
-                resultCategory.textContent =
-                    complaint.category;
-
-
-                resultStatus.textContent =
-                    complaint.status;
-
-
-                const statusMessage =
-                    document.getElementById(
-                        "statusMessage"
-                    );
-
-
-                if (statusMessage) {
-
-                    if (
-                        complaint.status ===
-                        "Submitted"
-                    ) {
-
-                        statusMessage.textContent =
-                            "Your complaint has been submitted successfully and is waiting for review.";
-
-                    }
-
-                    else if (
-                        complaint.status ===
-                        "Under Review"
-                    ) {
-
-                        statusMessage.textContent =
-                            "Your complaint is currently being reviewed by the administration.";
-
-                    }
-
-                    else if (
-                        complaint.status ===
-                        "In Progress"
-                    ) {
-
-                        statusMessage.textContent =
-                            "Action is currently being taken regarding your complaint.";
-
-                    }
-
-                    else if (
-                        complaint.status ===
-                        "Resolved"
-                    ) {
-
-                        statusMessage.textContent =
-                            "Your complaint has been resolved.";
-
-                    }
-
-                    else {
-
-                        statusMessage.textContent =
-                            "Your complaint status has been updated.";
-
-                    }
-
-                }
-
-
-                const date =
-                    new Date(
-                        complaint.created_at.replace(
-                            " ",
-                            "T"
-                        )
-                    );
-
-
-                resultDate.textContent =
-                    date.toLocaleString(
-                        "en-IN",
-                        {
-
-                            day: "numeric",
-
-                            month: "short",
-
-                            year: "numeric",
-
-                            hour: "numeric",
-
-                            minute: "2-digit"
-
-                        }
-                    );
-
-
-                trackingResult.classList.remove(
-                    "hidden"
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Tracking error:",
-                    error
-                );
-
-
-                trackingError.classList.remove(
-                    "hidden"
-                );
-
-
-            } finally {
-
-                trackButton.disabled =
-                    false;
-
-                trackButton.textContent =
-                    "Track Status 🔍";
-
             }
 
-        }
-    );
+            if (resultCategory) {
+                resultCategory.textContent =
+                    complaint.category;
+            }
 
+            if (resultStatus) {
+                resultStatus.textContent =
+                    complaint.status;
+            }
+
+            const statusMessage =
+                document.getElementById("statusMessage");
+
+            if (statusMessage) {
+
+                if (complaint.status === "Submitted") {
+                    statusMessage.textContent =
+                        "Your complaint has been submitted successfully and is waiting for review.";
+                }
+
+                else if (complaint.status === "Under Review") {
+                    statusMessage.textContent =
+                        "Your complaint is currently being reviewed by the administration.";
+                }
+
+                else if (complaint.status === "In Progress") {
+                    statusMessage.textContent =
+                        "Action is currently being taken regarding your complaint.";
+                }
+
+                else if (complaint.status === "Resolved") {
+                    statusMessage.textContent =
+                        "Your complaint has been resolved.";
+                }
+
+                else {
+                    statusMessage.textContent =
+                        "Your complaint status has been updated.";
+                }
+            }
+
+            if (resultDate && complaint.created_at) {
+
+                const date = new Date(
+                    complaint.created_at.replace(" ", "T")
+                );
+
+                resultDate.textContent =
+                    date.toLocaleString("en-IN", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                        hour: "numeric",
+                        minute: "2-digit"
+                    });
+            }
+
+            if (trackingResult) {
+                trackingResult.classList.remove("hidden");
+            }
+
+        } catch (error) {
+
+            console.error("Tracking error:", error);
+
+            if (trackingError) {
+                trackingError.classList.remove("hidden");
+            }
+
+        } finally {
+
+            if (trackButton) {
+                trackButton.disabled = false;
+                trackButton.textContent = "Track Status 🔍";
+            }
+        }
+    });
 }
 
 
@@ -490,143 +271,91 @@ if (trackForm) {
 ========================================================= */
 
 const adminLoginForm =
-    document.getElementById(
-        "adminLoginForm"
-    );
-
+    document.getElementById("adminLoginForm");
 
 if (adminLoginForm) {
 
     const adminUsername =
-        document.getElementById(
-            "adminUsername"
-        );
+        document.getElementById("adminUsername");
 
     const adminPassword =
-        document.getElementById(
-            "adminPassword"
-        );
+        document.getElementById("adminPassword");
 
     const loginError =
-        document.getElementById(
-            "loginError"
-        );
+        document.getElementById("loginError");
 
+    adminLoginForm.addEventListener("submit", async (event) => {
 
-    adminLoginForm.addEventListener(
-        "submit",
-        async (event) => {
+        event.preventDefault();
 
-            event.preventDefault();
+        if (loginError) {
+            loginError.classList.add("hidden");
+        }
 
+        const loginButton =
+            adminLoginForm.querySelector(".submit-btn");
 
-            loginError.classList.add(
-                "hidden"
+        if (loginButton) {
+            loginButton.disabled = true;
+            loginButton.textContent = "Logging in...";
+        }
+
+        try {
+
+            const response = await fetch(
+                `${API_BASE}/api/admin/login`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        username: adminUsername.value.trim(),
+                        password: adminPassword.value
+                    })
+                }
             );
 
+            const result = await response.json();
 
-            const loginButton =
-                adminLoginForm.querySelector(
-                    ".submit-btn"
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message ||
+                    "Invalid username or password"
                 );
+            }
 
+            sessionStorage.setItem(
+                "adminLoggedIn",
+                "true"
+            );
 
-            loginButton.disabled =
-                true;
+            window.location.href =
+                "admin-dashboard.html";
 
-            loginButton.textContent =
-                "Logging in...";
+        } catch (error) {
 
+            console.error("Admin login error:", error);
 
-            try {
-
-                const response =
-                    await fetch(
-                        `${API_BASE}/api/admin/login`,
-                        {
-
-                            method: "POST",
-
-                            headers: {
-
-                                "Content-Type":
-                                    "application/json"
-
-                            },
-
-                            body:
-                                JSON.stringify({
-
-                                    username:
-                                        adminUsername.value.trim(),
-
-                                    password:
-                                        adminPassword.value
-
-                                })
-
-                        }
-                    );
-
-
-                const result =
-                    await response.json();
-
-
-                if (
-                    !response.ok ||
-                    !result.success
-                ) {
-
-                    throw new Error(
-                        result.message ||
-                        "Invalid username or password"
-                    );
-
-                }
-
-
-                sessionStorage.setItem(
-                    "adminLoggedIn",
-                    "true"
-                );
-
-
-                window.location.href =
-                    "admin-dashboard.html";
-
-
-            } catch (error) {
-
-                console.error(
-                    "Admin login error:",
-                    error
-                );
-
-
+            if (loginError) {
                 loginError.textContent =
                     error.message ||
                     "Login failed. Please try again.";
 
-
-                loginError.classList.remove(
-                    "hidden"
-                );
-
-
-            } finally {
-
-                loginButton.disabled =
-                    false;
-
-                loginButton.textContent =
-                    "Login to Dashboard →";
-
+                loginError.classList.remove("hidden");
             }
 
-        }
-    );
+        } finally {
 
+            if (loginButton) {
+                loginButton.disabled = false;
+                loginButton.textContent =
+                    "Login to Dashboard →";
+            }
+        }
+    });
 }
 
 
@@ -635,525 +364,312 @@ if (adminLoginForm) {
 ========================================================= */
 
 const complaintsContainer =
-    document.getElementById(
-        "complaintsContainer"
-    );
-
+    document.getElementById("complaintsContainer");
 
 if (complaintsContainer) {
 
-
-    /* =====================================================
-       LOGIN CHECK
-    ===================================================== */
-
     if (
-        sessionStorage.getItem(
-            "adminLoggedIn"
-        ) !== "true"
+        sessionStorage.getItem("adminLoggedIn") !== "true"
     ) {
-
-        window.location.href =
-            "admin-login.html";
-
+        window.location.href = "admin-login.html";
         return;
-
     }
 
-
-    /* =====================================================
-       DASHBOARD ELEMENTS
-    ===================================================== */
-
     const totalComplaints =
-        document.getElementById(
-            "totalComplaints"
-        );
+        document.getElementById("totalComplaints");
 
     const submittedCount =
-        document.getElementById(
-            "submittedCount"
-        );
+        document.getElementById("submittedCount");
 
     const reviewCount =
-        document.getElementById(
-            "reviewCount"
-        );
+        document.getElementById("reviewCount");
 
     const resolvedCount =
-        document.getElementById(
-            "resolvedCount"
-        );
+        document.getElementById("resolvedCount");
 
     const refreshButton =
-        document.getElementById(
-            "refreshComplaints"
-        );
+        document.getElementById("refreshComplaints");
 
     const searchComplaint =
-        document.getElementById(
-            "searchComplaint"
-        );
+        document.getElementById("searchComplaint");
 
     const statusFilter =
-        document.getElementById(
-            "statusFilter"
-        );
+        document.getElementById("statusFilter");
 
     const logoutButton =
-        document.getElementById(
-            "logoutButton"
-        );
-
-
-    /* =====================================================
-       MODAL ELEMENTS
-    ===================================================== */
+        document.getElementById("logoutButton");
 
     const complaintModal =
-        document.getElementById(
-            "complaintModal"
-        );
+        document.getElementById("complaintModal");
 
     const closeModal =
-        document.getElementById(
-            "closeModal"
-        );
+        document.getElementById("closeModal");
 
     const modalComplaintId =
-        document.getElementById(
-            "modalComplaintId"
-        );
+        document.getElementById("modalComplaintId");
 
     const modalYear =
-        document.getElementById(
-            "modalYear"
-        );
+        document.getElementById("modalYear");
 
     const modalBranch =
-        document.getElementById(
-            "modalBranch"
-        );
+        document.getElementById("modalBranch");
 
     const modalCategory =
-        document.getElementById(
-            "modalCategory"
-        );
+        document.getElementById("modalCategory");
 
     const modalRecipient =
-        document.getElementById(
-            "modalRecipient"
-        );
+        document.getElementById("modalRecipient");
 
     const modalStatus =
-        document.getElementById(
-            "modalStatus"
-        );
+        document.getElementById("modalStatus");
 
     const modalDate =
-        document.getElementById(
-            "modalDate"
-        );
+        document.getElementById("modalDate");
 
     const modalMessage =
-        document.getElementById(
-            "modalMessage"
-        );
+        document.getElementById("modalMessage");
 
     const statusSelect =
-        document.getElementById(
-            "statusSelect"
-        );
+        document.getElementById("statusSelect");
 
     const updateStatusButton =
-        document.getElementById(
-            "updateStatusButton"
-        );
+        document.getElementById("updateStatusButton");
 
     const statusUpdateMessage =
-        document.getElementById(
-            "statusUpdateMessage"
-        );
+        document.getElementById("statusUpdateMessage");
 
-
-    let selectedComplaintId =
-        null;
-
-
+    let selectedComplaintId = null;
     let allComplaints = [];
 
 
-    /* =====================================================
-       FORMAT DATE
-    ===================================================== */
+    function formatDate(dateString) {
 
-    function formatDate(
-        dateString
-    ) {
+        if (!dateString) {
+            return "-";
+        }
 
-        const date =
-            new Date(
-                dateString.replace(
-                    " ",
-                    "T"
-                )
-            );
-
-
-        return date.toLocaleString(
-            "en-IN",
-            {
-
-                day: "numeric",
-
-                month: "short",
-
-                year: "numeric",
-
-                hour: "numeric",
-
-                minute: "2-digit"
-
-            }
+        const date = new Date(
+            dateString.replace(" ", "T")
         );
 
+        return date.toLocaleString("en-IN", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+            hour: "numeric",
+            minute: "2-digit"
+        });
     }
 
 
-    /* =====================================================
-       UPDATE STATISTICS
-    ===================================================== */
+    function updateStatistics(complaints) {
 
-    function updateStatistics(
-        complaints
-    ) {
+        if (totalComplaints) {
+            totalComplaints.textContent =
+                complaints.length;
+        }
 
-        totalComplaints.textContent =
-            complaints.length;
+        if (submittedCount) {
+            submittedCount.textContent =
+                complaints.filter(
+                    complaint =>
+                        complaint.status === "Submitted"
+                ).length;
+        }
 
+        if (reviewCount) {
+            reviewCount.textContent =
+                complaints.filter(
+                    complaint =>
+                        complaint.status === "Under Review"
+                ).length;
+        }
 
-        submittedCount.textContent =
-            complaints.filter(
-                complaint =>
-                    complaint.status ===
-                    "Submitted"
-            ).length;
-
-
-        reviewCount.textContent =
-            complaints.filter(
-                complaint =>
-                    complaint.status ===
-                    "Under Review"
-            ).length;
-
-
-        resolvedCount.textContent =
-            complaints.filter(
-                complaint =>
-                    complaint.status ===
-                    "Resolved"
-            ).length;
-
+        if (resolvedCount) {
+            resolvedCount.textContent =
+                complaints.filter(
+                    complaint =>
+                        complaint.status === "Resolved"
+                ).length;
+        }
     }
 
 
-    /* =====================================================
-       DISPLAY COMPLAINTS
-    ===================================================== */
+    function displayComplaints(complaints) {
 
-    function displayComplaints(
-        complaints
-    ) {
+        complaintsContainer.innerHTML = "";
 
-        complaintsContainer.innerHTML =
-            "";
-
-
-        if (
-            complaints.length === 0
-        ) {
+        if (complaints.length === 0) {
 
             complaintsContainer.innerHTML = `
                 <tr>
-                    <td
-                        colspan="7"
-                        class="empty-table"
-                    >
+                    <td colspan="7" class="empty-table">
                         No complaints found.
                     </td>
                 </tr>
-            ;
+            `;
 
             return;
-
         }
 
+        complaints.forEach((complaint) => {
 
-        complaints.forEach(
-            (complaint) => {
+            const row = document.createElement("tr");
 
-                const row =
-                    document.createElement(
-                        "tr"
-                    );
+            let statusClass = "submitted";
 
-
-                let statusClass =
-                    "submitted";
-
-
-                if (
-                    complaint.status ===
-                    "Under Review"
-                ) {
-
-                    statusClass =
-                        "review";
-
-                }
-
-
-                if (
-                    complaint.status ===
-                    "In Progress"
-                ) {
-
-                    statusClass =
-                        "progress";
-
-                }
-
-
-                if (
-                    complaint.status ===
-                    "Resolved"
-                ) {
-
-                    statusClass =
-                        "resolved";
-
-                }
-
-
-                row.innerHTML = `
-
-                    <td>
-
-                        <strong
-                            class="complaint-id-cell"
-                        >
-                            ${complaint.complaint_id}
-                        </strong>
-
-                    </td>
-
-
-                    <td>
-
-                        ${complaint.year}
-
-                        <br>
-
-                        <span
-                            class="branch-text"
-                        >
-                            ${complaint.branch}
-                        </span>
-
-                    </td>
-
-
-                    <td>
-                        ${complaint.category}
-                    </td>
-
-
-                    <td>
-                        ${complaint.recipient || "-"}
-                    </td>
-
-
-                    <td>
-
-                        <span
-                            class="status-badge ${statusClass}"
-                        >
-                            ${complaint.status}
-                        </span>
-
-                    </td>
-
-
-                    <td>
-                        ${formatDate(
-                            complaint.created_at
-                        )}
-                    </td>
-
-
-                    <td>
-
-                        <button
-                            class="view-btn"
-                            data-id="${complaint.complaint_id}"
-                        >
-                            View
-                        </button>
-
-                    </td>
-
-                `;
-
-
-                complaintsContainer.appendChild(
-                    row
-                );
-
+            if (complaint.status === "Under Review") {
+                statusClass = "review";
             }
-        );
 
+            else if (complaint.status === "In Progress") {
+                statusClass = "progress";
+            }
+
+            else if (complaint.status === "Resolved") {
+                statusClass = "resolved";
+            }
+
+            row.innerHTML = `
+                <td>
+                    <strong class="complaint-id-cell">
+                        ${complaint.complaint_id}
+                    </strong>
+                </td>
+
+                <td>
+                    ${complaint.year}
+                    <br>
+                    <span class="branch-text">
+                        ${complaint.branch}
+                    </span>
+                </td>
+
+                <td>
+                    ${complaint.category}
+                </td>
+
+                <td>
+                    ${complaint.recipient || "-"}
+                </td>
+
+                <td>
+                    <span class="status-badge ${statusClass}">
+                        ${complaint.status}
+                    </span>
+                </td>
+
+                <td>
+                    ${formatDate(complaint.created_at)}
+                </td>
+
+                <td>
+                    <button
+                        class="view-btn"
+                        data-id="${complaint.complaint_id}"
+                    >
+                        View
+                    </button>
+                </td>
+            `;
+
+            complaintsContainer.appendChild(row);
+        });
     }
 
-
-    /* =====================================================
-       SEARCH + FILTER
-    ===================================================== */
 
     function filterComplaints() {
 
         const searchValue =
-            searchComplaint.value
-                .trim()
-                .toUpperCase();
-
+            searchComplaint
+                ? searchComplaint.value.trim().toUpperCase()
+                : "";
 
         const selectedStatus =
-            statusFilter.value;
-
+            statusFilter
+                ? statusFilter.value
+                : "All";
 
         const filteredComplaints =
-            allComplaints.filter(
-                (complaint) => {
+            allComplaints.filter((complaint) => {
 
-                    const matchesSearch =
-                        complaint.complaint_id
-                            .toUpperCase()
-                            .includes(
-                                searchValue
-                            );
+                const matchesSearch =
+                    complaint.complaint_id
+                        .toUpperCase()
+                        .includes(searchValue);
 
+                const matchesStatus =
+                    selectedStatus === "All" ||
+                    complaint.status === selectedStatus;
 
-                    const matchesStatus =
-                        selectedStatus ===
-                            "All" ||
-                        complaint.status ===
-                            selectedStatus;
+                return matchesSearch && matchesStatus;
+            });
 
-
-                    return (
-                        matchesSearch &&
-                        matchesStatus
-                    );
-
-                }
-            );
-
-
-        displayComplaints(
-            filteredComplaints
-        );
-
+        displayComplaints(filteredComplaints);
     }
 
 
-    /* =====================================================
-       OPEN MODAL
-    ===================================================== */
+    function openComplaintModal(complaint) {
 
-    function openComplaintModal(
-        complaint
-    ) {
-
-        if (!complaint) {
-
-            console.error(
-                "Complaint not found."
-            );
-
+        if (!complaint || !complaintModal) {
             return;
-
         }
-
 
         selectedComplaintId =
             complaint.complaint_id;
 
+        if (modalComplaintId) {
+            modalComplaintId.textContent =
+                complaint.complaint_id;
+        }
 
-        modalComplaintId.textContent =
-            complaint.complaint_id;
+        if (modalYear) {
+            modalYear.textContent =
+                complaint.year;
+        }
 
+        if (modalBranch) {
+            modalBranch.textContent =
+                complaint.branch;
+        }
 
-        modalYear.textContent =
-            complaint.year;
-
-
-        modalBranch.textContent =
-            complaint.branch;
-
-
-        modalCategory.textContent =
-            complaint.category;
-
+        if (modalCategory) {
+            modalCategory.textContent =
+                complaint.category;
+        }
 
         if (modalRecipient) {
-
             modalRecipient.textContent =
                 complaint.recipient || "-";
-
         }
 
+        if (modalStatus) {
+            modalStatus.textContent =
+                complaint.status;
+        }
 
-        modalStatus.textContent =
-            complaint.status;
+        if (modalDate) {
+            modalDate.textContent =
+                formatDate(complaint.created_at);
+        }
 
-
-        modalDate.textContent =
-            formatDate(
-                complaint.created_at
-            );
-
-
-        modalMessage.textContent =
-            complaint.message;
-
+        if (modalMessage) {
+            modalMessage.textContent =
+                complaint.message;
+        }
 
         if (statusSelect) {
-
             statusSelect.value =
                 complaint.status;
-
         }
-
 
         if (statusUpdateMessage) {
-
-            statusUpdateMessage.textContent =
-                "";
-
+            statusUpdateMessage.textContent = "";
         }
 
-
-        complaintModal.classList.add(
-            "show"
-        );
-
+        complaintModal.classList.add("show");
     }
 
-
-    /* =====================================================
-       VIEW COMPLAINT
-    ===================================================== */
 
     async function viewComplaint(
         complaintId,
@@ -1163,74 +679,44 @@ if (complaintsContainer) {
         try {
 
             if (viewButton) {
-
-                viewButton.disabled =
-                    true;
-
-                viewButton.textContent =
-                    "Opening...";
-
+                viewButton.disabled = true;
+                viewButton.textContent = "Opening...";
             }
 
-
-            const response =
-                await fetch(
-                    `${API_BASE}/api/admin/complaints/${complaintId}/view`,
-                    {
-                        method: "POST"
-                    }
-                );
-
+            const response = await fetch(
+                `${API_BASE}/api/admin/complaints/${complaintId}/view`,
+                {
+                    method: "POST"
+                }
+            );
 
             const result =
                 await response.json();
 
-
-            if (
-                !response.ok ||
-                !result.success
-            ) {
-
+            if (!response.ok || !result.success) {
                 throw new Error(
                     result.message ||
                     "Unable to open complaint."
                 );
-
             }
-
 
             const updatedComplaint =
                 result.complaint;
 
-
             const index =
                 allComplaints.findIndex(
                     complaint =>
-                        complaint.complaint_id ===
-                        complaintId
+                        complaint.complaint_id === complaintId
                 );
 
-
             if (index !== -1) {
-
                 allComplaints[index] =
                     updatedComplaint;
-
             }
 
-
-            updateStatistics(
-                allComplaints
-            );
-
-
+            updateStatistics(allComplaints);
             filterComplaints();
-
-
-            openComplaintModal(
-                updatedComplaint
-            );
-
+            openComplaintModal(updatedComplaint);
 
         } catch (error) {
 
@@ -1239,33 +725,20 @@ if (complaintsContainer) {
                 error
             );
 
-
             alert(
                 error.message ||
                 "Unable to open complaint."
             );
 
-
         } finally {
 
             if (viewButton) {
-
-                viewButton.disabled =
-                    false;
-
-                viewButton.textContent =
-                    "View";
-
+                viewButton.disabled = false;
+                viewButton.textContent = "View";
             }
-
         }
-
     }
 
-
-    /* =====================================================
-       UPDATE STATUS
-    ===================================================== */
 
     if (updateStatusButton) {
 
@@ -1274,30 +747,21 @@ if (complaintsContainer) {
             async () => {
 
                 if (!selectedComplaintId) {
-
-                    alert(
-                        "No complaint selected."
-                    );
-
+                    alert("No complaint selected.");
                     return;
-
                 }
-
 
                 const newStatus =
                     statusSelect.value;
 
-
-                updateStatusButton.disabled =
-                    true;
+                updateStatusButton.disabled = true;
 
                 updateStatusButton.textContent =
                     "Updating...";
 
-
-                statusUpdateMessage.textContent =
-                    "";
-
+                if (statusUpdateMessage) {
+                    statusUpdateMessage.textContent = "";
+                }
 
                 try {
 
@@ -1305,48 +769,35 @@ if (complaintsContainer) {
                         await fetch(
                             `${API_BASE}/api/admin/complaints/${selectedComplaintId}/status`,
                             {
-
                                 method: "PUT",
 
                                 headers: {
-
                                     "Content-Type":
                                         "application/json"
-
                                 },
 
                                 body:
                                     JSON.stringify({
-
-                                        status:
-                                            newStatus
-
+                                        status: newStatus
                                     })
-
                             }
                         );
 
-
                     const result =
                         await response.json();
-
 
                     if (
                         !response.ok ||
                         !result.success
                     ) {
-
                         throw new Error(
                             result.message ||
                             "Failed to update status."
                         );
-
                     }
-
 
                     const updatedComplaint =
                         result.complaint;
-
 
                     const index =
                         allComplaints.findIndex(
@@ -1355,34 +806,28 @@ if (complaintsContainer) {
                                 selectedComplaintId
                         );
 
-
                     if (index !== -1) {
-
                         allComplaints[index] =
                             updatedComplaint;
-
                     }
 
+                    if (modalStatus) {
+                        modalStatus.textContent =
+                            updatedComplaint.status;
+                    }
 
-                    modalStatus.textContent =
-                        updatedComplaint.status;
+                    if (statusSelect) {
+                        statusSelect.value =
+                            updatedComplaint.status;
+                    }
 
-
-                    statusSelect.value =
-                        updatedComplaint.status;
-
-
-                    updateStatistics(
-                        allComplaints
-                    );
-
-
+                    updateStatistics(allComplaints);
                     filterComplaints();
 
-
-                    statusUpdateMessage.textContent =
-                        "✓ Status updated successfully";
-
+                    if (statusUpdateMessage) {
+                        statusUpdateMessage.textContent =
+                            "✓ Status updated successfully";
+                    }
 
                 } catch (error) {
 
@@ -1391,10 +836,11 @@ if (complaintsContainer) {
                         error
                     );
 
-
-                    statusUpdateMessage.textContent =
-                        error.message ||
-                        "Failed to update status.";
+                    if (statusUpdateMessage) {
+                        statusUpdateMessage.textContent =
+                            error.message ||
+                            "Failed to update status.";
+                    }
 
                 } finally {
 
@@ -1403,52 +849,33 @@ if (complaintsContainer) {
 
                     updateStatusButton.textContent =
                         "✓ Update Status";
-
                 }
-
             }
         );
-
     }
 
-
-    /* =====================================================
-       VIEW BUTTON EVENT
-    ===================================================== */
 
     complaintsContainer.addEventListener(
         "click",
         (event) => {
 
             const viewButton =
-                event.target.closest(
-                    ".view-btn"
-                );
-
+                event.target.closest(".view-btn");
 
             if (!viewButton) {
-
                 return;
-
             }
-
 
             const complaintId =
                 viewButton.dataset.id;
-
 
             viewComplaint(
                 complaintId,
                 viewButton
             );
-
         }
     );
 
-
-    /* =====================================================
-       CLOSE MODAL
-    ===================================================== */
 
     if (closeModal) {
 
@@ -1456,19 +883,15 @@ if (complaintsContainer) {
             "click",
             () => {
 
-                complaintModal.classList.remove(
-                    "show"
-                );
-
+                if (complaintModal) {
+                    complaintModal.classList.remove(
+                        "show"
+                    );
+                }
             }
         );
-
     }
 
-
-    /* =====================================================
-       CLOSE MODAL OUTSIDE
-    ===================================================== */
 
     if (complaintModal) {
 
@@ -1477,70 +900,42 @@ if (complaintsContainer) {
             (event) => {
 
                 if (
-                    event.target ===
-                    complaintModal
+                    event.target === complaintModal
                 ) {
-
                     complaintModal.classList.remove(
                         "show"
                     );
-
                 }
-
             }
         );
-
     }
 
 
-    /* =====================================================
-       SEARCH
-    ===================================================== */
-
     if (searchComplaint) {
-
         searchComplaint.addEventListener(
             "input",
             filterComplaints
         );
-
     }
 
 
-    /* =====================================================
-       STATUS FILTER
-    ===================================================== */
-
     if (statusFilter) {
-
         statusFilter.addEventListener(
             "change",
             filterComplaints
         );
-
     }
 
 
-    /* =====================================================
-       REFRESH
-    ===================================================== */
-
     if (refreshButton) {
-
         refreshButton.addEventListener(
             "click",
             loadComplaints
         );
-
     }
 
 
-    /* =====================================================
-       LOGOUT
-    ===================================================== */
-
     if (logoutButton) {
-
         logoutButton.addEventListener(
             "click",
             () => {
@@ -1549,33 +944,22 @@ if (complaintsContainer) {
                     "adminLoggedIn"
                 );
 
-
                 window.location.href =
                     "admin-login.html";
-
             }
         );
-
     }
 
-
-    /* =====================================================
-       LOAD COMPLAINTS
-    ===================================================== */
 
     async function loadComplaints() {
 
         complaintsContainer.innerHTML = `
             <tr>
-                <td
-                    colspan="7"
-                    class="empty-table"
-                >
+                <td colspan="7" class="empty-table">
                     Loading complaints...
                 </td>
             </tr>
         `;
-
 
         try {
 
@@ -1584,27 +968,17 @@ if (complaintsContainer) {
                     `${API_BASE}/api/complaints`
                 );
 
-
             if (!response.ok) {
-
                 throw new Error(
                     "Failed to load complaints"
                 );
-
             }
-
 
             allComplaints =
                 await response.json();
 
-
-            updateStatistics(
-                allComplaints
-            );
-
-
+            updateStatistics(allComplaints);
             filterComplaints();
-
 
         } catch (error) {
 
@@ -1613,30 +987,19 @@ if (complaintsContainer) {
                 error
             );
 
-
             complaintsContainer.innerHTML = `
                 <tr>
-                    <td
-                        colspan="7"
-                        class="empty-table"
-                    >
+                    <td colspan="7" class="empty-table">
                         Unable to load complaints.
                         Please try again.
                     </td>
                 </tr>
             `;
-
         }
-
     }
 
 
-    /* =====================================================
-       INITIAL LOAD
-    ===================================================== */
-
     loadComplaints();
-
 }
 
 
