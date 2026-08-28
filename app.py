@@ -36,7 +36,7 @@ def get_db_connection():
 
 
 # =========================================================
-# CREATE DATABASE TABLES
+# CREATE / UPDATE DATABASE TABLE
 # =========================================================
 
 def init_db():
@@ -51,11 +51,22 @@ def init_db():
             year TEXT NOT NULL,
             branch TEXT NOT NULL,
             category TEXT NOT NULL,
+            recipient TEXT NOT NULL DEFAULT '',
             message TEXT NOT NULL,
             status TEXT NOT NULL DEFAULT 'Submitted',
             created_at TEXT NOT NULL
         )
     """)
+
+    # Add recipient column if an older database already exists
+    cursor.execute("PRAGMA table_info(complaints)")
+    columns = [column["name"] for column in cursor.fetchall()]
+
+    if "recipient" not in columns:
+        cursor.execute("""
+            ALTER TABLE complaints
+            ADD COLUMN recipient TEXT NOT NULL DEFAULT ''
+        """)
 
     connection.commit()
     connection.close()
@@ -70,7 +81,7 @@ init_db()
 
 @app.route("/")
 def home():
-    return send_from_directory(PROJECT_DIR, "index.html")
+    return send_from_directory(PROJECT_DIR, "login.html")
 
 
 # =========================================================
@@ -88,6 +99,7 @@ def frontend_files(filename):
 
 @app.route("/api/student/login", methods=["POST"])
 def student_login():
+
     data = request.get_json()
 
     if not data:
@@ -117,6 +129,7 @@ def student_login():
 
 @app.route("/api/complaints", methods=["POST"])
 def submit_complaint():
+
     data = request.get_json()
 
     if not data:
@@ -125,10 +138,17 @@ def submit_complaint():
             "message": "No complaint data received."
         }), 400
 
-    roll_no = data.get("roll_no", "").strip().upper()
+    # Accept both roll_no and roll_number
+    roll_no = (
+        data.get("roll_no")
+        or data.get("roll_number")
+        or ""
+    ).strip().upper()
+
     year = data.get("year", "").strip()
     branch = data.get("branch", "").strip()
     category = data.get("category", "").strip()
+    recipient = data.get("recipient", "").strip()
     message = data.get("message", "").strip()
 
     if not roll_no or not year or not branch or not category or not message:
@@ -151,17 +171,19 @@ def submit_complaint():
             year,
             branch,
             category,
+            recipient,
             message,
             status,
             created_at
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, (
         complaint_id,
         roll_no,
         year,
         branch,
         category,
+        recipient,
         message,
         "Submitted",
         created_at
@@ -178,11 +200,12 @@ def submit_complaint():
 
 
 # =========================================================
-# GET ALL COMPLAINTS
+# GET ALL COMPLAINTS - ADMIN DASHBOARD
 # =========================================================
 
 @app.route("/api/complaints", methods=["GET"])
 def get_complaints():
+
     connection = get_db_connection()
     cursor = connection.cursor()
 
@@ -199,6 +222,7 @@ def get_complaints():
     complaints_list = []
 
     for complaint in complaints:
+
         complaints_list.append({
             "id": complaint["id"],
             "complaint_id": complaint["complaint_id"],
@@ -206,6 +230,7 @@ def get_complaints():
             "year": complaint["year"],
             "branch": complaint["branch"],
             "category": complaint["category"],
+            "recipient": complaint["recipient"],
             "message": complaint["message"],
             "status": complaint["status"],
             "created_at": complaint["created_at"]
@@ -218,11 +243,12 @@ def get_complaints():
 
 
 # =========================================================
-# TRACK COMPLAINT
+# GET SINGLE COMPLAINT / TRACK COMPLAINT
 # =========================================================
 
 @app.route("/api/complaints/<complaint_id>", methods=["GET"])
 def track_complaint(complaint_id):
+
     connection = get_db_connection()
     cursor = connection.cursor()
 
@@ -230,7 +256,9 @@ def track_complaint(complaint_id):
         SELECT *
         FROM complaints
         WHERE complaint_id = ?
-    """, (complaint_id.strip().upper(),))
+    """, (
+        complaint_id.strip().upper(),
+    ))
 
     complaint = cursor.fetchone()
 
@@ -245,10 +273,14 @@ def track_complaint(complaint_id):
     return jsonify({
         "success": True,
         "complaint": {
+            "id": complaint["id"],
             "complaint_id": complaint["complaint_id"],
+            "roll_no": complaint["roll_no"],
             "year": complaint["year"],
             "branch": complaint["branch"],
             "category": complaint["category"],
+            "recipient": complaint["recipient"],
+            "message": complaint["message"],
             "status": complaint["status"],
             "created_at": complaint["created_at"]
         }
@@ -259,8 +291,12 @@ def track_complaint(complaint_id):
 # UPDATE COMPLAINT STATUS
 # =========================================================
 
-@app.route("/api/complaints/<complaint_id>/status", methods=["PUT"])
+@app.route(
+    "/api/complaints/<complaint_id>/status",
+    methods=["PUT"]
+)
 def update_complaint_status(complaint_id):
+
     data = request.get_json()
 
     if not data:
@@ -320,6 +356,7 @@ def update_complaint_status(complaint_id):
 
 @app.route("/api/admin/login", methods=["POST"])
 def admin_login():
+
     data = request.get_json()
 
     if not data:
@@ -331,7 +368,11 @@ def admin_login():
     username = data.get("username", "").strip()
     password = data.get("password", "").strip()
 
-    if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+    if (
+        username == ADMIN_USERNAME
+        and password == ADMIN_PASSWORD
+    ):
+
         return jsonify({
             "success": True,
             "message": "Login successful."
@@ -348,7 +389,10 @@ def admin_login():
 # =========================================================
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
+
+    port = int(
+        os.environ.get("PORT", 5000)
+    )
 
     app.run(
         host="0.0.0.0",
