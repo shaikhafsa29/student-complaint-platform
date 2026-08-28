@@ -12,10 +12,10 @@ from pathlib import Path
 
 # =========================================================
 
-app = Flask(**name**)
+app = Flask(__name__)
 CORS(app)
 
-PROJECT_DIR = Path(**file**).resolve().parent
+PROJECT_DIR = Path(__file__).resolve().parent
 DATABASE = PROJECT_DIR / "complaints.db"
 
 # =========================================================
