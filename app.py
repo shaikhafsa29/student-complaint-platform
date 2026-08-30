@@ -3,6 +3,7 @@ from flask_cors import CORS
 import sqlite3
 import uuid
 from datetime import datetime
+from zoneinfo import ZoneInfo
 import os
 from pathlib import Path
 
@@ -150,9 +151,18 @@ def submit_complaint():
             "message": "Please fill in all required fields."
         }), 400
 
+    # Generate unique complaint ID
     complaint_id = "CMP-" + uuid.uuid4().hex[:8].upper()
 
-    created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # =====================================================
+    # INDIA TIME (IST)
+    # Railway servers may use UTC, so explicitly use
+    # Asia/Kolkata timezone.
+    # =====================================================
+
+    created_at = datetime.now(
+        ZoneInfo("Asia/Kolkata")
+    ).strftime("%Y-%m-%d %H:%M:%S")
 
     connection = get_db_connection()
     cursor = connection.cursor()
@@ -234,7 +244,7 @@ def get_complaints():
 
 
 # =========================================================
-# GET SINGLE COMPLAINT - FOR VIEW BUTTON
+# GET SINGLE COMPLAINT - FOR TRACKING / VIEW BUTTON
 # =========================================================
 
 @app.route("/api/complaints/<complaint_id>", methods=["GET"])
@@ -246,7 +256,9 @@ def get_single_complaint(complaint_id):
         SELECT *
         FROM complaints
         WHERE complaint_id = ?
-    """, (complaint_id.strip().upper(),))
+    """, (
+        complaint_id.strip().upper(),
+    ))
 
     complaint = cursor.fetchone()
 
