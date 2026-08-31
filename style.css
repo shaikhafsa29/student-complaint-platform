@@ -1,12 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
 
-
 /* =========================================================
-   DEFAULT THEME
+   THEME VARIABLES
 ========================================================= */
 
 :root {
-
     --bg: #f6f7fb;
     --surface: #ffffff;
     --text: #171923;
@@ -19,24 +17,21 @@
     --soft: #f0f0ff;
 
     --success: #159957;
+    --success-bg: #e8fff2;
 
     --danger: #d14343;
     --danger-bg: #fff0f0;
 
-    --hero-gradient:
-        linear-gradient(145deg, #ffffff, #f1f1ff);
+    --hero-gradient: linear-gradient(145deg, #ffffff, #f1f1ff);
 
-    --shadow:
-        0 20px 60px rgba(40, 40, 100, 0.08);
+    --shadow: 0 20px 60px rgba(40, 40, 100, 0.08);
 }
 
-
 /* =========================================================
-   MIDNIGHT THEME
+   MIDNIGHT
 ========================================================= */
 
 body[data-theme="midnight"] {
-
     --bg: #0b0d16;
     --surface: #151827;
     --text: #f4f5ff;
@@ -49,24 +44,21 @@ body[data-theme="midnight"] {
     --soft: #20243a;
 
     --success: #39d98a;
+    --success-bg: #172d25;
 
     --danger: #ff6b6b;
     --danger-bg: #321d25;
 
-    --hero-gradient:
-        linear-gradient(145deg, #171a2b, #20243a);
+    --hero-gradient: linear-gradient(145deg, #171a2b, #20243a);
 
-    --shadow:
-        0 25px 70px rgba(0, 0, 0, 0.35);
+    --shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
 }
 
-
 /* =========================================================
-   AURORA THEME
+   AURORA
 ========================================================= */
 
 body[data-theme="aurora"] {
-
     --bg: #eef5f5;
     --surface: #ffffff;
     --text: #172326;
@@ -79,204 +71,149 @@ body[data-theme="aurora"] {
     --soft: #e6f3f3;
 
     --success: #159957;
+    --success-bg: #e8fff2;
 
     --danger: #d14343;
     --danger-bg: #fff0f0;
 
-    --hero-gradient:
-        linear-gradient(
-            145deg,
-            #ffffff,
-            #e6f5f4,
-            #eef0ff
-        );
+    --hero-gradient: linear-gradient(
+        145deg,
+        #ffffff,
+        #e6f5f4,
+        #eef0ff
+    );
 
-    --shadow:
-        0 20px 60px rgba(40, 90, 100, 0.10);
+    --shadow: 0 20px 60px rgba(40, 90, 100, 0.10);
 }
-
 
 /* =========================================================
    GLOBAL
 ========================================================= */
 
 * {
-
     margin: 0;
     padding: 0;
-
     box-sizing: border-box;
-
 }
-
 
 html {
-
     scroll-behavior: smooth;
-
 }
 
-
 body {
-
     min-height: 100vh;
-
     background: var(--bg);
-
     color: var(--text);
-
     font-family: "Inter", sans-serif;
 
     transition:
-        background-color 0.35s ease,
-        color 0.35s ease;
-
+        background-color 0.3s ease,
+        color 0.3s ease;
 }
-
 
 button,
 input,
 select,
 textarea {
-
     font-family: inherit;
-
 }
-
 
 a,
 button,
 div,
 section,
 article {
-
     transition:
-        background-color 0.3s ease,
-        color 0.3s ease,
-        border-color 0.3s ease;
-
+        background-color 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.25s ease;
 }
 
+.hidden {
+    display: none !important;
+}
 
 /* =========================================================
    FAST SPLASH SCREEN
 ========================================================= */
 
 .splash-screen {
-
     position: fixed;
-
     inset: 0;
-
     z-index: 99999;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     background: var(--bg);
 
     animation:
-        splashFadeOut 0.35s ease
-        0.65s forwards;
-
+        splashFadeOut 0.35s ease 0.65s forwards;
 }
 
-
 .splash-content {
-
     text-align: center;
 
     animation:
-        splashContentIn 0.5s ease
-        forwards;
-
+        splashContentIn 0.5s ease forwards;
 }
 
-
 .splash-logo {
-
     width: 72px;
-
     height: 72px;
 
     margin: 0 auto 18px;
 
     display: grid;
-
     place-items: center;
 
     border-radius: 22px;
 
     background: var(--primary);
-
     color: white;
 
-    font-family:
-        "Space Grotesk",
-        sans-serif;
+    font-family: "Space Grotesk", sans-serif;
 
     font-size: 28px;
-
     font-weight: 800;
 
     box-shadow:
-        0 15px 40px
-        rgba(91, 91, 214, 0.25);
-
+        0 15px 40px rgba(91, 91, 214, 0.25);
 }
 
-
 .splash-content h1 {
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
+    font-family: "Space Grotesk", sans-serif;
 
     font-size: 2.1rem;
 
     letter-spacing: -1.5px;
-
 }
-
 
 .splash-content h1 span {
-
     color: var(--primary);
-
 }
 
-
 .splash-content p {
-
     margin-top: 8px;
 
     color: var(--muted);
 
     font-size: 0.9rem;
-
 }
 
-
 .splash-loader {
-
     display: flex;
-
     justify-content: center;
 
     gap: 6px;
 
     margin-top: 22px;
-
 }
 
-
 .splash-loader span {
-
     width: 6px;
-
     height: 6px;
 
     border-radius: 50%;
@@ -284,93 +221,54 @@ article {
     background: var(--primary);
 
     animation:
-        splashDot 0.8s infinite
-        alternate;
-
+        splashDot 0.8s infinite alternate;
 }
-
 
 .splash-loader span:nth-child(2) {
-
     animation-delay: 0.15s;
-
 }
-
 
 .splash-loader span:nth-child(3) {
-
     animation-delay: 0.3s;
-
 }
-
 
 @keyframes splashContentIn {
-
     from {
-
         opacity: 0;
-
-        transform:
-            translateY(10px)
-            scale(0.97);
-
+        transform: translateY(10px) scale(0.97);
     }
 
     to {
-
         opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
-
+        transform: translateY(0) scale(1);
     }
-
 }
-
 
 @keyframes splashFadeOut {
-
     to {
-
         opacity: 0;
-
         visibility: hidden;
-
         pointer-events: none;
-
     }
-
 }
-
 
 @keyframes splashDot {
-
     from {
-
         opacity: 0.3;
-
         transform: translateY(0);
-
     }
 
     to {
-
         opacity: 1;
-
         transform: translateY(-4px);
-
     }
-
 }
-
 
 /* =========================================================
    NAVBAR
 ========================================================= */
 
 .navbar {
-
     position: relative;
 
     width: min(1180px, 92%);
@@ -379,15 +277,9 @@ article {
 
     padding: 15px 22px;
 
-    background:
-        color-mix(
-            in srgb,
-            var(--surface) 88%,
-            transparent
-        );
+    background: var(--surface);
 
-    border:
-        1px solid var(--border);
+    border: 1px solid var(--border);
 
     border-radius: 18px;
 
@@ -400,15 +292,10 @@ article {
     backdrop-filter: blur(15px);
 
     z-index: 1000;
-
 }
 
-
 .logo {
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
+    font-family: "Space Grotesk", sans-serif;
 
     font-size: 1.25rem;
 
@@ -419,97 +306,76 @@ article {
     color: var(--text);
 
     letter-spacing: -1px;
-
 }
-
 
 .logo span {
-
     color: var(--primary);
-
 }
 
-
 .nav-links {
-
     display: flex;
 
     align-items: center;
 
-    gap: 8px;
-
+    gap: 6px;
 }
 
-
 .nav-links a {
-
     color: var(--muted);
 
     text-decoration: none;
 
-    font-size: 0.92rem;
+    font-size: 0.88rem;
 
     font-weight: 600;
 
-    padding: 10px 14px;
+    padding: 9px 12px;
 
     border-radius: 10px;
-
 }
-
 
 .nav-links a:hover,
 .nav-links a.active {
-
     color: var(--primary);
 
     background: var(--soft);
-
 }
 
-
 /* =========================================================
-   APPEARANCE BUTTON
+   THEME BUTTON
 ========================================================= */
 
 .appearance-button {
-
     border: 1px solid var(--border);
 
     background: var(--surface);
 
     color: var(--text);
 
-    padding: 10px 13px;
+    padding: 9px 12px;
 
     border-radius: 10px;
 
-    font-size: 0.85rem;
+    font-size: 0.82rem;
 
     font-weight: 700;
 
     cursor: pointer;
-
 }
 
-
 .appearance-button:hover {
-
     background: var(--soft);
 
     color: var(--primary);
 
     transform: translateY(-1px);
-
 }
-
 
 /* =========================================================
    THEME MENU
 ========================================================= */
 
 .theme-menu {
-
     position: absolute;
 
     top: calc(100% + 12px);
@@ -522,46 +388,34 @@ article {
 
     background: var(--surface);
 
-    border:
-        1px solid var(--border);
+    border: 1px solid var(--border);
 
     border-radius: 18px;
 
     box-shadow:
-        0 25px 60px
-        rgba(0, 0, 0, 0.14);
+        0 25px 60px rgba(0, 0, 0, 0.14);
 
     opacity: 0;
 
     visibility: hidden;
 
-    transform:
-        translateY(-8px)
-        scale(0.98);
+    transform: translateY(-8px) scale(0.98);
 
     transition:
         opacity 0.2s ease,
         transform 0.2s ease,
         visibility 0.2s ease;
-
 }
 
-
 .theme-menu.show {
-
     opacity: 1;
 
     visibility: visible;
 
-    transform:
-        translateY(0)
-        scale(1);
-
+    transform: translateY(0) scale(1);
 }
 
-
 .theme-menu-header {
-
     display: flex;
 
     align-items: center;
@@ -569,23 +423,14 @@ article {
     justify-content: space-between;
 
     padding: 4px 5px 12px;
-
 }
-
 
 .theme-menu-header strong {
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
-
+    font-family: "Space Grotesk", sans-serif;
 }
 
-
 .theme-close {
-
     width: 30px;
-
     height: 30px;
 
     border: none;
@@ -599,12 +444,9 @@ article {
     font-size: 20px;
 
     cursor: pointer;
-
 }
 
-
 .theme-option {
-
     width: 100%;
 
     display: flex;
@@ -628,50 +470,34 @@ article {
     text-align: left;
 
     cursor: pointer;
-
 }
-
 
 .theme-option:hover {
-
     background: var(--soft);
-
 }
 
-
 .theme-option.selected {
-
     border-color: var(--primary);
 
     background: var(--soft);
-
 }
 
-
 .theme-option span:last-child {
-
     display: flex;
 
     flex-direction: column;
 
     gap: 3px;
-
 }
 
-
 .theme-option small {
-
     color: var(--muted);
 
     font-size: 0.72rem;
-
 }
 
-
 .theme-preview {
-
     width: 42px;
-
     height: 42px;
 
     flex-shrink: 0;
@@ -679,52 +505,37 @@ article {
     border-radius: 11px;
 
     border: 1px solid var(--border);
-
 }
-
 
 .campus-preview {
-
-    background:
-        linear-gradient(
-            135deg,
-            #ffffff,
-            #f0f0ff
-        );
-
+    background: linear-gradient(
+        135deg,
+        #ffffff,
+        #f0f0ff
+    );
 }
-
 
 .midnight-preview {
-
-    background:
-        linear-gradient(
-            135deg,
-            #0b0d16,
-            #292d42
-        );
-
+    background: linear-gradient(
+        135deg,
+        #0b0d16,
+        #292d42
+    );
 }
-
 
 .aurora-preview {
-
-    background:
-        linear-gradient(
-            135deg,
-            #e6f5f4,
-            #eef0ff
-        );
-
+    background: linear-gradient(
+        135deg,
+        #e6f5f4,
+        #eef0ff
+    );
 }
-
 
 /* =========================================================
    HERO
 ========================================================= */
 
 .hero {
-
     width: min(1180px, 92%);
 
     min-height: 580px;
@@ -733,18 +544,14 @@ article {
 
     display: grid;
 
-    grid-template-columns:
-        1.2fr 0.8fr;
+    grid-template-columns: 1.2fr 0.8fr;
 
     gap: 60px;
 
     align-items: center;
-
 }
 
-
 .badge {
-
     display: inline-block;
 
     padding: 9px 14px;
@@ -762,45 +569,30 @@ article {
     letter-spacing: 1px;
 
     margin-bottom: 20px;
-
 }
-
 
 .hero h1,
 .page-header h1,
 .form-intro h1,
 .track-intro h1 {
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
+    font-family: "Space Grotesk", sans-serif;
 
     font-size:
-        clamp(
-            3rem,
-            6vw,
-            5.5rem
-        );
+        clamp(3rem, 6vw, 5.5rem);
 
     line-height: 0.95;
 
     letter-spacing: -3px;
-
 }
-
 
 .hero h1 span {
-
     color: var(--primary);
-
 }
-
 
 .hero-description,
 .page-header p,
 .form-intro p,
 .track-intro p {
-
     max-width: 620px;
 
     margin-top: 25px;
@@ -810,25 +602,23 @@ article {
     font-size: 1.05rem;
 
     line-height: 1.8;
-
 }
 
-
 .hero-buttons {
-
     display: flex;
 
     gap: 14px;
 
     margin-top: 35px;
-
 }
 
+/* =========================================================
+   BUTTONS
+========================================================= */
 
 .primary-btn,
 .secondary-btn,
 .submit-btn {
-
     display: inline-flex;
 
     align-items: center;
@@ -842,13 +632,10 @@ article {
     text-decoration: none;
 
     font-weight: 700;
-
 }
-
 
 .primary-btn,
 .submit-btn {
-
     background: var(--primary);
 
     color: white;
@@ -856,83 +643,61 @@ article {
     border: none;
 
     cursor: pointer;
-
 }
-
 
 .primary-btn:hover,
 .submit-btn:hover {
-
     background: var(--primary-dark);
 
     transform: translateY(-2px);
-
 }
 
-
 .submit-btn:disabled {
-
     opacity: 0.7;
 
     cursor: not-allowed;
 
     transform: none;
-
 }
 
-
 .secondary-btn {
-
     background: var(--surface);
 
     color: var(--text);
 
-    border:
-        1px solid var(--border);
-
+    border: 1px solid var(--border);
 }
-
 
 .secondary-btn:hover {
-
     background: var(--soft);
-
 }
-
 
 /* =========================================================
    HERO CARD
 ========================================================= */
 
 .hero-card {
-
-    background:
-        var(--hero-gradient);
+    background: var(--hero-gradient);
 
     padding: 40px;
 
     border-radius: 28px;
 
-    border:
-        1px solid var(--border);
+    border: 1px solid var(--border);
 
     box-shadow: var(--shadow);
 
     position: relative;
 
     overflow: hidden;
-
 }
 
-
 .hero-card::before {
-
     content: "";
 
     position: absolute;
 
     width: 180px;
-
     height: 180px;
 
     background: var(--soft);
@@ -940,18 +705,13 @@ article {
     border-radius: 50%;
 
     top: -80px;
-
     right: -60px;
-
 }
 
-
 .floating-icon {
-
     position: relative;
 
     width: 62px;
-
     height: 62px;
 
     display: grid;
@@ -965,25 +725,18 @@ article {
     border-radius: 18px;
 
     box-shadow:
-        0 10px 30px
-        rgba(0, 0, 0, 0.08);
-
+        0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
-
 .hero-card h2 {
-
     position: relative;
 
     margin-top: 30px;
 
     font-size: 1.7rem;
-
 }
 
-
 .hero-card p {
-
     position: relative;
 
     margin-top: 12px;
@@ -991,12 +744,9 @@ article {
     color: var(--muted);
 
     line-height: 1.7;
-
 }
 
-
 .mini-status {
-
     position: relative;
 
     margin-top: 30px;
@@ -1010,16 +760,12 @@ article {
     font-size: 0.85rem;
 
     font-weight: 600;
-
 }
 
-
 .status-dot {
-
     display: inline-block;
 
     width: 8px;
-
     height: 8px;
 
     background: var(--success);
@@ -1027,34 +773,25 @@ article {
     border-radius: 50%;
 
     margin-right: 8px;
-
 }
-
 
 /* =========================================================
    FEATURES
 ========================================================= */
 
 .features {
-
     width: min(1180px, 92%);
 
     margin: 80px auto;
-
 }
 
-
 .section-heading {
-
     text-align: center;
 
     margin-bottom: 40px;
-
 }
 
-
 .section-heading p {
-
     color: var(--primary);
 
     font-size: 0.75rem;
@@ -1062,87 +799,62 @@ article {
     font-weight: 800;
 
     letter-spacing: 1px;
-
 }
-
 
 .section-heading h2 {
-
     margin-top: 12px;
 
-    font-family:
-        "Space Grotesk",
-        sans-serif;
+    font-family: "Space Grotesk", sans-serif;
 
     font-size: 2.3rem;
-
 }
-
 
 .feature-grid,
 .info-grid {
-
     display: grid;
 
     grid-template-columns:
         repeat(3, 1fr);
 
     gap: 20px;
-
 }
-
 
 .feature-card,
 .info-card {
-
     background: var(--surface);
 
-    border:
-        1px solid var(--border);
+    border: 1px solid var(--border);
 
     padding: 30px;
 
     border-radius: 20px;
-
 }
-
 
 .feature-card:hover,
 .info-card:hover {
-
     transform: translateY(-6px);
 
     box-shadow:
-        0 20px 40px
-        rgba(40, 40, 100, 0.08);
-
+        0 20px 40px rgba(40, 40, 100, 0.08);
 }
 
-
 .feature-number {
-
     color: var(--primary);
 
     font-weight: 800;
 
     font-size: 0.85rem;
-
 }
-
 
 .feature-card h3,
 .info-card h2 {
-
     margin-top: 20px;
 
     font-size: 1.2rem;
-
 }
-
 
 .feature-card p,
 .info-card p {
-
     margin-top: 12px;
 
     color: var(--muted);
@@ -1150,88 +862,65 @@ article {
     line-height: 1.7;
 
     font-size: 0.92rem;
-
 }
 
-
 /* =========================================================
-   ABOUT / COMPLAINT PAGE
+   GENERAL PAGE
 ========================================================= */
 
 .page-container,
 .complaint-page,
 .track-page {
-
     width: min(1000px, 92%);
 
     margin: 80px auto;
-
 }
-
 
 .page-header,
 .form-intro,
 .track-intro {
-
     text-align: center;
 
     max-width: 750px;
 
     margin: auto;
-
 }
-
 
 .page-header p,
 .form-intro p,
 .track-intro p {
-
     margin-left: auto;
 
     margin-right: auto;
-
 }
-
 
 .info-grid {
-
     margin-top: 60px;
-
 }
-
 
 .card-icon {
-
     font-size: 2rem;
-
 }
 
-
 .important-note {
-
     margin-top: 40px;
 
     padding: 30px;
 
-    background: #fff8e8;
+    background: var(--soft);
 
-    border: 1px solid #f1dfaa;
+    border: 1px solid var(--border);
 
     border-radius: 20px;
-
 }
-
 
 .important-note p {
-
     margin-top: 10px;
 
-    color: #76633c;
+    color: var(--muted);
 
     line-height: 1.7;
-
 }
-
 
 /* =========================================================
    COMPLAINT FORM
@@ -1239,7 +928,6 @@ article {
 
 .form-card,
 .track-card {
-
     max-width: 800px;
 
     margin: 50px auto 0;
@@ -1248,37 +936,26 @@ article {
 
     background: var(--surface);
 
-    border:
-        1px solid var(--border);
+    border: 1px solid var(--border);
 
     border-radius: 25px;
 
     box-shadow: var(--shadow);
-
 }
-
 
 .form-row {
-
     display: grid;
 
-    grid-template-columns:
-        1fr 1fr;
+    grid-template-columns: 1fr 1fr;
 
     gap: 20px;
-
 }
-
 
 .input-group {
-
     margin-bottom: 24px;
-
 }
 
-
 .input-group label {
-
     display: block;
 
     margin-bottom: 9px;
@@ -1286,20 +963,16 @@ article {
     font-size: 0.9rem;
 
     font-weight: 700;
-
 }
-
 
 .input-group input,
 .input-group select,
 .input-group textarea {
-
     width: 100%;
 
     padding: 14px;
 
-    border:
-        1px solid var(--border);
+    border: 1px solid var(--border);
 
     border-radius: 12px;
 
@@ -1310,34 +983,24 @@ article {
     background: var(--surface);
 
     color: var(--text);
-
 }
-
 
 .input-group input:focus,
 .input-group select:focus,
 .input-group textarea:focus {
-
     border-color: var(--primary);
 
     box-shadow:
-        0 0 0 4px
-        rgba(91, 91, 214, 0.1);
-
+        0 0 0 4px rgba(91, 91, 214, 0.1);
 }
 
-
 textarea {
-
     min-height: 170px;
 
     resize: vertical;
-
 }
 
-
 .text-info {
-
     display: flex;
 
     justify-content: space-between;
@@ -1347,12 +1010,9 @@ textarea {
     color: var(--muted);
 
     font-size: 0.75rem;
-
 }
 
-
 .privacy-note {
-
     padding: 14px;
 
     margin-bottom: 22px;
@@ -1364,163 +1024,200 @@ textarea {
     border-radius: 12px;
 
     font-size: 0.85rem;
-
 }
 
-
 .submit-btn {
-
     width: 100%;
 
     font-size: 1rem;
-
 }
-
 
 /* =========================================================
-   SUCCESS SCREEN
+   SUCCESS PAGE
+   FIXED TO MATCH success.html
 ========================================================= */
 
-.success-box {
+.success-page {
+    min-height: calc(100vh - 180px);
+
+    width: min(1000px, 92%);
+
+    margin: 60px auto;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 30px 0;
+}
+
+.success-card {
+    width: 100%;
+
+    max-width: 700px;
+
+    padding: 50px 45px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+
+    border-radius: 28px;
+
+    box-shadow: var(--shadow);
 
     text-align: center;
-
-    padding: 30px 10px;
-
 }
 
-
-.hidden {
-
-    display: none !important;
-
+.success-card:hover {
+    transform: translateY(-3px);
 }
-
 
 .success-icon {
+    width: 82px;
+    height: 82px;
 
-    width: 70px;
-
-    height: 70px;
-
-    margin: auto;
+    margin: 0 auto 25px;
 
     display: grid;
 
     place-items: center;
 
-    background: #e8fff2;
+    border-radius: 50%;
+
+    background: var(--success-bg);
 
     color: var(--success);
 
-    border-radius: 50%;
+    border: 1px solid var(--border);
 
-    font-size: 2rem;
+    font-size: 2.4rem;
 
-    font-weight: bold;
+    font-weight: 800;
 
+    box-shadow:
+        0 12px 30px rgba(21, 153, 87, 0.12);
 }
 
+.success-card h1 {
+    font-family: "Space Grotesk", sans-serif;
 
-.success-box h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
 
-    margin-top: 20px;
+    line-height: 1.15;
 
+    letter-spacing: -1px;
 }
 
+.success-card > p {
+    max-width: 550px;
 
-.success-box > p {
+    margin: 16px auto 0;
+
+    color: var(--muted);
+
+    line-height: 1.7;
+
+    font-size: 0.95rem;
+}
+
+.complaint-id-box {
+    margin: 32px auto 0;
+
+    max-width: 480px;
+
+    padding: 25px;
+
+    background: var(--soft);
+
+    border: 1px solid var(--border);
+
+    border-radius: 18px;
+}
+
+.complaint-id-box span {
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 0.75rem;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.2px;
+}
+
+.complaint-id-box strong {
+    display: block;
+
+    margin-top: 10px;
+
+    color: var(--primary);
+
+    font-family: "Space Grotesk", sans-serif;
+
+    font-size: 1.7rem;
+
+    letter-spacing: 2px;
+}
+
+.complaint-id-box small {
+    display: block;
 
     margin-top: 10px;
 
     color: var(--muted);
 
+    font-size: 0.78rem;
 }
 
+.success-actions {
+    display: flex;
 
-.complaint-id {
+    justify-content: center;
 
-    margin: 25px auto;
+    gap: 14px;
 
-    padding: 20px;
+    margin-top: 30px;
 
-    max-width: 400px;
-
-    background: var(--soft);
-
-    border-radius: 15px;
-
+    flex-wrap: wrap;
 }
 
-
-.complaint-id span {
-
-    display: block;
-
-    font-size: 0.7rem;
-
-    color: var(--muted);
-
-    letter-spacing: 1px;
-
+.success-actions .primary-btn,
+.success-actions .secondary-btn {
+    min-width: 180px;
 }
-
-
-.complaint-id strong {
-
-    display: block;
-
-    margin-top: 8px;
-
-    color: var(--primary);
-
-    font-size: 1.4rem;
-
-    letter-spacing: 2px;
-
-}
-
-
-.save-note {
-
-    margin-bottom: 25px;
-
-}
-
 
 /* =========================================================
-   COMPLAINT TRACKING
+   TRACKING
 ========================================================= */
 
 .track-card {
-
     max-width: 650px;
-
 }
 
-
 .tracking-result {
-
     margin-top: 35px;
 
     padding: 30px;
 
     background: var(--surface);
 
-    border:
-        1px solid var(--border);
+    border: 1px solid var(--border);
 
     border-radius: 20px;
 
     text-align: center;
 
+    box-shadow: var(--shadow);
 }
 
-
 .result-icon {
-
     width: 65px;
-
     height: 65px;
 
     margin: 0 auto 15px;
@@ -1534,35 +1231,23 @@ textarea {
     border-radius: 50%;
 
     font-size: 1.7rem;
-
 }
 
-
 .tracking-result h2 {
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
+    font-family: "Space Grotesk", sans-serif;
 
     font-size: 1.5rem;
 
     margin-bottom: 25px;
-
 }
-
 
 .result-details {
-
     text-align: left;
 
-    border-top:
-        1px solid var(--border);
-
+    border-top: 1px solid var(--border);
 }
 
-
 .result-row {
-
     display: flex;
 
     justify-content: space-between;
@@ -1571,41 +1256,28 @@ textarea {
 
     padding: 17px 0;
 
-    border-bottom:
-        1px solid var(--border);
-
+    border-bottom: 1px solid var(--border);
 }
 
-
 .result-row span {
-
     color: var(--muted);
 
     font-size: 0.88rem;
-
 }
 
-
 .result-row strong {
-
     text-align: right;
 
     font-size: 0.9rem;
 
     color: var(--text);
-
 }
-
 
 #resultStatus {
-
     color: var(--primary);
-
 }
 
-
 .tracking-error {
-
     margin-top: 30px;
 
     padding: 25px;
@@ -1614,64 +1286,33 @@ textarea {
 
     background: var(--danger-bg);
 
-    border:
-        1px solid #f3caca;
+    border: 1px solid var(--border);
 
     border-radius: 18px;
-
 }
-
 
 .tracking-error h3 {
-
     color: var(--danger);
-
 }
 
-
 .tracking-error p {
-
     margin-top: 8px;
 
     color: var(--muted);
 
     font-size: 0.9rem;
-
 }
-
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-footer {
-
-    padding: 30px;
-
-    text-align: center;
-
-    color: var(--muted);
-
-    font-size: 0.85rem;
-
-}
-
 
 /* =========================================================
    STUDENT LOGIN
 ========================================================= */
 
 .login-page {
-
     min-height: 100vh;
-
 }
 
-
 .student-login-container {
-
-    min-height:
-        calc(100vh - 90px);
+    min-height: calc(100vh - 90px);
 
     display: flex;
 
@@ -1680,12 +1321,9 @@ footer {
     justify-content: center;
 
     padding: 40px 20px;
-
 }
 
-
 .student-login-card {
-
     width: 100%;
 
     max-width: 480px;
@@ -1696,29 +1334,20 @@ footer {
 
     background: var(--surface);
 
-    border:
-        1px solid var(--border);
-
-    backdrop-filter: blur(18px);
+    border: 1px solid var(--border);
 
     text-align: center;
 
     box-shadow: var(--shadow);
-
 }
 
-
 .login-icon {
-
     font-size: 52px;
 
     margin-bottom: 15px;
-
 }
 
-
 .login-badge {
-
     font-size: 12px;
 
     font-weight: 700;
@@ -1727,49 +1356,39 @@ footer {
 
     margin-bottom: 15px;
 
+    color: var(--primary);
 }
-
 
 .student-login-card h1 {
-
     margin-bottom: 12px;
 
+    font-family: "Space Grotesk", sans-serif;
 }
-
 
 .student-login-card h1 span {
-
     color: var(--primary);
-
 }
-
 
 .login-description {
-
     margin-bottom: 30px;
 
-    opacity: 0.75;
+    color: var(--muted);
 
+    line-height: 1.6;
 }
-
 
 .student-login-card form {
-
     text-align: left;
-
 }
 
-
 .student-login-card input {
-
     width: 100%;
 
     padding: 15px;
 
     border-radius: 10px;
 
-    border:
-        1px solid var(--border);
+    border: 1px solid var(--border);
 
     background: var(--surface);
 
@@ -1781,165 +1400,185 @@ footer {
 
     font-size: 15px;
 
+    outline: none;
 }
 
+.student-login-card input:focus {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 4px rgba(91, 91, 214, 0.1);
+}
 
 .student-login-card .submit-btn {
-
     width: 100%;
 
     cursor: pointer;
-
 }
 
-
 .login-note {
-
     margin-top: 20px;
 
     font-size: 13px;
 
-    opacity: 0.65;
-
+    color: var(--muted);
 }
 
-
 .login-error {
-
     color: var(--danger);
 
     margin-bottom: 15px;
 
     text-align: left;
-
 }
 
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+    padding: 30px;
+
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: 0.85rem;
+}
 
 /* =========================================================
    MOBILE
 ========================================================= */
 
-@media (max-width: 750px) {
+@media (max-width: 850px) {
 
     .navbar {
-
         flex-direction: column;
 
         gap: 15px;
-
     }
 
-
     .hero {
-
         grid-template-columns: 1fr;
 
         gap: 40px;
 
         margin-top: 50px;
-
     }
-
 
     .hero h1 {
-
         font-size: 4rem;
-
     }
-
 
     .feature-grid,
     .info-grid,
     .form-row {
-
         grid-template-columns: 1fr;
-
     }
 
-
     .nav-links {
-
         flex-wrap: wrap;
 
         justify-content: center;
-
     }
-
 
     .hero-buttons {
-
         flex-direction: column;
-
     }
-
 
     .form-card,
     .track-card {
-
         padding: 25px;
-
     }
 
-
     .result-row {
-
         flex-direction: column;
 
         gap: 6px;
-
     }
-
 
     .result-row strong {
-
         text-align: left;
-
     }
 
-
     .theme-menu {
-
         position: fixed;
 
         top: 125px;
 
         right: 4%;
 
-        width: min(
-            285px,
-            92%
-        );
-
+        width: min(285px, 92%);
     }
 
+    .success-card {
+        padding: 40px 25px;
+    }
 }
-
 
 @media (max-width: 500px) {
 
-    .splash-content h1 {
-
-        font-size: 1.7rem;
-
+    .navbar {
+        width: 94%;
     }
 
+    .splash-content h1 {
+        font-size: 1.7rem;
+    }
 
     .splash-logo {
-
         width: 62px;
 
         height: 62px;
 
         font-size: 24px;
-
     }
-
 
     .appearance-button {
-
         width: 100%;
-
     }
 
+    .nav-links a {
+        font-size: 0.78rem;
+
+        padding: 8px 9px;
+    }
+
+    .hero h1 {
+        font-size: 3.3rem;
+    }
+
+    .success-page {
+        width: 94%;
+
+        margin: 30px auto;
+    }
+
+    .success-card {
+        padding: 35px 20px;
+
+        border-radius: 22px;
+    }
+
+    .success-card h1 {
+        font-size: 1.8rem;
+    }
+
+    .complaint-id-box strong {
+        font-size: 1.4rem;
+    }
+
+    .success-actions {
+        flex-direction: column;
+    }
+
+    .success-actions .primary-btn,
+    .success-actions .secondary-btn {
+        width: 100%;
+    }
+
+    .student-login-card {
+        padding: 30px 22px;
+    }
 }
 
