@@ -1,30 +1,63 @@
+```html
 <!DOCTYPE html>
 
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+    <title>VEMU Voice | Student Support Platform</title>
 
-<title>VEMU Voice | Student Support Platform</title>
-
-<link
-    rel="stylesheet"
-    href="style.css"
->
-
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
 </head>
 
 <body>
 
+<!-- =========================================================
+     FAST OPENING SCREEN
+========================================================= -->
 
-<!-- Navigation -->
+<div id="splashScreen" class="splash-screen">
+
+    <div class="splash-content">
+
+        <div class="splash-logo">
+            Vv
+        </div>
+
+        <h1>
+            VEMU <span>VOICE</span>
+        </h1>
+
+        <p>
+            Student Support Platform
+        </p>
+
+        <div class="splash-loader">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     NAVIGATION
+========================================================= -->
+
 <nav class="navbar">
 
     <a
@@ -33,6 +66,7 @@
     >
         VEMU<span>VOICE</span>
     </a>
+
 
     <div class="nav-links">
 
@@ -59,12 +93,102 @@
             Admin
         </a>
 
+
+        <!-- APPEARANCE BUTTON -->
+
+        <button
+            id="appearanceButton"
+            class="appearance-button"
+            type="button"
+        >
+            🎨 Appearance
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         THEME MENU
+    ===================================================== -->
+
+    <div
+        id="themeMenu"
+        class="theme-menu"
+    >
+
+        <div class="theme-menu-header">
+
+            <strong>
+                Choose Theme
+            </strong>
+
+            <button
+                id="closeThemeMenu"
+                type="button"
+                class="theme-close"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <button
+            class="theme-option"
+            data-theme="campus"
+            type="button"
+        >
+
+            <span class="theme-preview campus-preview"></span>
+
+            <span>
+                <strong>Campus Light</strong>
+                <small>Clean & professional</small>
+            </span>
+
+        </button>
+
+
+        <button
+            class="theme-option"
+            data-theme="midnight"
+            type="button"
+        >
+
+            <span class="theme-preview midnight-preview"></span>
+
+            <span>
+                <strong>Midnight</strong>
+                <small>Dark & modern</small>
+            </span>
+
+        </button>
+
+
+        <button
+            class="theme-option"
+            data-theme="aurora"
+            type="button"
+        >
+
+            <span class="theme-preview aurora-preview"></span>
+
+            <span>
+                <strong>Aurora</strong>
+                <small>Soft & futuristic</small>
+            </span>
+
+        </button>
+
     </div>
 
 </nav>
 
 
-<!-- Hero Section -->
+<!-- =========================================================
+     HERO SECTION
+========================================================= -->
+
 <main class="hero">
 
     <section class="hero-content">
@@ -111,7 +235,10 @@
     </section>
 
 
-    <!-- Hero Card -->
+    <!-- =====================================================
+         HERO CARD
+    ===================================================== -->
+
     <section class="hero-card">
 
         <div class="floating-icon">
@@ -143,7 +270,10 @@
 </main>
 
 
-<!-- Features -->
+<!-- =========================================================
+     FEATURES
+========================================================= -->
+
 <section class="features">
 
     <div class="section-heading">
@@ -217,7 +347,10 @@
 </section>
 
 
-<!-- Footer -->
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
 <footer>
 
     <p>
@@ -229,7 +362,7 @@
 
 <script src="script.js"></script>
 
-
 </body>
 
 </html>
+```
