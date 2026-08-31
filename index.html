@@ -1,32 +1,29 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>VEMU Voice | Student Support Platform</title>
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+    <link rel="stylesheet"
+          href="style.css">
 
 </head>
 
+
 <body>
+
 
 <!-- =========================================================
      FAST OPENING SCREEN
 ========================================================= -->
 
-<div id="splashScreen" class="splash-screen">
+<div class="splash-screen">
 
     <div class="splash-content">
 
@@ -35,7 +32,7 @@
         </div>
 
         <h1>
-            VEMU <span>VOICE</span>
+            VEMU<span>VOICE</span>
         </h1>
 
         <p>
@@ -43,14 +40,17 @@
         </p>
 
         <div class="splash-loader">
+
             <span></span>
             <span></span>
             <span></span>
+
         </div>
 
     </div>
 
 </div>
+
 
 
 <!-- =========================================================
@@ -59,151 +59,205 @@
 
 <nav class="navbar">
 
-    <a
-        href="index.html"
-        class="logo"
-    >
+
+    <a href="index.html"
+       class="logo">
+
         VEMU<span>VOICE</span>
+
     </a>
 
 
     <div class="nav-links">
 
-        <a
-            href="index.html"
-            class="active"
-        >
+
+        <a href="index.html"
+           class="active">
+
             Home
+
         </a>
+
 
         <a href="about.html">
+
             About
+
         </a>
+
 
         <a href="contact.html">
+
             Submit Complaint
+
         </a>
+
 
         <a href="track.html">
+
             Track Complaint
+
         </a>
+
 
         <a href="admin-login.html">
+
             Admin
+
         </a>
 
 
-        <!-- APPEARANCE BUTTON -->
+        <!-- MODE BUTTON -->
 
         <button
             id="appearanceButton"
             class="appearance-button"
-            type="button"
-        >
-            🎨 Appearance
+            type="button">
+
+            ☾ Mode
+
         </button>
 
-    </div>
+
+        <!-- THEME MENU -->
+
+        <div
+            id="themeMenu"
+            class="theme-menu">
 
 
-    <!-- =====================================================
-         THEME MENU
-    ===================================================== -->
+            <div class="theme-menu-header">
 
-    <div
-        id="themeMenu"
-        class="theme-menu"
-    >
+                <strong>
+                    Choose Mode
+                </strong>
 
-        <div class="theme-menu-header">
+                <button
+                    id="themeClose"
+                    class="theme-close"
+                    type="button">
 
-            <strong>
-                Choose Theme
-            </strong>
+                    ×
+
+                </button>
+
+            </div>
+
 
             <button
-                id="closeThemeMenu"
-                type="button"
-                class="theme-close"
-            >
-                ×
+                class="theme-option"
+                data-theme="campus"
+                type="button">
+
+
+                <span class="theme-preview campus-preview"></span>
+
+
+                <span>
+
+                    <strong>
+                        Campus
+                    </strong>
+
+                    <small>
+                        Clean & bright
+                    </small>
+
+                </span>
+
+
             </button>
+
+
+
+            <button
+                class="theme-option"
+                data-theme="midnight"
+                type="button">
+
+
+                <span class="theme-preview midnight-preview"></span>
+
+
+                <span>
+
+                    <strong>
+                        Midnight
+                    </strong>
+
+                    <small>
+                        Dark & modern
+                    </small>
+
+                </span>
+
+
+            </button>
+
+
+
+            <button
+                class="theme-option"
+                data-theme="aurora"
+                type="button">
+
+
+                <span class="theme-preview aurora-preview"></span>
+
+
+                <span>
+
+                    <strong>
+                        Aurora
+                    </strong>
+
+                    <small>
+                        Soft & elegant
+                    </small>
+
+                </span>
+
+
+            </button>
+
 
         </div>
 
-
-        <button
-            class="theme-option"
-            data-theme="campus"
-            type="button"
-        >
-
-            <span class="theme-preview campus-preview"></span>
-
-            <span>
-                <strong>Campus Light</strong>
-                <small>Clean & professional</small>
-            </span>
-
-        </button>
-
-
-        <button
-            class="theme-option"
-            data-theme="midnight"
-            type="button"
-        >
-
-            <span class="theme-preview midnight-preview"></span>
-
-            <span>
-                <strong>Midnight</strong>
-                <small>Dark & modern</small>
-            </span>
-
-        </button>
-
-
-        <button
-            class="theme-option"
-            data-theme="aurora"
-            type="button"
-        >
-
-            <span class="theme-preview aurora-preview"></span>
-
-            <span>
-                <strong>Aurora</strong>
-                <small>Soft & futuristic</small>
-            </span>
-
-        </button>
 
     </div>
 
 </nav>
 
 
+
 <!-- =========================================================
-     HERO SECTION
+     HERO
 ========================================================= -->
 
 <main class="hero">
 
+
     <section class="hero-content">
 
+
         <p class="badge">
+
             🔒 SAFE • PRIVATE • STUDENT FIRST
+
         </p>
 
+
         <h1>
+
             Your Voice
             <br>
 
             <span>
                 Matters.
             </span>
+
         </h1>
+
 
         <p class="hero-description">
 
@@ -215,38 +269,48 @@
 
         <div class="hero-buttons">
 
-            <a
-                href="contact.html"
-                class="primary-btn"
-            >
+
+            <a href="contact.html"
+               class="primary-btn">
+
                 Submit a Complaint →
+
             </a>
 
-            <a
-                href="about.html"
-                class="secondary-btn"
-            >
+
+            <a href="about.html"
+               class="secondary-btn">
+
                 Learn More
+
             </a>
+
 
         </div>
+
 
     </section>
 
 
-    <!-- =====================================================
-         HERO CARD
-    ===================================================== -->
+
+    <!-- HERO CARD -->
 
     <section class="hero-card">
 
+
         <div class="floating-icon">
+
             💬
+
         </div>
 
+
         <h2>
+
             Speak Freely
+
         </h2>
+
 
         <p>
 
@@ -264,9 +328,12 @@
 
         </div>
 
+
     </section>
 
+
 </main>
+
 
 
 <!-- =========================================================
@@ -275,75 +342,118 @@
 
 <section class="features">
 
+
     <div class="section-heading">
+
 
         <p>
             HOW IT WORKS
         </p>
 
+
         <h2>
+
             Simple. Private. Effective.
+
         </h2>
 
+
     </div>
+
 
 
     <div class="feature-grid">
 
+
         <article class="feature-card">
 
+
             <div class="feature-number">
+
                 01
+
             </div>
 
+
             <h3>
+
                 Share Your Concern
+
             </h3>
 
+
             <p>
+
                 Tell us what happened and explain the issue clearly.
+
             </p>
+
 
         </article>
 
 
+
         <article class="feature-card">
 
+
             <div class="feature-number">
+
                 02
+
             </div>
 
+
             <h3>
+
                 Stay Anonymous
+
             </h3>
 
+
             <p>
+
                 No name is required when submitting your concern.
+
             </p>
+
 
         </article>
 
 
+
         <article class="feature-card">
 
+
             <div class="feature-number">
+
                 03
+
             </div>
 
+
             <h3>
+
                 Get a Complaint ID
+
             </h3>
 
+
             <p>
+
                 Your complaint will receive a unique ID
                 for future tracking.
+
             </p>
 
+
         </article>
+
 
     </div>
 
+
 </section>
+
 
 
 <!-- =========================================================
@@ -353,13 +463,223 @@
 <footer>
 
     <p>
+
         © 2026 VEMU Voice • Student Support Platform
+
     </p>
 
 </footer>
 
 
+
+<!-- =========================================================
+     EXISTING JAVASCRIPT
+========================================================= -->
+
 <script src="script.js"></script>
+
+
+
+<!-- =========================================================
+     THEME SYSTEM
+========================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+
+    const appearanceButton =
+        document.getElementById("appearanceButton");
+
+
+    const themeMenu =
+        document.getElementById("themeMenu");
+
+
+    const themeClose =
+        document.getElementById("themeClose");
+
+
+    const themeOptions =
+        document.querySelectorAll(".theme-option");
+
+
+    /* =====================================================
+       LOAD SAVED THEME
+    ===================================================== */
+
+    const savedTheme =
+        localStorage.getItem("vemuVoiceTheme") || "campus";
+
+
+    if (savedTheme === "midnight") {
+
+        document.body.setAttribute(
+            "data-theme",
+            "midnight"
+        );
+
+    }
+    else if (savedTheme === "aurora") {
+
+        document.body.setAttribute(
+            "data-theme",
+            "aurora"
+        );
+
+    }
+    else {
+
+        document.body.removeAttribute(
+            "data-theme"
+        );
+
+    }
+
+
+    /* =====================================================
+       OPEN MODE MENU
+    ===================================================== */
+
+    if (appearanceButton) {
+
+        appearanceButton.addEventListener(
+            "click",
+            (event) => {
+
+                event.stopPropagation();
+
+                themeMenu.classList.toggle("show");
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       CLOSE MODE MENU
+    ===================================================== */
+
+    if (themeClose) {
+
+        themeClose.addEventListener(
+            "click",
+            () => {
+
+                themeMenu.classList.remove("show");
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       CHANGE THEME
+    ===================================================== */
+
+    themeOptions.forEach((option) => {
+
+
+        option.addEventListener(
+            "click",
+            () => {
+
+
+                const selectedTheme =
+                    option.dataset.theme;
+
+
+                if (selectedTheme === "midnight") {
+
+                    document.body.setAttribute(
+                        "data-theme",
+                        "midnight"
+                    );
+
+                }
+                else if (selectedTheme === "aurora") {
+
+                    document.body.setAttribute(
+                        "data-theme",
+                        "aurora"
+                    );
+
+                }
+                else {
+
+                    document.body.removeAttribute(
+                        "data-theme"
+                    );
+
+                }
+
+
+                localStorage.setItem(
+                    "vemuVoiceTheme",
+                    selectedTheme
+                );
+
+
+                themeOptions.forEach(
+                    item => item.classList.remove("selected")
+                );
+
+
+                option.classList.add("selected");
+
+
+                themeMenu.classList.remove("show");
+
+            }
+        );
+
+    });
+
+
+    /* =====================================================
+       MARK CURRENT THEME
+    ===================================================== */
+
+    themeOptions.forEach((option) => {
+
+        if (option.dataset.theme === savedTheme) {
+
+            option.classList.add("selected");
+
+        }
+
+    });
+
+
+    /* =====================================================
+       CLOSE WHEN CLICKING OUTSIDE
+    ===================================================== */
+
+    document.addEventListener(
+        "click",
+        (event) => {
+
+            if (
+                themeMenu &&
+                !themeMenu.contains(event.target) &&
+                !appearanceButton.contains(event.target)
+            ) {
+
+                themeMenu.classList.remove("show");
+
+            }
+
+        }
+    );
+
+
+});
+
+</script>
+
 
 </body>
 
