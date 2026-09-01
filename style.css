@@ -2,6 +2,25 @@
 
 
 /* =========================================================
+   VEMU VOICE
+   MAIN STYLE SHEET
+   Covers:
+   - Splash Screen
+   - Main Website
+   - Theme / Mode
+   - Home
+   - About
+   - Complaint Form
+   - Success Page
+   - Track Complaint
+   - Student Login
+   - Admin Login
+
+   ADMIN DASHBOARD CSS IS NOT INCLUDED HERE.
+========================================================= */
+
+
+/* =========================================================
    DEFAULT THEME
 ========================================================= */
 
@@ -9,6 +28,7 @@
 
     --bg: #f6f7fb;
     --surface: #ffffff;
+
     --text: #171923;
     --muted: #6b7280;
 
@@ -44,6 +64,7 @@ body[data-theme="midnight"] {
 
     --bg: #0b0d16;
     --surface: #151827;
+
     --text: #f4f5ff;
     --muted: #a6abc2;
 
@@ -79,6 +100,7 @@ body[data-theme="aurora"] {
 
     --bg: #eef5f5;
     --surface: #ffffff;
+
     --text: #172326;
     --muted: #667477;
 
@@ -108,7 +130,7 @@ body[data-theme="aurora"] {
 
 
 /* =========================================================
-   GLOBAL
+   GLOBAL RESET
 ========================================================= */
 
 * {
@@ -134,7 +156,9 @@ body {
 
     color: var(--text);
 
-    font-family: "Inter", sans-serif;
+    font-family:
+        "Inter",
+        sans-serif;
 
     transition:
         background-color 0.35s ease,
@@ -164,8 +188,14 @@ article {
 }
 
 
+.hidden {
+
+    display: none !important;
+}
+
+
 /* =========================================================
-   FAST SPLASH SCREEN
+   FAST OPENING / SPLASH SCREEN
 ========================================================= */
 
 .splash-screen {
@@ -179,12 +209,14 @@ article {
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     background: var(--bg);
 
     animation:
-        splashFadeOut 0.35s ease
+        splashFadeOut
+        0.35s ease
         0.65s forwards;
 }
 
@@ -194,7 +226,8 @@ article {
     text-align: center;
 
     animation:
-        splashContentIn 0.5s ease
+        splashContentIn
+        0.5s ease
         forwards;
 }
 
@@ -207,13 +240,14 @@ article {
     margin: 0 auto 18px;
 
     display: grid;
+
     place-items: center;
 
     border-radius: 22px;
 
     background: var(--primary);
 
-    color: white;
+    color: #ffffff;
 
     font-family:
         "Space Grotesk",
@@ -279,7 +313,8 @@ article {
     background: var(--primary);
 
     animation:
-        splashDot 0.8s infinite
+        splashDot
+        0.8s infinite
         alternate;
 }
 
@@ -449,7 +484,7 @@ article {
 
 
 /* =========================================================
-   MODE / APPEARANCE BUTTON
+   MODE BUTTON
 ========================================================= */
 
 .appearance-button {
@@ -457,39 +492,29 @@ article {
     border:
         1px solid var(--border);
 
-    background:
-        var(--surface);
+    background: var(--surface);
 
-    color:
-        var(--text);
+    color: var(--text);
 
-    padding:
-        8px 11px;
+    padding: 7px 10px;
 
-    border-radius:
-        9px;
+    border-radius: 9px;
 
-    font-size:
-        0.78rem;
+    font-size: 0.75rem;
 
-    font-weight:
-        700;
+    font-weight: 700;
 
-    cursor:
-        pointer;
+    cursor: pointer;
 
-    white-space:
-        nowrap;
+    white-space: nowrap;
 }
 
 
 .appearance-button:hover {
 
-    background:
-        var(--soft);
+    background: var(--soft);
 
-    color:
-        var(--primary);
+    color: var(--primary);
 
     transform:
         translateY(-1px);
@@ -504,8 +529,7 @@ article {
 
     position: absolute;
 
-    top:
-        calc(100% + 12px);
+    top: calc(100% + 12px);
 
     right: 0;
 
@@ -513,14 +537,12 @@ article {
 
     padding: 14px;
 
-    background:
-        var(--surface);
+    background: var(--surface);
 
     border:
         1px solid var(--border);
 
-    border-radius:
-        18px;
+    border-radius: 18px;
 
     box-shadow:
         0 25px 60px
@@ -561,8 +583,7 @@ article {
 
     justify-content: space-between;
 
-    padding:
-        4px 5px 12px;
+    padding: 4px 5px 12px;
 }
 
 
@@ -583,11 +604,9 @@ article {
 
     border-radius: 50%;
 
-    background:
-        var(--soft);
+    background: var(--soft);
 
-    color:
-        var(--text);
+    color: var(--text);
 
     font-size: 20px;
 
@@ -614,34 +633,27 @@ article {
 
     border-radius: 13px;
 
-    background:
-        transparent;
+    background: transparent;
 
-    color:
-        var(--text);
+    color: var(--text);
 
-    text-align:
-        left;
+    text-align: left;
 
-    cursor:
-        pointer;
+    cursor: pointer;
 }
 
 
 .theme-option:hover {
 
-    background:
-        var(--soft);
+    background: var(--soft);
 }
 
 
 .theme-option.selected {
 
-    border-color:
-        var(--primary);
+    border-color: var(--primary);
 
-    background:
-        var(--soft);
+    background: var(--soft);
 }
 
 
@@ -657,11 +669,9 @@ article {
 
 .theme-option small {
 
-    color:
-        var(--muted);
+    color: var(--muted);
 
-    font-size:
-        0.72rem;
+    font-size: 0.72rem;
 }
 
 
@@ -718,57 +728,42 @@ article {
 
 .hero {
 
-    width:
-        min(1180px, 92%);
+    width: min(1180px, 92%);
 
-    min-height:
-        580px;
+    min-height: 580px;
 
-    margin:
-        40px auto 70px;
+    margin: 40px auto 70px;
 
-    display:
-        grid;
+    display: grid;
 
     grid-template-columns:
         1.2fr 0.8fr;
 
-    gap:
-        60px;
+    gap: 60px;
 
-    align-items:
-        center;
+    align-items: center;
 }
 
 
 .badge {
 
-    display:
-        inline-block;
+    display: inline-block;
 
-    padding:
-        9px 14px;
+    padding: 9px 14px;
 
-    background:
-        var(--soft);
+    background: var(--soft);
 
-    color:
-        var(--primary);
+    color: var(--primary);
 
-    border-radius:
-        100px;
+    border-radius: 100px;
 
-    font-size:
-        0.75rem;
+    font-size: 0.75rem;
 
-    font-weight:
-        800;
+    font-weight: 800;
 
-    letter-spacing:
-        1px;
+    letter-spacing: 1px;
 
-    margin-bottom:
-        20px;
+    margin-bottom: 20px;
 }
 
 
@@ -788,18 +783,15 @@ article {
             5.5rem
         );
 
-    line-height:
-        0.95;
+    line-height: 0.95;
 
-    letter-spacing:
-        -3px;
+    letter-spacing: -3px;
 }
 
 
 .hero h1 span {
 
-    color:
-        var(--primary);
+    color: var(--primary);
 }
 
 
@@ -808,33 +800,29 @@ article {
 .form-intro p,
 .track-intro p {
 
-    max-width:
-        620px;
+    max-width: 620px;
 
-    margin-top:
-        25px;
+    margin-top: 25px;
 
-    color:
-        var(--muted);
+    color: var(--muted);
 
-    font-size:
-        1.05rem;
+    font-size: 1.05rem;
 
-    line-height:
-        1.8;
+    line-height: 1.8;
 }
 
 
+/* =========================================================
+   BUTTONS
+========================================================= */
+
 .hero-buttons {
 
-    display:
-        flex;
+    display: flex;
 
-    gap:
-        14px;
+    gap: 14px;
 
-    margin-top:
-        35px;
+    margin-top: 35px;
 }
 
 
@@ -842,51 +830,39 @@ article {
 .secondary-btn,
 .submit-btn {
 
-    display:
-        inline-flex;
+    display: inline-flex;
 
-    align-items:
-        center;
+    align-items: center;
 
-    justify-content:
-        center;
+    justify-content: center;
 
-    padding:
-        14px 22px;
+    padding: 14px 22px;
 
-    border-radius:
-        12px;
+    border-radius: 12px;
 
-    text-decoration:
-        none;
+    text-decoration: none;
 
-    font-weight:
-        700;
+    font-weight: 700;
 }
 
 
 .primary-btn,
 .submit-btn {
 
-    background:
-        var(--primary);
+    background: var(--primary);
 
-    color:
-        white;
+    color: #ffffff;
 
-    border:
-        none;
+    border: none;
 
-    cursor:
-        pointer;
+    cursor: pointer;
 }
 
 
 .primary-btn:hover,
 .submit-btn:hover {
 
-    background:
-        var(--primary-dark);
+    background: var(--primary-dark);
 
     transform:
         translateY(-2px);
@@ -895,24 +871,19 @@ article {
 
 .submit-btn:disabled {
 
-    opacity:
-        0.7;
+    opacity: 0.7;
 
-    cursor:
-        not-allowed;
+    cursor: not-allowed;
 
-    transform:
-        none;
+    transform: none;
 }
 
 
 .secondary-btn {
 
-    background:
-        var(--surface);
+    background: var(--surface);
 
-    color:
-        var(--text);
+    color: var(--text);
 
     border:
         1px solid var(--border);
@@ -921,8 +892,7 @@ article {
 
 .secondary-btn:hover {
 
-    background:
-        var(--soft);
+    background: var(--soft);
 }
 
 
@@ -935,79 +905,55 @@ article {
     background:
         var(--hero-gradient);
 
-    padding:
-        40px;
+    padding: 40px;
 
-    border-radius:
-        28px;
+    border-radius: 28px;
 
     border:
         1px solid var(--border);
 
-    box-shadow:
-        var(--shadow);
+    box-shadow: var(--shadow);
 
-    position:
-        relative;
+    position: relative;
 
-    overflow:
-        hidden;
+    overflow: hidden;
 }
 
 
 .hero-card::before {
 
-    content:
-        "";
+    content: "";
 
-    position:
-        absolute;
+    position: absolute;
 
-    width:
-        180px;
+    width: 180px;
+    height: 180px;
 
-    height:
-        180px;
+    background: var(--soft);
 
-    background:
-        var(--soft);
+    border-radius: 50%;
 
-    border-radius:
-        50%;
-
-    top:
-        -80px;
-
-    right:
-        -60px;
+    top: -80px;
+    right: -60px;
 }
 
 
 .floating-icon {
 
-    position:
-        relative;
+    position: relative;
 
-    width:
-        62px;
+    width: 62px;
+    height: 62px;
 
-    height:
-        62px;
+    display: grid;
 
-    display:
-        grid;
+    place-items: center;
 
-    place-items:
-        center;
+    font-size: 1.8rem;
 
-    font-size:
-        1.8rem;
+    background: var(--surface);
 
-    background:
-        var(--surface);
-
-    border-radius:
-        18px;
+    border-radius: 18px;
 
     box-shadow:
         0 10px 30px
@@ -1017,77 +963,56 @@ article {
 
 .hero-card h2 {
 
-    position:
-        relative;
+    position: relative;
 
-    margin-top:
-        30px;
+    margin-top: 30px;
 
-    font-size:
-        1.7rem;
+    font-size: 1.7rem;
 }
 
 
 .hero-card p {
 
-    position:
-        relative;
+    position: relative;
 
-    margin-top:
-        12px;
+    margin-top: 12px;
 
-    color:
-        var(--muted);
+    color: var(--muted);
 
-    line-height:
-        1.7;
+    line-height: 1.7;
 }
 
 
 .mini-status {
 
-    position:
-        relative;
+    position: relative;
 
-    margin-top:
-        30px;
+    margin-top: 30px;
 
-    padding:
-        14px;
+    padding: 14px;
 
-    background:
-        var(--surface);
+    background: var(--surface);
 
-    border-radius:
-        12px;
+    border-radius: 12px;
 
-    font-size:
-        0.85rem;
+    font-size: 0.85rem;
 
-    font-weight:
-        600;
+    font-weight: 600;
 }
 
 
 .status-dot {
 
-    display:
-        inline-block;
+    display: inline-block;
 
-    width:
-        8px;
+    width: 8px;
+    height: 8px;
 
-    height:
-        8px;
+    background: var(--success);
 
-    background:
-        var(--success);
+    border-radius: 50%;
 
-    border-radius:
-        50%;
-
-    margin-right:
-        8px;
+    margin-right: 8px;
 }
 
 
@@ -1097,82 +1022,67 @@ article {
 
 .features {
 
-    width:
-        min(1180px, 92%);
+    width: min(1180px, 92%);
 
-    margin:
-        80px auto;
+    margin: 80px auto;
 }
 
 
 .section-heading {
 
-    text-align:
-        center;
+    text-align: center;
 
-    margin-bottom:
-        40px;
+    margin-bottom: 40px;
 }
 
 
 .section-heading p {
 
-    color:
-        var(--primary);
+    color: var(--primary);
 
-    font-size:
-        0.75rem;
+    font-size: 0.75rem;
 
-    font-weight:
-        800;
+    font-weight: 800;
 
-    letter-spacing:
-        1px;
+    letter-spacing: 1px;
 }
 
 
 .section-heading h2 {
 
-    margin-top:
-        12px;
+    margin-top: 12px;
 
     font-family:
         "Space Grotesk",
         sans-serif;
 
-    font-size:
-        2.3rem;
+    font-size: 2.3rem;
 }
 
 
 .feature-grid,
 .info-grid {
 
-    display:
-        grid;
+    display: grid;
 
     grid-template-columns:
         repeat(3, 1fr);
 
-    gap:
-        20px;
+    gap: 20px;
 }
 
 
 .feature-card,
 .info-card {
 
-    background:
-        var(--surface);
+    background: var(--surface);
 
     border:
         1px solid var(--border);
 
-    padding:
-        30px;
+    padding: 30px;
 
-    border-radius:
-        20px;
+    border-radius: 20px;
 }
 
 
@@ -1190,58 +1100,47 @@ article {
 
 .feature-number {
 
-    color:
-        var(--primary);
+    color: var(--primary);
 
-    font-weight:
-        800;
+    font-weight: 800;
 
-    font-size:
-        0.85rem;
+    font-size: 0.85rem;
 }
 
 
 .feature-card h3,
 .info-card h2 {
 
-    margin-top:
-        20px;
+    margin-top: 20px;
 
-    font-size:
-        1.2rem;
+    font-size: 1.2rem;
 }
 
 
 .feature-card p,
 .info-card p {
 
-    margin-top:
-        12px;
+    margin-top: 12px;
 
-    color:
-        var(--muted);
+    color: var(--muted);
 
-    line-height:
-        1.7;
+    line-height: 1.7;
 
-    font-size:
-        0.92rem;
+    font-size: 0.92rem;
 }
 
 
 /* =========================================================
-   ABOUT / COMPLAINT PAGE
+   ABOUT / GENERAL PAGE
 ========================================================= */
 
 .page-container,
 .complaint-page,
 .track-page {
 
-    width:
-        min(1000px, 92%);
+    width: min(1000px, 92%);
 
-    margin:
-        80px auto;
+    margin: 80px auto;
 }
 
 
@@ -1249,14 +1148,11 @@ article {
 .form-intro,
 .track-intro {
 
-    text-align:
-        center;
+    text-align: center;
 
-    max-width:
-        750px;
+    max-width: 750px;
 
-    margin:
-        auto;
+    margin: auto;
 }
 
 
@@ -1264,57 +1160,46 @@ article {
 .form-intro p,
 .track-intro p {
 
-    margin-left:
-        auto;
+    margin-left: auto;
 
-    margin-right:
-        auto;
+    margin-right: auto;
 }
 
 
 .info-grid {
 
-    margin-top:
-        60px;
+    margin-top: 60px;
 }
 
 
 .card-icon {
 
-    font-size:
-        2rem;
+    font-size: 2rem;
 }
 
 
 .important-note {
 
-    margin-top:
-        40px;
+    margin-top: 40px;
 
-    padding:
-        30px;
+    padding: 30px;
 
-    background:
-        #fff8e8;
+    background: #fff8e8;
 
     border:
         1px solid #f1dfaa;
 
-    border-radius:
-        20px;
+    border-radius: 20px;
 }
 
 
 .important-note p {
 
-    margin-top:
-        10px;
+    margin-top: 10px;
 
-    color:
-        #76633c;
+    color: #76633c;
 
-    line-height:
-        1.7;
+    line-height: 1.7;
 }
 
 
@@ -1325,62 +1210,49 @@ article {
 .form-card,
 .track-card {
 
-    max-width:
-        800px;
+    max-width: 800px;
 
-    margin:
-        50px auto 0;
+    margin: 50px auto 0;
 
-    padding:
-        40px;
+    padding: 40px;
 
-    background:
-        var(--surface);
+    background: var(--surface);
 
     border:
         1px solid var(--border);
 
-    border-radius:
-        25px;
+    border-radius: 25px;
 
-    box-shadow:
-        var(--shadow);
+    box-shadow: var(--shadow);
 }
 
 
 .form-row {
 
-    display:
-        grid;
+    display: grid;
 
     grid-template-columns:
         1fr 1fr;
 
-    gap:
-        20px;
+    gap: 20px;
 }
 
 
 .input-group {
 
-    margin-bottom:
-        24px;
+    margin-bottom: 24px;
 }
 
 
 .input-group label {
 
-    display:
-        block;
+    display: block;
 
-    margin-bottom:
-        9px;
+    margin-bottom: 9px;
 
-    font-size:
-        0.9rem;
+    font-size: 0.9rem;
 
-    font-weight:
-        700;
+    font-weight: 700;
 }
 
 
@@ -1388,29 +1260,22 @@ article {
 .input-group select,
 .input-group textarea {
 
-    width:
-        100%;
+    width: 100%;
 
-    padding:
-        14px;
+    padding: 14px;
 
     border:
         1px solid var(--border);
 
-    border-radius:
-        12px;
+    border-radius: 12px;
 
-    font:
-        inherit;
+    font: inherit;
 
-    outline:
-        none;
+    outline: none;
 
-    background:
-        var(--surface);
+    background: var(--surface);
 
-    color:
-        var(--text);
+    color: var(--text);
 }
 
 
@@ -1418,8 +1283,7 @@ article {
 .input-group select:focus,
 .input-group textarea:focus {
 
-    border-color:
-        var(--primary);
+    border-color: var(--primary);
 
     box-shadow:
         0 0 0 4px
@@ -1429,154 +1293,113 @@ article {
 
 textarea {
 
-    min-height:
-        170px;
+    min-height: 170px;
 
-    resize:
-        vertical;
+    resize: vertical;
 }
 
 
 .text-info {
 
-    display:
-        flex;
+    display: flex;
 
-    justify-content:
-        space-between;
+    justify-content: space-between;
 
-    margin-top:
-        8px;
+    margin-top: 8px;
 
-    color:
-        var(--muted);
+    color: var(--muted);
 
-    font-size:
-        0.75rem;
+    font-size: 0.75rem;
 }
 
 
 .privacy-note {
 
-    padding:
-        14px;
+    padding: 14px;
 
-    margin-bottom:
-        22px;
+    margin-bottom: 22px;
 
-    background:
-        var(--soft);
+    background: var(--soft);
 
-    color:
-        var(--primary);
+    color: var(--primary);
 
-    border-radius:
-        12px;
+    border-radius: 12px;
 
-    font-size:
-        0.85rem;
+    font-size: 0.85rem;
 }
 
 
 .submit-btn {
 
-    width:
-        100%;
+    width: 100%;
 
-    font-size:
-        1rem;
+    font-size: 1rem;
 }
 
 
 /* =========================================================
-   SUCCESS SCREEN
+   SUCCESS PAGE
 ========================================================= */
 
 .success-page {
 
-    width:
-        min(800px, 92%);
+    width: min(1000px, 92%);
 
     min-height:
-        calc(100vh - 220px);
+        calc(100vh - 180px);
 
-    margin:
-        50px auto;
+    margin: 50px auto;
 
-    display:
-        flex;
+    display: flex;
 
-    align-items:
-        center;
+    align-items: center;
 
-    justify-content:
-        center;
+    justify-content: center;
 }
 
 
 .success-card {
 
-    width:
-        100%;
+    width: 100%;
 
-    max-width:
-        650px;
+    max-width: 650px;
 
-    padding:
-        50px 45px;
+    padding: 50px 45px;
 
-    text-align:
-        center;
+    text-align: center;
 
-    background:
-        var(--surface);
+    background: var(--surface);
 
     border:
         1px solid var(--border);
 
-    border-radius:
-        28px;
+    border-radius: 28px;
 
-    box-shadow:
-        var(--shadow);
+    box-shadow: var(--shadow);
 }
 
 
 .success-icon {
 
-    width:
-        78px;
+    width: 78px;
+    height: 78px;
 
-    height:
-        78px;
+    margin: 0 auto 24px;
 
-    margin:
-        0 auto 25px;
+    display: grid;
 
-    display:
-        grid;
-
-    place-items:
-        center;
-
-    border-radius:
-        50%;
+    place-items: center;
 
     background:
-        #e8fff2;
-
-    color:
-        var(--success);
-
-    font-size:
-        2.4rem;
-
-    font-weight:
-        800;
-
-    box-shadow:
-        0 12px 30px
         rgba(21, 153, 87, 0.12);
+
+    color: var(--success);
+
+    border-radius: 50%;
+
+    font-size: 2.4rem;
+
+    font-weight: 800;
 }
 
 
@@ -1593,136 +1416,171 @@ textarea {
             2.7rem
         );
 
-    line-height:
-        1.15;
+    line-height: 1.15;
+
+    letter-spacing: -1px;
 }
 
 
 .success-card > p {
 
-    max-width:
-        520px;
+    max-width: 520px;
 
-    margin:
-        16px auto 0;
+    margin: 16px auto 0;
 
-    color:
-        var(--muted);
+    color: var(--muted);
 
-    line-height:
-        1.7;
+    line-height: 1.7;
+
+    font-size: 0.95rem;
 }
 
 
 .complaint-id-box {
 
-    margin:
-        30px auto;
+    margin: 30px auto;
 
-    padding:
-        22px;
+    padding: 22px;
 
-    max-width:
-        450px;
+    max-width: 450px;
 
-    background:
-        var(--soft);
+    background: var(--soft);
 
     border:
         1px solid var(--border);
 
-    border-radius:
-        18px;
+    border-radius: 18px;
 }
 
 
 .complaint-id-box span {
 
-    display:
-        block;
+    display: block;
 
-    color:
-        var(--muted);
+    color: var(--muted);
 
-    font-size:
-        0.75rem;
+    font-size: 0.75rem;
 
-    font-weight:
-        700;
+    font-weight: 700;
 
-    text-transform:
-        uppercase;
+    letter-spacing: 1px;
 
-    letter-spacing:
-        1px;
+    text-transform: uppercase;
 }
 
 
 .complaint-id-box strong {
 
-    display:
-        block;
+    display: block;
 
-    margin-top:
-        9px;
+    margin-top: 10px;
 
-    color:
-        var(--primary);
+    color: var(--primary);
 
     font-family:
         "Space Grotesk",
         sans-serif;
 
-    font-size:
-        1.5rem;
+    font-size: 1.5rem;
 
-    letter-spacing:
-        2px;
-
-    word-break:
-        break-word;
+    letter-spacing: 2px;
 }
 
 
 .complaint-id-box small {
 
-    display:
-        block;
+    display: block;
 
-    margin-top:
-        9px;
+    margin-top: 9px;
 
-    color:
-        var(--muted);
+    color: var(--muted);
 
-    font-size:
-        0.78rem;
+    font-size: 0.78rem;
 }
 
 
 .success-actions {
 
-    display:
-        flex;
+    display: flex;
 
-    justify-content:
-        center;
+    justify-content: center;
 
-    gap:
-        12px;
+    gap: 12px;
 
-    flex-wrap:
-        wrap;
-
-    margin-top:
-        25px;
+    margin-top: 28px;
 }
 
 
-.hidden {
+/* =========================================================
+   OLD SUCCESS CLASSES
+   Kept so existing success screens don't break.
+========================================================= */
 
-    display:
-        none !important;
+.success-box {
+
+    text-align: center;
+
+    padding: 30px 10px;
+}
+
+
+.success-box h2 {
+
+    margin-top: 20px;
+}
+
+
+.success-box > p {
+
+    margin-top: 10px;
+
+    color: var(--muted);
+}
+
+
+.complaint-id {
+
+    margin: 25px auto;
+
+    padding: 20px;
+
+    max-width: 400px;
+
+    background: var(--soft);
+
+    border-radius: 15px;
+}
+
+
+.complaint-id span {
+
+    display: block;
+
+    font-size: 0.7rem;
+
+    color: var(--muted);
+
+    letter-spacing: 1px;
+}
+
+
+.complaint-id strong {
+
+    display: block;
+
+    margin-top: 8px;
+
+    color: var(--primary);
+
+    font-size: 1.4rem;
+
+    letter-spacing: 2px;
+}
+
+
+.save-note {
+
+    margin-bottom: 25px;
 }
 
 
@@ -1732,58 +1590,43 @@ textarea {
 
 .track-card {
 
-    max-width:
-        650px;
+    max-width: 650px;
 }
 
 
 .tracking-result {
 
-    margin-top:
-        35px;
+    margin-top: 35px;
 
-    padding:
-        30px;
+    padding: 30px;
 
-    background:
-        var(--surface);
+    background: var(--surface);
 
     border:
         1px solid var(--border);
 
-    border-radius:
-        20px;
+    border-radius: 20px;
 
-    text-align:
-        center;
+    text-align: center;
 }
 
 
 .result-icon {
 
-    width:
-        65px;
+    width: 65px;
+    height: 65px;
 
-    height:
-        65px;
+    margin: 0 auto 15px;
 
-    margin:
-        0 auto 15px;
+    display: grid;
 
-    display:
-        grid;
+    place-items: center;
 
-    place-items:
-        center;
+    background: var(--soft);
 
-    background:
-        var(--soft);
+    border-radius: 50%;
 
-    border-radius:
-        50%;
-
-    font-size:
-        1.7rem;
+    font-size: 1.7rem;
 }
 
 
@@ -1793,18 +1636,15 @@ textarea {
         "Space Grotesk",
         sans-serif;
 
-    font-size:
-        1.5rem;
+    font-size: 1.5rem;
 
-    margin-bottom:
-        25px;
+    margin-bottom: 25px;
 }
 
 
 .result-details {
 
-    text-align:
-        left;
+    text-align: left;
 
     border-top:
         1px solid var(--border);
@@ -1813,17 +1653,13 @@ textarea {
 
 .result-row {
 
-    display:
-        flex;
+    display: flex;
 
-    justify-content:
-        space-between;
+    justify-content: space-between;
 
-    gap:
-        20px;
+    gap: 20px;
 
-    padding:
-        17px 0;
+    padding: 17px 0;
 
     border-bottom:
         1px solid var(--border);
@@ -1832,73 +1668,58 @@ textarea {
 
 .result-row span {
 
-    color:
-        var(--muted);
+    color: var(--muted);
 
-    font-size:
-        0.88rem;
+    font-size: 0.88rem;
 }
 
 
 .result-row strong {
 
-    text-align:
-        right;
+    text-align: right;
 
-    font-size:
-        0.9rem;
+    font-size: 0.9rem;
 
-    color:
-        var(--text);
+    color: var(--text);
 }
 
 
 #resultStatus {
 
-    color:
-        var(--primary);
+    color: var(--primary);
 }
 
 
 .tracking-error {
 
-    margin-top:
-        30px;
+    margin-top: 30px;
 
-    padding:
-        25px;
+    padding: 25px;
 
-    text-align:
-        center;
+    text-align: center;
 
-    background:
-        var(--danger-bg);
+    background: var(--danger-bg);
 
     border:
         1px solid #f3caca;
 
-    border-radius:
-        18px;
+    border-radius: 18px;
 }
 
 
 .tracking-error h3 {
 
-    color:
-        var(--danger);
+    color: var(--danger);
 }
 
 
 .tracking-error p {
 
-    margin-top:
-        8px;
+    margin-top: 8px;
 
-    color:
-        var(--muted);
+    color: var(--muted);
 
-    font-size:
-        0.9rem;
+    font-size: 0.9rem;
 }
 
 
@@ -1908,17 +1729,13 @@ textarea {
 
 footer {
 
-    padding:
-        30px;
+    padding: 30px;
 
-    text-align:
-        center;
+    text-align: center;
 
-    color:
-        var(--muted);
+    color: var(--muted);
 
-    font-size:
-        0.85rem;
+    font-size: 0.85rem;
 }
 
 
@@ -1928,8 +1745,7 @@ footer {
 
 .login-page {
 
-    min-height:
-        100vh;
+    min-height: 100vh;
 }
 
 
@@ -1938,84 +1754,64 @@ footer {
     min-height:
         calc(100vh - 90px);
 
-    display:
-        flex;
+    display: flex;
 
-    align-items:
-        center;
+    align-items: center;
 
-    justify-content:
-        center;
+    justify-content: center;
 
-    padding:
-        40px 20px;
+    padding: 40px 20px;
 }
 
 
 .student-login-card {
 
-    width:
-        100%;
+    width: 100%;
 
-    max-width:
-        480px;
+    max-width: 480px;
 
-    padding:
-        45px;
+    padding: 45px;
 
-    border-radius:
-        24px;
+    border-radius: 24px;
 
-    background:
-        var(--surface);
+    background: var(--surface);
 
     border:
         1px solid var(--border);
 
-    backdrop-filter:
-        blur(18px);
+    backdrop-filter: blur(18px);
 
-    text-align:
-        center;
+    text-align: center;
 
-    box-shadow:
-        var(--shadow);
+    box-shadow: var(--shadow);
 }
 
 
 .login-icon {
 
-    font-size:
-        52px;
+    font-size: 52px;
 
-    margin-bottom:
-        15px;
+    margin-bottom: 15px;
 }
 
 
 .login-badge {
 
-    font-size:
-        12px;
+    font-size: 12px;
 
-    font-weight:
-        700;
+    font-weight: 700;
 
-    letter-spacing:
-        2px;
+    letter-spacing: 2px;
 
-    margin-bottom:
-        15px;
+    margin-bottom: 15px;
 
-    color:
-        var(--primary);
+    color: var(--primary);
 }
 
 
 .student-login-card h1 {
 
-    margin-bottom:
-        12px;
+    margin-bottom: 12px;
 
     font-family:
         "Space Grotesk",
@@ -2025,69 +1821,54 @@ footer {
 
 .student-login-card h1 span {
 
-    color:
-        var(--primary);
+    color: var(--primary);
 }
 
 
 .login-description {
 
-    margin-bottom:
-        30px;
+    margin-bottom: 30px;
 
-    color:
-        var(--muted);
+    color: var(--muted);
 
-    line-height:
-        1.6;
+    line-height: 1.6;
 }
 
 
 .student-login-card form {
 
-    text-align:
-        left;
+    text-align: left;
 }
 
 
 .student-login-card input {
 
-    width:
-        100%;
+    width: 100%;
 
-    padding:
-        15px;
+    padding: 15px;
 
-    border-radius:
-        10px;
+    border-radius: 10px;
 
     border:
         1px solid var(--border);
 
-    background:
-        var(--surface);
+    background: var(--surface);
 
-    color:
-        var(--text);
+    color: var(--text);
 
-    margin-top:
-        8px;
+    margin-top: 8px;
 
-    margin-bottom:
-        20px;
+    margin-bottom: 20px;
 
-    font-size:
-        15px;
+    font-size: 15px;
 
-    outline:
-        none;
+    outline: none;
 }
 
 
 .student-login-card input:focus {
 
-    border-color:
-        var(--primary);
+    border-color: var(--primary);
 
     box-shadow:
         0 0 0 4px
@@ -2097,427 +1878,467 @@ footer {
 
 .student-login-card .submit-btn {
 
-    width:
-        100%;
+    width: 100%;
 
-    cursor:
-        pointer;
+    cursor: pointer;
 }
 
 
 .login-note {
 
-    margin-top:
-        20px;
+    margin-top: 20px;
 
-    font-size:
-        13px;
+    font-size: 13px;
 
-    color:
-        var(--muted);
-
-    line-height:
-        1.5;
+    color: var(--muted);
 }
 
 
 .login-error {
 
-    color:
-        var(--danger);
+    color: var(--danger);
 
-    margin-bottom:
-        15px;
+    margin-bottom: 15px;
 
-    text-align:
-        left;
-
-    font-size:
-        0.85rem;
+    text-align: left;
 }
 
 
 /* =========================================================
-   ADMIN LOGIN PAGE
+   ADMIN LOGIN
+   IMPORTANT:
+   This is the CSS that was missing.
 ========================================================= */
 
 .admin-login-page {
 
-    width:
-        min(500px, 92%);
+    min-height: 100vh;
 
-    margin:
-        80px auto;
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.admin-login-container {
+
+    flex: 1;
 
     min-height:
-        calc(100vh - 240px);
+        calc(100vh - 100px);
 
-    display:
-        flex;
+    display: flex;
 
-    align-items:
-        center;
+    align-items: center;
 
-    justify-content:
-        center;
+    justify-content: center;
+
+    padding: 50px 20px;
 }
 
 
 .admin-login-card {
 
-    width:
-        100%;
+    width: 100%;
 
-    padding:
-        45px;
+    max-width: 470px;
 
-    background:
-        var(--surface);
+    padding: 45px;
+
+    background: var(--surface);
 
     border:
         1px solid var(--border);
 
-    border-radius:
-        25px;
+    border-radius: 26px;
 
-    box-shadow:
-        var(--shadow);
+    box-shadow: var(--shadow);
 
-    text-align:
-        center;
+    text-align: center;
 
-    position:
-        relative;
+    position: relative;
 
-    overflow:
-        hidden;
+    overflow: hidden;
 }
 
 
 .admin-login-card::before {
 
-    content:
-        "";
+    content: "";
 
-    position:
-        absolute;
+    position: absolute;
 
-    width:
-        180px;
+    width: 180px;
+    height: 180px;
 
-    height:
-        180px;
+    top: -110px;
+    right: -80px;
 
-    border-radius:
-        50%;
+    background: var(--soft);
 
-    background:
-        var(--soft);
+    border-radius: 50%;
 
-    top:
-        -100px;
-
-    right:
-        -70px;
-
-    opacity:
-        0.7;
+    pointer-events: none;
 }
 
 
-.admin-icon {
+/* ---------------------------------------------------------
+   ADMIN LOGO
+--------------------------------------------------------- */
 
-    width:
-        70px;
+.admin-logo {
 
-    height:
-        70px;
+    position: relative;
 
-    margin:
-        0 auto 20px;
+    width: 68px;
+    height: 68px;
 
-    display:
-        grid;
+    margin: 0 auto 20px;
 
-    place-items:
-        center;
+    display: grid;
 
-    background:
-        var(--soft);
+    place-items: center;
 
-    color:
-        var(--primary);
+    background: var(--primary);
 
-    border:
-        1px solid var(--border);
+    color: #ffffff;
 
-    border-radius:
-        20px;
+    border-radius: 20px;
 
-    font-size:
-        2rem;
+    font-family:
+        "Space Grotesk",
+        sans-serif;
 
-    position:
-        relative;
+    font-size: 24px;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 15px 35px
+        rgba(91, 91, 214, 0.22);
 }
 
 
-.admin-login-card .badge {
+/* ---------------------------------------------------------
+   ADMIN TITLE AREA
+--------------------------------------------------------- */
 
-    margin-bottom:
-        15px;
+.admin-login-badge {
+
+    position: relative;
+
+    display: inline-block;
+
+    margin-bottom: 14px;
+
+    color: var(--primary);
+
+    font-size: 0.72rem;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
 }
 
 
 .admin-login-card h1 {
 
-    position:
-        relative;
+    position: relative;
 
     font-family:
         "Space Grotesk",
         sans-serif;
 
     font-size:
-        2.3rem;
+        clamp(
+            2rem,
+            5vw,
+            2.8rem
+        );
 
-    line-height:
-        1.1;
+    line-height: 1.05;
 
-    letter-spacing:
-        -1.5px;
+    letter-spacing: -1.5px;
 }
 
 
 .admin-login-card h1 span {
 
-    color:
-        var(--primary);
+    color: var(--primary);
 }
 
 
-.admin-description {
+.admin-login-description {
 
-    position:
-        relative;
+    position: relative;
 
-    margin:
-        14px auto 30px;
+    margin: 14px auto 30px;
 
-    max-width:
-        390px;
+    max-width: 370px;
 
-    color:
-        var(--muted);
+    color: var(--muted);
 
-    font-size:
-        0.92rem;
+    font-size: 0.92rem;
 
-    line-height:
-        1.7;
+    line-height: 1.7;
 }
 
 
-#adminLoginForm {
+/* ---------------------------------------------------------
+   ADMIN LOGIN FORM
+--------------------------------------------------------- */
 
-    position:
-        relative;
+.admin-login-card form {
 
-    text-align:
-        left;
+    position: relative;
+
+    text-align: left;
 }
 
 
-#adminLoginForm .input-group {
+.admin-input-group {
 
-    margin-bottom:
-        20px;
+    margin-bottom: 20px;
 }
 
 
-#adminLoginForm .input-group label {
+.admin-input-group label {
 
-    color:
-        var(--text);
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--text);
+
+    font-size: 0.88rem;
+
+    font-weight: 700;
 }
 
 
-#adminUsername,
-#adminPassword {
+.admin-input-group input {
 
-    width:
-        100%;
+    width: 100%;
 
-    padding:
-        14px 15px;
+    padding: 14px 15px;
 
     border:
         1px solid var(--border);
 
-    border-radius:
-        12px;
+    border-radius: 12px;
 
-    background:
-        var(--surface);
+    background: var(--surface);
 
-    color:
-        var(--text);
+    color: var(--text);
 
-    font-size:
-        0.95rem;
+    font-size: 0.92rem;
 
-    outline:
-        none;
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 
-#adminUsername:focus,
-#adminPassword:focus {
+.admin-input-group input::placeholder {
 
-    border-color:
-        var(--primary);
+    color: var(--muted);
+
+    opacity: 0.7;
+}
+
+
+.admin-input-group input:focus {
+
+    border-color: var(--primary);
 
     box-shadow:
         0 0 0 4px
-        rgba(91, 91, 214, 0.1);
+        rgba(91, 91, 214, 0.10);
 }
 
 
-#adminLoginForm .submit-btn {
+/* ---------------------------------------------------------
+   ADMIN LOGIN BUTTON
+--------------------------------------------------------- */
 
-    width:
-        100%;
+.admin-login-btn {
 
-    margin-top:
-        5px;
+    width: 100%;
 
-    padding:
-        15px;
+    display: flex;
 
-    font-size:
-        0.95rem;
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 14px 18px;
+
+    margin-top: 8px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: var(--primary);
+
+    color: #ffffff;
+
+    font-size: 0.95rem;
+
+    font-weight: 700;
+
+    cursor: pointer;
 }
 
 
-.admin-login-card .login-error {
+.admin-login-btn:hover {
 
-    margin:
-        0 0 18px;
+    background: var(--primary-dark);
 
-    padding:
-        12px 14px;
+    transform:
+        translateY(-2px);
 
-    background:
-        var(--danger-bg);
+    box-shadow:
+        0 10px 25px
+        rgba(91, 91, 214, 0.20);
+}
+
+
+.admin-login-btn:active {
+
+    transform:
+        translateY(0);
+}
+
+
+/* ---------------------------------------------------------
+   ADMIN LOGIN ERROR
+--------------------------------------------------------- */
+
+.admin-login-error {
+
+    margin-bottom: 16px;
+
+    padding: 11px 13px;
+
+    background: var(--danger-bg);
 
     border:
         1px solid #f3caca;
 
-    border-radius:
-        10px;
+    border-radius: 10px;
 
-    color:
-        var(--danger);
+    color: var(--danger);
 
-    text-align:
-        center;
+    font-size: 0.82rem;
 
-    font-size:
-        0.82rem;
+    text-align: left;
 }
 
 
-.admin-security {
+/* ---------------------------------------------------------
+   ADMIN SECURITY BOX
+--------------------------------------------------------- */
 
-    position:
-        relative;
+.admin-security-box {
 
-    margin-top:
-        25px;
+    position: relative;
 
-    padding:
-        18px;
+    margin-top: 28px;
 
-    background:
-        var(--soft);
+    padding: 17px;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 12px;
+
+    text-align: left;
+
+    background: var(--soft);
 
     border:
         1px solid var(--border);
 
-    border-radius:
-        14px;
-
-    text-align:
-        center;
+    border-radius: 14px;
 }
 
 
 .admin-security-icon {
 
-    font-size:
-        1.4rem;
+    width: 36px;
+    height: 36px;
 
-    margin-bottom:
-        7px;
+    flex-shrink: 0;
+
+    display: grid;
+
+    place-items: center;
+
+    background: var(--surface);
+
+    border-radius: 10px;
+
+    font-size: 1.1rem;
 }
 
 
-.admin-security strong {
+.admin-security-box strong {
 
-    display:
-        block;
+    display: block;
 
-    font-family:
-        "Space Grotesk",
-        sans-serif;
+    color: var(--text);
 
-    font-size:
-        0.9rem;
+    font-size: 0.85rem;
 }
 
 
-.admin-security span {
+.admin-security-box p {
 
-    display:
-        block;
+    margin-top: 4px;
 
-    margin-top:
-        5px;
+    color: var(--muted);
 
-    color:
-        var(--muted);
+    font-size: 0.76rem;
 
-    font-size:
-        0.75rem;
+    line-height: 1.5;
 }
 
 
-.admin-back {
+/* ---------------------------------------------------------
+   ADMIN BACK LINK
+--------------------------------------------------------- */
 
-    display:
-        inline-flex;
+.admin-back-link {
 
-    margin-top:
-        22px;
+    position: relative;
 
-    color:
-        var(--primary);
+    display: inline-flex;
 
-    text-decoration:
-        none;
+    align-items: center;
 
-    font-size:
-        0.85rem;
+    gap: 6px;
 
-    font-weight:
-        700;
+    margin-top: 25px;
+
+    color: var(--primary);
+
+    text-decoration: none;
+
+    font-size: 0.85rem;
+
+    font-weight: 700;
 }
 
 
-.admin-back:hover {
+.admin-back-link:hover {
 
-    text-decoration:
-        underline;
+    color: var(--primary-dark);
 
     transform:
         translateX(-2px);
@@ -2525,38 +2346,107 @@ footer {
 
 
 /* =========================================================
-   MOBILE
+   ADMIN LOGIN ALTERNATE CLASS SUPPORT
+   Keeps styling working if your HTML uses the more
+   generic names from the earlier version.
+========================================================= */
+
+.admin-login-card .login-badge {
+
+    color: var(--primary);
+}
+
+
+.admin-login-card .login-description {
+
+    color: var(--muted);
+
+    line-height: 1.7;
+}
+
+
+.admin-login-card .input-group {
+
+    text-align: left;
+}
+
+
+.admin-login-card .input-group label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 0.88rem;
+
+    font-weight: 700;
+}
+
+
+.admin-login-card .input-group input {
+
+    width: 100%;
+
+    padding: 14px 15px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 12px;
+
+    background: var(--surface);
+
+    color: var(--text);
+
+    outline: none;
+}
+
+
+.admin-login-card .input-group input:focus {
+
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(91, 91, 214, 0.10);
+}
+
+
+.admin-login-card .submit-btn {
+
+    width: 100%;
+
+    margin-top: 5px;
+}
+
+
+/* =========================================================
+   MOBILE RESPONSIVE
 ========================================================= */
 
 @media (max-width: 750px) {
 
     .navbar {
 
-        flex-direction:
-            column;
+        flex-direction: column;
 
-        gap:
-            15px;
+        gap: 15px;
     }
 
 
     .hero {
 
-        grid-template-columns:
-            1fr;
+        grid-template-columns: 1fr;
 
-        gap:
-            40px;
+        gap: 40px;
 
-        margin-top:
-            50px;
+        margin-top: 50px;
     }
 
 
     .hero h1 {
 
-        font-size:
-            4rem;
+        font-size: 4rem;
     }
 
 
@@ -2564,153 +2454,175 @@ footer {
     .info-grid,
     .form-row {
 
-        grid-template-columns:
-            1fr;
+        grid-template-columns: 1fr;
     }
 
 
     .nav-links {
 
-        flex-wrap:
-            wrap;
+        flex-wrap: wrap;
 
-        justify-content:
-            center;
+        justify-content: center;
     }
 
 
     .hero-buttons {
 
-        flex-direction:
-            column;
+        flex-direction: column;
     }
 
 
     .form-card,
     .track-card {
 
-        padding:
-            25px;
+        padding: 25px;
     }
 
 
     .result-row {
 
-        flex-direction:
-            column;
+        flex-direction: column;
 
-        gap:
-            6px;
+        gap: 6px;
     }
 
 
     .result-row strong {
 
-        text-align:
-            left;
+        text-align: left;
     }
 
 
     .theme-menu {
 
-        position:
-            fixed;
+        position: fixed;
 
-        top:
-            125px;
+        top: 125px;
 
-        right:
-            4%;
+        right: 4%;
 
-        width:
-            min(
-                285px,
-                92%
-            );
+        width: min(
+            285px,
+            92%
+        );
+    }
+
+
+    /* SUCCESS */
+
+    .success-page {
+
+        margin: 30px auto;
     }
 
 
     .success-card {
 
-        padding:
-            40px 25px;
+        padding: 35px 25px;
     }
 
 
-    .admin-login-page {
+    .success-actions {
 
-        width:
-            min(
-                92%,
-                500px
-            );
+        flex-direction: column;
+    }
 
-        margin:
-            50px auto;
+
+    .success-actions a {
+
+        width: 100%;
+    }
+
+
+    /* ADMIN LOGIN */
+
+    .admin-login-container {
+
+        padding: 35px 18px;
     }
 
 
     .admin-login-card {
 
-        padding:
-            35px 25px;
-    }
+        padding: 35px 25px;
 
+        border-radius: 22px;
+    }
 }
 
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
 
 @media (max-width: 500px) {
 
     .splash-content h1 {
 
-        font-size:
-            1.7rem;
+        font-size: 1.7rem;
     }
 
 
     .splash-logo {
 
-        width:
-            62px;
+        width: 62px;
+        height: 62px;
 
-        height:
-            62px;
-
-        font-size:
-            24px;
+        font-size: 24px;
     }
 
 
     .appearance-button {
 
-        width:
-            auto;
+        padding: 7px 10px;
 
-        padding:
-            7px 10px;
+        font-size: 0.72rem;
+    }
 
-        font-size:
-            0.75rem;
+
+    .hero h1 {
+
+        font-size: 3.4rem;
+    }
+
+
+    .section-heading h2 {
+
+        font-size: 1.9rem;
+    }
+
+
+    .student-login-card {
+
+        padding: 32px 22px;
+    }
+
+
+    .admin-login-card {
+
+        padding: 32px 20px;
+    }
+
+
+    .admin-logo {
+
+        width: 60px;
+        height: 60px;
+
+        border-radius: 17px;
+
+        font-size: 22px;
     }
 
 
     .admin-login-card h1 {
 
-        font-size:
-            2rem;
+        font-size: 2rem;
     }
 
 
-    .admin-icon {
+    .success-card h1 {
 
-        width:
-            62px;
-
-        height:
-            62px;
-
-        font-size:
-            1.7rem;
+        font-size: 1.8rem;
     }
-
 }
