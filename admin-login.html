@@ -1,48 +1,74 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Admin Login | VEMU Voice</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+          href="admin-login.css">
+
 </head>
 
 <body>
 
-    <nav class="navbar">
-
-        <a href="index.html" class="logo">
-            VEMU<span>VOICE</span>
-        </a>
-
-    <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Submit Complaint</a>
-        <a href="track.html">Track Complaint</a>
-        <a href="admin-login.html" class="active">Admin</a>
-    </div>
-
-    </nav>
-
+    <!-- =====================================================
+         ADMIN LOGIN PAGE
+    ===================================================== -->
 
     <main class="admin-login-page">
 
-        <section class="admin-login-card">
+        <div class="admin-login-card">
 
-            <div class="admin-icon">🔐</div>
+            <!-- Logo -->
 
-            <p class="badge">AUTHORIZED ACCESS ONLY</p>
+            <div class="admin-logo">
 
-            <h1>Admin Login</h1>
+                <div class="admin-logo-icon">
+                    Vv
+                </div>
 
-            <p class="admin-description">
-                Sign in to access the complaint management dashboard.
-            </p>
+                <div class="admin-logo-text">
 
+                    <h2>
+                        Vemu<span>Voice</span>
+                    </h2>
+
+                    <p>
+                        Student Support Platform
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Login Heading -->
+
+            <div class="login-heading">
+
+                <div class="login-badge">
+                    ADMIN ACCESS
+                </div>
+
+                <h1>
+                    Welcome Back
+                </h1>
+
+                <p>
+                    Sign in to manage and review student complaints.
+                </p>
+
+            </div>
+
+
+            <!-- Login Form -->
 
             <form id="adminLoginForm">
 
@@ -55,7 +81,8 @@
                     <input
                         type="text"
                         id="adminUsername"
-                        placeholder="Enter username"
+                        placeholder="Enter admin username"
+                        autocomplete="username"
                         required
                     >
 
@@ -71,35 +98,68 @@
                     <input
                         type="password"
                         id="adminPassword"
-                        placeholder="Enter password"
+                        placeholder="Enter admin password"
+                        autocomplete="current-password"
                         required
                     >
 
                 </div>
 
 
-                <button type="submit" class="submit-btn">
-                    Login to Dashboard →
+                <!-- Error Message -->
+
+                <p id="loginError"
+                   class="login-error hidden">
+                </p>
+
+
+                <button
+                    type="submit"
+                    class="admin-login-btn">
+
+                    Login to Dashboard
+                    <span>→</span>
+
                 </button>
 
             </form>
 
 
-            <div
-                id="loginError"
-                class="login-error hidden"
-            >
-                Invalid username or password.
+            <!-- Security Note -->
+
+            <div class="security-note">
+
+                <span class="security-icon">
+                    🔒
+                </span>
+
+                <div>
+
+                    <strong>
+                        Secure Admin Area
+                    </strong>
+
+                    <p>
+                        Authorized administrators only.
+                    </p>
+
+                </div>
+
             </div>
 
-        </section>
+
+            <!-- Back -->
+
+            <a href="index.html"
+               class="back-home">
+
+                ← Back to VEMU Voice
+
+            </a>
+
+        </div>
 
     </main>
-
-
-    <footer>
-        <p>© 2026 VEMU Voice • Student Support Platform</p>
-    </footer>
 
 
     <script src="script.js"></script>
@@ -107,3 +167,4 @@
 </body>
 
 </html>
+
