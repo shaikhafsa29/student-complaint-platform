@@ -1,1913 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
-
-
 /* =========================================================
-   VEMU VOICE
-   MAIN STYLE SHEET
-   Covers:
-   - Splash Screen
-   - Main Website
-   - Theme / Mode
-   - Home
-   - About
-   - Complaint Form
-   - Success Page
-   - Track Complaint
-   - Student Login
-   - Admin Login
-
-   ADMIN DASHBOARD CSS IS NOT INCLUDED HERE.
-========================================================= */
-
-
-/* =========================================================
-   DEFAULT THEME
-========================================================= */
-
-:root {
-
-    --bg: #f6f7fb;
-    --surface: #ffffff;
-
-    --text: #171923;
-    --muted: #6b7280;
-
-    --primary: #5b5bd6;
-    --primary-dark: #4545b8;
-
-    --border: #e6e7ee;
-    --soft: #f0f0ff;
-
-    --success: #159957;
-
-    --danger: #d14343;
-    --danger-bg: #fff0f0;
-
-    --hero-gradient:
-        linear-gradient(
-            145deg,
-            #ffffff,
-            #f1f1ff
-        );
-
-    --shadow:
-        0 20px 60px
-        rgba(40, 40, 100, 0.08);
-}
-
-
-/* =========================================================
-   MIDNIGHT THEME
-========================================================= */
-
-body[data-theme="midnight"] {
-
-    --bg: #0b0d16;
-    --surface: #151827;
-
-    --text: #f4f5ff;
-    --muted: #a6abc2;
-
-    --primary: #8b86ff;
-    --primary-dark: #6f69e8;
-
-    --border: #292d42;
-    --soft: #20243a;
-
-    --success: #39d98a;
-
-    --danger: #ff6b6b;
-    --danger-bg: #321d25;
-
-    --hero-gradient:
-        linear-gradient(
-            145deg,
-            #171a2b,
-            #20243a
-        );
-
-    --shadow:
-        0 25px 70px
-        rgba(0, 0, 0, 0.35);
-}
-
-
-/* =========================================================
-   AURORA THEME
-========================================================= */
-
-body[data-theme="aurora"] {
-
-    --bg: #eef5f5;
-    --surface: #ffffff;
-
-    --text: #172326;
-    --muted: #667477;
-
-    --primary: #287f91;
-    --primary-dark: #206674;
-
-    --border: #d8e5e5;
-    --soft: #e6f3f3;
-
-    --success: #159957;
-
-    --danger: #d14343;
-    --danger-bg: #fff0f0;
-
-    --hero-gradient:
-        linear-gradient(
-            145deg,
-            #ffffff,
-            #e6f5f4,
-            #eef0ff
-        );
-
-    --shadow:
-        0 20px 60px
-        rgba(40, 90, 100, 0.10);
-}
-
-
-/* =========================================================
-   GLOBAL RESET
-========================================================= */
-
-* {
-
-    margin: 0;
-    padding: 0;
-
-    box-sizing: border-box;
-}
-
-
-html {
-
-    scroll-behavior: smooth;
-}
-
-
-body {
-
-    min-height: 100vh;
-
-    background: var(--bg);
-
-    color: var(--text);
-
-    font-family:
-        "Inter",
-        sans-serif;
-
-    transition:
-        background-color 0.35s ease,
-        color 0.35s ease;
-}
-
-
-button,
-input,
-select,
-textarea {
-
-    font-family: inherit;
-}
-
-
-a,
-button,
-div,
-section,
-article {
-
-    transition:
-        background-color 0.3s ease,
-        color 0.3s ease,
-        border-color 0.3s ease;
-}
-
-
-.hidden {
-
-    display: none !important;
-}
-
-
-/* =========================================================
-   FAST OPENING / SPLASH SCREEN
-========================================================= */
-
-.splash-screen {
-
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 99999;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    background: var(--bg);
-
-    animation:
-        splashFadeOut
-        0.35s ease
-        0.65s forwards;
-}
-
-
-.splash-content {
-
-    text-align: center;
-
-    animation:
-        splashContentIn
-        0.5s ease
-        forwards;
-}
-
-
-.splash-logo {
-
-    width: 72px;
-    height: 72px;
-
-    margin: 0 auto 18px;
-
-    display: grid;
-
-    place-items: center;
-
-    border-radius: 22px;
-
-    background: var(--primary);
-
-    color: #ffffff;
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
-
-    font-size: 28px;
-
-    font-weight: 800;
-
-    box-shadow:
-        0 15px 40px
-        rgba(91, 91, 214, 0.25);
-}
-
-
-.splash-content h1 {
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
-
-    font-size: 2.1rem;
-
-    letter-spacing: -1.5px;
-}
-
-
-.splash-content h1 span {
-
-    color: var(--primary);
-}
-
-
-.splash-content p {
-
-    margin-top: 8px;
-
-    color: var(--muted);
-
-    font-size: 0.9rem;
-}
-
-
-.splash-loader {
-
-    display: flex;
-
-    justify-content: center;
-
-    gap: 6px;
-
-    margin-top: 22px;
-}
-
-
-.splash-loader span {
-
-    width: 6px;
-    height: 6px;
-
-    border-radius: 50%;
-
-    background: var(--primary);
-
-    animation:
-        splashDot
-        0.8s infinite
-        alternate;
-}
-
-
-.splash-loader span:nth-child(2) {
-
-    animation-delay: 0.15s;
-}
-
-
-.splash-loader span:nth-child(3) {
-
-    animation-delay: 0.3s;
-}
-
-
-@keyframes splashContentIn {
-
-    from {
-
-        opacity: 0;
-
-        transform:
-            translateY(10px)
-            scale(0.97);
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
-    }
-}
-
-
-@keyframes splashFadeOut {
-
-    to {
-
-        opacity: 0;
-
-        visibility: hidden;
-
-        pointer-events: none;
-    }
-}
-
-
-@keyframes splashDot {
-
-    from {
-
-        opacity: 0.3;
-
-        transform:
-            translateY(0);
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform:
-            translateY(-4px);
-    }
-}
-
-
-/* =========================================================
-   NAVBAR
-========================================================= */
-
-.navbar {
-
-    position: relative;
-
-    width: min(1180px, 92%);
-
-    margin: 20px auto;
-
-    padding: 15px 22px;
-
-    background:
-        color-mix(
-            in srgb,
-            var(--surface) 88%,
-            transparent
-        );
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 18px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    backdrop-filter: blur(15px);
-
-    z-index: 1000;
-}
-
-
-.logo {
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
-
-    font-size: 1.25rem;
-
-    font-weight: 800;
-
-    text-decoration: none;
-
-    color: var(--text);
-
-    letter-spacing: -1px;
-}
-
-
-.logo span {
-
-    color: var(--primary);
-}
-
-
-.nav-links {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-}
-
-
-.nav-links a {
-
-    color: var(--muted);
-
-    text-decoration: none;
-
-    font-size: 0.92rem;
-
-    font-weight: 600;
-
-    padding: 10px 14px;
-
-    border-radius: 10px;
-}
-
-
-.nav-links a:hover,
-.nav-links a.active {
-
-    color: var(--primary);
-
-    background: var(--soft);
-}
-
-
-/* =========================================================
-   MODE BUTTON
-========================================================= */
-
-.appearance-button {
-
-    border:
-        1px solid var(--border);
-
-    background: var(--surface);
-
-    color: var(--text);
-
-    padding: 7px 10px;
-
-    border-radius: 9px;
-
-    font-size: 0.75rem;
-
-    font-weight: 700;
-
-    cursor: pointer;
-
-    white-space: nowrap;
-}
-
-
-.appearance-button:hover {
-
-    background: var(--soft);
-
-    color: var(--primary);
-
-    transform:
-        translateY(-1px);
-}
-
-
-/* =========================================================
-   THEME MENU
-========================================================= */
-
-.theme-menu {
-
-    position: absolute;
-
-    top: calc(100% + 12px);
-
-    right: 0;
-
-    width: 285px;
-
-    padding: 14px;
-
-    background: var(--surface);
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 18px;
-
-    box-shadow:
-        0 25px 60px
-        rgba(0, 0, 0, 0.14);
-
-    opacity: 0;
-
-    visibility: hidden;
-
-    transform:
-        translateY(-8px)
-        scale(0.98);
-
-    transition:
-        opacity 0.2s ease,
-        transform 0.2s ease,
-        visibility 0.2s ease;
-}
-
-
-.theme-menu.show {
-
-    opacity: 1;
-
-    visibility: visible;
-
-    transform:
-        translateY(0)
-        scale(1);
-}
-
-
-.theme-menu-header {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    padding: 4px 5px 12px;
-}
-
-
-.theme-menu-header strong {
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
-}
-
-
-.theme-close {
-
-    width: 30px;
-    height: 30px;
-
-    border: none;
-
-    border-radius: 50%;
-
-    background: var(--soft);
-
-    color: var(--text);
-
-    font-size: 20px;
-
-    cursor: pointer;
-}
-
-
-.theme-option {
-
-    width: 100%;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-    padding: 11px;
-
-    margin-top: 5px;
-
-    border:
-        1px solid transparent;
-
-    border-radius: 13px;
-
-    background: transparent;
-
-    color: var(--text);
-
-    text-align: left;
-
-    cursor: pointer;
-}
-
-
-.theme-option:hover {
-
-    background: var(--soft);
-}
-
-
-.theme-option.selected {
-
-    border-color: var(--primary);
-
-    background: var(--soft);
-}
-
-
-.theme-option span:last-child {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 3px;
-}
-
-
-.theme-option small {
-
-    color: var(--muted);
-
-    font-size: 0.72rem;
-}
-
-
-.theme-preview {
-
-    width: 42px;
-    height: 42px;
-
-    flex-shrink: 0;
-
-    border-radius: 11px;
-
-    border:
-        1px solid var(--border);
-}
-
-
-.campus-preview {
-
-    background:
-        linear-gradient(
-            135deg,
-            #ffffff,
-            #f0f0ff
-        );
-}
-
-
-.midnight-preview {
-
-    background:
-        linear-gradient(
-            135deg,
-            #0b0d16,
-            #292d42
-        );
-}
-
-
-.aurora-preview {
-
-    background:
-        linear-gradient(
-            135deg,
-            #e6f5f4,
-            #eef0ff
-        );
-}
-
-
-/* =========================================================
-   HERO
-========================================================= */
-
-.hero {
-
-    width: min(1180px, 92%);
-
-    min-height: 580px;
-
-    margin: 40px auto 70px;
-
-    display: grid;
-
-    grid-template-columns:
-        1.2fr 0.8fr;
-
-    gap: 60px;
-
-    align-items: center;
-}
-
-
-.badge {
-
-    display: inline-block;
-
-    padding: 9px 14px;
-
-    background: var(--soft);
-
-    color: var(--primary);
-
-    border-radius: 100px;
-
-    font-size: 0.75rem;
-
-    font-weight: 800;
-
-    letter-spacing: 1px;
-
-    margin-bottom: 20px;
-}
-
-
-.hero h1,
-.page-header h1,
-.form-intro h1,
-.track-intro h1 {
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
-
-    font-size:
-        clamp(
-            3rem,
-            6vw,
-            5.5rem
-        );
-
-    line-height: 0.95;
-
-    letter-spacing: -3px;
-}
-
-
-.hero h1 span {
-
-    color: var(--primary);
-}
-
-
-.hero-description,
-.page-header p,
-.form-intro p,
-.track-intro p {
-
-    max-width: 620px;
-
-    margin-top: 25px;
-
-    color: var(--muted);
-
-    font-size: 1.05rem;
-
-    line-height: 1.8;
-}
-
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-.hero-buttons {
-
-    display: flex;
-
-    gap: 14px;
-
-    margin-top: 35px;
-}
-
-
-.primary-btn,
-.secondary-btn,
-.submit-btn {
-
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 14px 22px;
-
-    border-radius: 12px;
-
-    text-decoration: none;
-
-    font-weight: 700;
-}
-
-
-.primary-btn,
-.submit-btn {
-
-    background: var(--primary);
-
-    color: #ffffff;
-
-    border: none;
-
-    cursor: pointer;
-}
-
-
-.primary-btn:hover,
-.submit-btn:hover {
-
-    background: var(--primary-dark);
-
-    transform:
-        translateY(-2px);
-}
-
-
-.submit-btn:disabled {
-
-    opacity: 0.7;
-
-    cursor: not-allowed;
-
-    transform: none;
-}
-
-
-.secondary-btn {
-
-    background: var(--surface);
-
-    color: var(--text);
-
-    border:
-        1px solid var(--border);
-}
-
-
-.secondary-btn:hover {
-
-    background: var(--soft);
-}
-
-
-/* =========================================================
-   HERO CARD
-========================================================= */
-
-.hero-card {
-
-    background:
-        var(--hero-gradient);
-
-    padding: 40px;
-
-    border-radius: 28px;
-
-    border:
-        1px solid var(--border);
-
-    box-shadow: var(--shadow);
-
-    position: relative;
-
-    overflow: hidden;
-}
-
-
-.hero-card::before {
-
-    content: "";
-
-    position: absolute;
-
-    width: 180px;
-    height: 180px;
-
-    background: var(--soft);
-
-    border-radius: 50%;
-
-    top: -80px;
-    right: -60px;
-}
-
-
-.floating-icon {
-
-    position: relative;
-
-    width: 62px;
-    height: 62px;
-
-    display: grid;
-
-    place-items: center;
-
-    font-size: 1.8rem;
-
-    background: var(--surface);
-
-    border-radius: 18px;
-
-    box-shadow:
-        0 10px 30px
-        rgba(0, 0, 0, 0.08);
-}
-
-
-.hero-card h2 {
-
-    position: relative;
-
-    margin-top: 30px;
-
-    font-size: 1.7rem;
-}
-
-
-.hero-card p {
-
-    position: relative;
-
-    margin-top: 12px;
-
-    color: var(--muted);
-
-    line-height: 1.7;
-}
-
-
-.mini-status {
-
-    position: relative;
-
-    margin-top: 30px;
-
-    padding: 14px;
-
-    background: var(--surface);
-
-    border-radius: 12px;
-
-    font-size: 0.85rem;
-
-    font-weight: 600;
-}
-
-
-.status-dot {
-
-    display: inline-block;
-
-    width: 8px;
-    height: 8px;
-
-    background: var(--success);
-
-    border-radius: 50%;
-
-    margin-right: 8px;
-}
-
-
-/* =========================================================
-   FEATURES
-========================================================= */
-
-.features {
-
-    width: min(1180px, 92%);
-
-    margin: 80px auto;
-}
-
-
-.section-heading {
-
-    text-align: center;
-
-    margin-bottom: 40px;
-}
-
-
-.section-heading p {
-
-    color: var(--primary);
-
-    font-size: 0.75rem;
-
-    font-weight: 800;
-
-    letter-spacing: 1px;
-}
-
-
-.section-heading h2 {
-
-    margin-top: 12px;
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
-
-    font-size: 2.3rem;
-}
-
-
-.feature-grid,
-.info-grid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 20px;
-}
-
-
-.feature-card,
-.info-card {
-
-    background: var(--surface);
-
-    border:
-        1px solid var(--border);
-
-    padding: 30px;
-
-    border-radius: 20px;
-}
-
-
-.feature-card:hover,
-.info-card:hover {
-
-    transform:
-        translateY(-6px);
-
-    box-shadow:
-        0 20px 40px
-        rgba(40, 40, 100, 0.08);
-}
-
-
-.feature-number {
-
-    color: var(--primary);
-
-    font-weight: 800;
-
-    font-size: 0.85rem;
-}
-
-
-.feature-card h3,
-.info-card h2 {
-
-    margin-top: 20px;
-
-    font-size: 1.2rem;
-}
-
-
-.feature-card p,
-.info-card p {
-
-    margin-top: 12px;
-
-    color: var(--muted);
-
-    line-height: 1.7;
-
-    font-size: 0.92rem;
-}
-
-
-/* =========================================================
-   ABOUT / GENERAL PAGE
-========================================================= */
-
-.page-container,
-.complaint-page,
-.track-page {
-
-    width: min(1000px, 92%);
-
-    margin: 80px auto;
-}
-
-
-.page-header,
-.form-intro,
-.track-intro {
-
-    text-align: center;
-
-    max-width: 750px;
-
-    margin: auto;
-}
-
-
-.page-header p,
-.form-intro p,
-.track-intro p {
-
-    margin-left: auto;
-
-    margin-right: auto;
-}
-
-
-.info-grid {
-
-    margin-top: 60px;
-}
-
-
-.card-icon {
-
-    font-size: 2rem;
-}
-
-
-.important-note {
-
-    margin-top: 40px;
-
-    padding: 30px;
-
-    background: #fff8e8;
-
-    border:
-        1px solid #f1dfaa;
-
-    border-radius: 20px;
-}
-
-
-.important-note p {
-
-    margin-top: 10px;
-
-    color: #76633c;
-
-    line-height: 1.7;
-}
-
-
-/* =========================================================
-   COMPLAINT FORM
-========================================================= */
-
-.form-card,
-.track-card {
-
-    max-width: 800px;
-
-    margin: 50px auto 0;
-
-    padding: 40px;
-
-    background: var(--surface);
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 25px;
-
-    box-shadow: var(--shadow);
-}
-
-
-.form-row {
-
-    display: grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap: 20px;
-}
-
-
-.input-group {
-
-    margin-bottom: 24px;
-}
-
-
-.input-group label {
-
-    display: block;
-
-    margin-bottom: 9px;
-
-    font-size: 0.9rem;
-
-    font-weight: 700;
-}
-
-
-.input-group input,
-.input-group select,
-.input-group textarea {
-
-    width: 100%;
-
-    padding: 14px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 12px;
-
-    font: inherit;
-
-    outline: none;
-
-    background: var(--surface);
-
-    color: var(--text);
-}
-
-
-.input-group input:focus,
-.input-group select:focus,
-.input-group textarea:focus {
-
-    border-color: var(--primary);
-
-    box-shadow:
-        0 0 0 4px
-        rgba(91, 91, 214, 0.1);
-}
-
-
-textarea {
-
-    min-height: 170px;
-
-    resize: vertical;
-}
-
-
-.text-info {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    margin-top: 8px;
-
-    color: var(--muted);
-
-    font-size: 0.75rem;
-}
-
-
-.privacy-note {
-
-    padding: 14px;
-
-    margin-bottom: 22px;
-
-    background: var(--soft);
-
-    color: var(--primary);
-
-    border-radius: 12px;
-
-    font-size: 0.85rem;
-}
-
-
-.submit-btn {
-
-    width: 100%;
-
-    font-size: 1rem;
-}
-
-
-/* =========================================================
-   SUCCESS PAGE
-========================================================= */
-
-.success-page {
-
-    width: min(1000px, 92%);
-
-    min-height:
-        calc(100vh - 180px);
-
-    margin: 50px auto;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-}
-
-
-.success-card {
-
-    width: 100%;
-
-    max-width: 650px;
-
-    padding: 50px 45px;
-
-    text-align: center;
-
-    background: var(--surface);
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 28px;
-
-    box-shadow: var(--shadow);
-}
-
-
-.success-icon {
-
-    width: 78px;
-    height: 78px;
-
-    margin: 0 auto 24px;
-
-    display: grid;
-
-    place-items: center;
-
-    background:
-        rgba(21, 153, 87, 0.12);
-
-    color: var(--success);
-
-    border-radius: 50%;
-
-    font-size: 2.4rem;
-
-    font-weight: 800;
-}
-
-
-.success-card h1 {
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
-
-    font-size:
-        clamp(
-            1.8rem,
-            4vw,
-            2.7rem
-        );
-
-    line-height: 1.15;
-
-    letter-spacing: -1px;
-}
-
-
-.success-card > p {
-
-    max-width: 520px;
-
-    margin: 16px auto 0;
-
-    color: var(--muted);
-
-    line-height: 1.7;
-
-    font-size: 0.95rem;
-}
-
-
-.complaint-id-box {
-
-    margin: 30px auto;
-
-    padding: 22px;
-
-    max-width: 450px;
-
-    background: var(--soft);
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 18px;
-}
-
-
-.complaint-id-box span {
-
-    display: block;
-
-    color: var(--muted);
-
-    font-size: 0.75rem;
-
-    font-weight: 700;
-
-    letter-spacing: 1px;
-
-    text-transform: uppercase;
-}
-
-
-.complaint-id-box strong {
-
-    display: block;
-
-    margin-top: 10px;
-
-    color: var(--primary);
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
-
-    font-size: 1.5rem;
-
-    letter-spacing: 2px;
-}
-
-
-.complaint-id-box small {
-
-    display: block;
-
-    margin-top: 9px;
-
-    color: var(--muted);
-
-    font-size: 0.78rem;
-}
-
-
-.success-actions {
-
-    display: flex;
-
-    justify-content: center;
-
-    gap: 12px;
-
-    margin-top: 28px;
-}
-
-
-/* =========================================================
-   OLD SUCCESS CLASSES
-   Kept so existing success screens don't break.
-========================================================= */
-
-.success-box {
-
-    text-align: center;
-
-    padding: 30px 10px;
-}
-
-
-.success-box h2 {
-
-    margin-top: 20px;
-}
-
-
-.success-box > p {
-
-    margin-top: 10px;
-
-    color: var(--muted);
-}
-
-
-.complaint-id {
-
-    margin: 25px auto;
-
-    padding: 20px;
-
-    max-width: 400px;
-
-    background: var(--soft);
-
-    border-radius: 15px;
-}
-
-
-.complaint-id span {
-
-    display: block;
-
-    font-size: 0.7rem;
-
-    color: var(--muted);
-
-    letter-spacing: 1px;
-}
-
-
-.complaint-id strong {
-
-    display: block;
-
-    margin-top: 8px;
-
-    color: var(--primary);
-
-    font-size: 1.4rem;
-
-    letter-spacing: 2px;
-}
-
-
-.save-note {
-
-    margin-bottom: 25px;
-}
-
-
-/* =========================================================
-   COMPLAINT TRACKING
-========================================================= */
-
-.track-card {
-
-    max-width: 650px;
-}
-
-
-.tracking-result {
-
-    margin-top: 35px;
-
-    padding: 30px;
-
-    background: var(--surface);
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 20px;
-
-    text-align: center;
-}
-
-
-.result-icon {
-
-    width: 65px;
-    height: 65px;
-
-    margin: 0 auto 15px;
-
-    display: grid;
-
-    place-items: center;
-
-    background: var(--soft);
-
-    border-radius: 50%;
-
-    font-size: 1.7rem;
-}
-
-
-.tracking-result h2 {
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
-
-    font-size: 1.5rem;
-
-    margin-bottom: 25px;
-}
-
-
-.result-details {
-
-    text-align: left;
-
-    border-top:
-        1px solid var(--border);
-}
-
-
-.result-row {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    gap: 20px;
-
-    padding: 17px 0;
-
-    border-bottom:
-        1px solid var(--border);
-}
-
-
-.result-row span {
-
-    color: var(--muted);
-
-    font-size: 0.88rem;
-}
-
-
-.result-row strong {
-
-    text-align: right;
-
-    font-size: 0.9rem;
-
-    color: var(--text);
-}
-
-
-#resultStatus {
-
-    color: var(--primary);
-}
-
-
-.tracking-error {
-
-    margin-top: 30px;
-
-    padding: 25px;
-
-    text-align: center;
-
-    background: var(--danger-bg);
-
-    border:
-        1px solid #f3caca;
-
-    border-radius: 18px;
-}
-
-
-.tracking-error h3 {
-
-    color: var(--danger);
-}
-
-
-.tracking-error p {
-
-    margin-top: 8px;
-
-    color: var(--muted);
-
-    font-size: 0.9rem;
-}
-
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-footer {
-
-    padding: 30px;
-
-    text-align: center;
-
-    color: var(--muted);
-
-    font-size: 0.85rem;
-}
-
-
-/* =========================================================
-   STUDENT LOGIN
-========================================================= */
-
-.login-page {
-
-    min-height: 100vh;
-}
-
-
-.student-login-container {
-
-    min-height:
-        calc(100vh - 90px);
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 40px 20px;
-}
-
-
-.student-login-card {
-
-    width: 100%;
-
-    max-width: 480px;
-
-    padding: 45px;
-
-    border-radius: 24px;
-
-    background: var(--surface);
-
-    border:
-        1px solid var(--border);
-
-    backdrop-filter: blur(18px);
-
-    text-align: center;
-
-    box-shadow: var(--shadow);
-}
-
-
-.login-icon {
-
-    font-size: 52px;
-
-    margin-bottom: 15px;
-}
-
-
-.login-badge {
-
-    font-size: 12px;
-
-    font-weight: 700;
-
-    letter-spacing: 2px;
-
-    margin-bottom: 15px;
-
-    color: var(--primary);
-}
-
-
-.student-login-card h1 {
-
-    margin-bottom: 12px;
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
-}
-
-
-.student-login-card h1 span {
-
-    color: var(--primary);
-}
-
-
-.login-description {
-
-    margin-bottom: 30px;
-
-    color: var(--muted);
-
-    line-height: 1.6;
-}
-
-
-.student-login-card form {
-
-    text-align: left;
-}
-
-
-.student-login-card input {
-
-    width: 100%;
-
-    padding: 15px;
-
-    border-radius: 10px;
-
-    border:
-        1px solid var(--border);
-
-    background: var(--surface);
-
-    color: var(--text);
-
-    margin-top: 8px;
-
-    margin-bottom: 20px;
-
-    font-size: 15px;
-
-    outline: none;
-}
-
-
-.student-login-card input:focus {
-
-    border-color: var(--primary);
-
-    box-shadow:
-        0 0 0 4px
-        rgba(91, 91, 214, 0.1);
-}
-
-
-.student-login-card .submit-btn {
-
-    width: 100%;
-
-    cursor: pointer;
-}
-
-
-.login-note {
-
-    margin-top: 20px;
-
-    font-size: 13px;
-
-    color: var(--muted);
-}
-
-
-.login-error {
-
-    color: var(--danger);
-
-    margin-bottom: 15px;
-
-    text-align: left;
-}
-
-
-/* =========================================================
-   ADMIN LOGIN
-   IMPORTANT:
-   This is the CSS that was missing.
+   ADMIN LOGIN PAGE
 ========================================================= */
 
 .admin-login-page {
@@ -1916,256 +8,47 @@ footer {
 
     display: flex;
 
-    flex-direction: column;
-}
-
-
-.admin-login-container {
-
-    flex: 1;
-
-    min-height:
-        calc(100vh - 100px);
-
-    display: flex;
-
     align-items: center;
 
     justify-content: center;
 
     padding: 50px 20px;
+
+    background: var(--bg);
+
 }
 
+
+/* =========================================================
+   ADMIN LOGIN CARD
+========================================================= */
 
 .admin-login-card {
 
     width: 100%;
 
-    max-width: 470px;
+    max-width: 480px;
 
     padding: 45px;
 
     background: var(--surface);
 
-    border:
-        1px solid var(--border);
+    border: 1px solid var(--border);
 
-    border-radius: 26px;
+    border-radius: 28px;
 
     box-shadow: var(--shadow);
 
     text-align: center;
 
-    position: relative;
-
-    overflow: hidden;
 }
 
 
-.admin-login-card::before {
-
-    content: "";
-
-    position: absolute;
-
-    width: 180px;
-    height: 180px;
-
-    top: -110px;
-    right: -80px;
-
-    background: var(--soft);
-
-    border-radius: 50%;
-
-    pointer-events: none;
-}
-
-
-/* ---------------------------------------------------------
+/* =========================================================
    ADMIN LOGO
---------------------------------------------------------- */
+========================================================= */
 
 .admin-logo {
-
-    position: relative;
-
-    width: 68px;
-    height: 68px;
-
-    margin: 0 auto 20px;
-
-    display: grid;
-
-    place-items: center;
-
-    background: var(--primary);
-
-    color: #ffffff;
-
-    border-radius: 20px;
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
-
-    font-size: 24px;
-
-    font-weight: 800;
-
-    box-shadow:
-        0 15px 35px
-        rgba(91, 91, 214, 0.22);
-}
-
-
-/* ---------------------------------------------------------
-   ADMIN TITLE AREA
---------------------------------------------------------- */
-
-.admin-login-badge {
-
-    position: relative;
-
-    display: inline-block;
-
-    margin-bottom: 14px;
-
-    color: var(--primary);
-
-    font-size: 0.72rem;
-
-    font-weight: 800;
-
-    letter-spacing: 2px;
-}
-
-
-.admin-login-card h1 {
-
-    position: relative;
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
-
-    font-size:
-        clamp(
-            2rem,
-            5vw,
-            2.8rem
-        );
-
-    line-height: 1.05;
-
-    letter-spacing: -1.5px;
-}
-
-
-.admin-login-card h1 span {
-
-    color: var(--primary);
-}
-
-
-.admin-login-description {
-
-    position: relative;
-
-    margin: 14px auto 30px;
-
-    max-width: 370px;
-
-    color: var(--muted);
-
-    font-size: 0.92rem;
-
-    line-height: 1.7;
-}
-
-
-/* ---------------------------------------------------------
-   ADMIN LOGIN FORM
---------------------------------------------------------- */
-
-.admin-login-card form {
-
-    position: relative;
-
-    text-align: left;
-}
-
-
-.admin-input-group {
-
-    margin-bottom: 20px;
-}
-
-
-.admin-input-group label {
-
-    display: block;
-
-    margin-bottom: 8px;
-
-    color: var(--text);
-
-    font-size: 0.88rem;
-
-    font-weight: 700;
-}
-
-
-.admin-input-group input {
-
-    width: 100%;
-
-    padding: 14px 15px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 12px;
-
-    background: var(--surface);
-
-    color: var(--text);
-
-    font-size: 0.92rem;
-
-    outline: none;
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-
-.admin-input-group input::placeholder {
-
-    color: var(--muted);
-
-    opacity: 0.7;
-}
-
-
-.admin-input-group input:focus {
-
-    border-color: var(--primary);
-
-    box-shadow:
-        0 0 0 4px
-        rgba(91, 91, 214, 0.10);
-}
-
-
-/* ---------------------------------------------------------
-   ADMIN LOGIN BUTTON
---------------------------------------------------------- */
-
-.admin-login-btn {
-
-    width: 100%;
 
     display: flex;
 
@@ -2173,201 +56,155 @@ footer {
 
     justify-content: center;
 
-    gap: 8px;
+    gap: 14px;
 
-    padding: 14px 18px;
+    margin-bottom: 35px;
 
-    margin-top: 8px;
-
-    border: none;
-
-    border-radius: 12px;
-
-    background: var(--primary);
-
-    color: #ffffff;
-
-    font-size: 0.95rem;
-
-    font-weight: 700;
-
-    cursor: pointer;
 }
 
 
-.admin-login-btn:hover {
+.admin-logo-icon {
 
-    background: var(--primary-dark);
+    width: 58px;
 
-    transform:
-        translateY(-2px);
-
-    box-shadow:
-        0 10px 25px
-        rgba(91, 91, 214, 0.20);
-}
-
-
-.admin-login-btn:active {
-
-    transform:
-        translateY(0);
-}
-
-
-/* ---------------------------------------------------------
-   ADMIN LOGIN ERROR
---------------------------------------------------------- */
-
-.admin-login-error {
-
-    margin-bottom: 16px;
-
-    padding: 11px 13px;
-
-    background: var(--danger-bg);
-
-    border:
-        1px solid #f3caca;
-
-    border-radius: 10px;
-
-    color: var(--danger);
-
-    font-size: 0.82rem;
-
-    text-align: left;
-}
-
-
-/* ---------------------------------------------------------
-   ADMIN SECURITY BOX
---------------------------------------------------------- */
-
-.admin-security-box {
-
-    position: relative;
-
-    margin-top: 28px;
-
-    padding: 17px;
-
-    display: flex;
-
-    align-items: flex-start;
-
-    gap: 12px;
-
-    text-align: left;
-
-    background: var(--soft);
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 14px;
-}
-
-
-.admin-security-icon {
-
-    width: 36px;
-    height: 36px;
-
-    flex-shrink: 0;
+    height: 58px;
 
     display: grid;
 
     place-items: center;
 
-    background: var(--surface);
+    background: var(--primary);
 
-    border-radius: 10px;
+    color: white;
 
-    font-size: 1.1rem;
+    border-radius: 17px;
+
+    font-family: "Space Grotesk", sans-serif;
+
+    font-size: 21px;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 12px 30px
+        rgba(91, 91, 214, 0.22);
+
 }
 
 
-.admin-security-box strong {
+.admin-logo-text {
 
-    display: block;
+    text-align: left;
 
-    color: var(--text);
-
-    font-size: 0.85rem;
 }
 
 
-.admin-security-box p {
+.admin-logo-text h2 {
 
-    margin-top: 4px;
+    font-family:
+        "Space Grotesk",
+        sans-serif;
 
-    color: var(--muted);
+    font-size: 1.35rem;
 
-    font-size: 0.76rem;
+    letter-spacing: -0.7px;
 
-    line-height: 1.5;
 }
 
 
-/* ---------------------------------------------------------
-   ADMIN BACK LINK
---------------------------------------------------------- */
-
-.admin-back-link {
-
-    position: relative;
-
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 6px;
-
-    margin-top: 25px;
+.admin-logo-text h2 span {
 
     color: var(--primary);
 
-    text-decoration: none;
-
-    font-size: 0.85rem;
-
-    font-weight: 700;
 }
 
 
-.admin-back-link:hover {
+.admin-logo-text p {
 
-    color: var(--primary-dark);
+    margin-top: 3px;
 
-    transform:
-        translateX(-2px);
+    color: var(--muted);
+
+    font-size: 0.72rem;
+
 }
 
 
 /* =========================================================
-   ADMIN LOGIN ALTERNATE CLASS SUPPORT
-   Keeps styling working if your HTML uses the more
-   generic names from the earlier version.
+   LOGIN HEADING
 ========================================================= */
 
-.admin-login-card .login-badge {
+.login-heading {
 
-    color: var(--primary);
+    margin-bottom: 30px;
+
 }
 
 
-.admin-login-card .login-description {
+.login-badge {
+
+    display: inline-block;
+
+    padding: 7px 12px;
+
+    margin-bottom: 15px;
+
+    background: var(--soft);
+
+    color: var(--primary);
+
+    border-radius: 100px;
+
+    font-size: 0.7rem;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+
+}
+
+
+.login-heading h1 {
+
+    font-family:
+        "Space Grotesk",
+        sans-serif;
+
+    font-size: 2.3rem;
+
+    letter-spacing: -1.5px;
+
+}
+
+
+.login-heading p {
+
+    margin-top: 10px;
 
     color: var(--muted);
 
-    line-height: 1.7;
+    font-size: 0.9rem;
+
+    line-height: 1.6;
+
+}
+
+
+/* =========================================================
+   ADMIN FORM
+========================================================= */
+
+.admin-login-card form {
+
+    text-align: left;
+
 }
 
 
 .admin-login-card .input-group {
 
-    text-align: left;
+    margin-bottom: 20px;
+
 }
 
 
@@ -2380,6 +217,7 @@ footer {
     font-size: 0.88rem;
 
     font-weight: 700;
+
 }
 
 
@@ -2389,16 +227,27 @@ footer {
 
     padding: 14px 15px;
 
-    border:
-        1px solid var(--border);
+    border: 1px solid var(--border);
 
     border-radius: 12px;
+
+    outline: none;
 
     background: var(--surface);
 
     color: var(--text);
 
-    outline: none;
+    font-size: 0.92rem;
+
+}
+
+
+.admin-login-card .input-group input::placeholder {
+
+    color: var(--muted);
+
+    opacity: 0.7;
+
 }
 
 
@@ -2408,221 +257,216 @@ footer {
 
     box-shadow:
         0 0 0 4px
-        rgba(91, 91, 214, 0.10);
+        rgba(91, 91, 214, 0.1);
+
 }
 
 
-.admin-login-card .submit-btn {
+/* =========================================================
+   LOGIN ERROR
+========================================================= */
+
+.admin-login-card .login-error {
+
+    margin-bottom: 15px;
+
+    padding: 11px 13px;
+
+    background: var(--danger-bg);
+
+    color: var(--danger);
+
+    border: 1px solid #f3caca;
+
+    border-radius: 10px;
+
+    font-size: 0.82rem;
+
+    text-align: left;
+
+}
+
+
+/* =========================================================
+   ADMIN LOGIN BUTTON
+========================================================= */
+
+.admin-login-btn {
 
     width: 100%;
 
-    margin-top: 5px;
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 15px 20px;
+
+    margin-top: 8px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: var(--primary);
+
+    color: white;
+
+    font-size: 0.95rem;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+}
+
+
+.admin-login-btn:hover {
+
+    background: var(--primary-dark);
+
+    transform: translateY(-2px);
+
+}
+
+
+.admin-login-btn span {
+
+    font-size: 1.15rem;
+
 }
 
 
 /* =========================================================
-   MOBILE RESPONSIVE
+   SECURITY NOTE
 ========================================================= */
 
-@media (max-width: 750px) {
+.security-note {
 
-    .navbar {
+    display: flex;
 
-        flex-direction: column;
+    align-items: center;
 
-        gap: 15px;
-    }
+    gap: 12px;
 
+    margin-top: 25px;
 
-    .hero {
+    padding: 15px;
 
-        grid-template-columns: 1fr;
+    background: var(--soft);
 
-        gap: 40px;
+    border: 1px solid var(--border);
 
-        margin-top: 50px;
-    }
+    border-radius: 13px;
 
+    text-align: left;
 
-    .hero h1 {
-
-        font-size: 4rem;
-    }
+}
 
 
-    .feature-grid,
-    .info-grid,
-    .form-row {
+.security-icon {
 
-        grid-template-columns: 1fr;
-    }
+    width: 38px;
 
+    height: 38px;
 
-    .nav-links {
+    flex-shrink: 0;
 
-        flex-wrap: wrap;
+    display: grid;
 
-        justify-content: center;
-    }
+    place-items: center;
 
+    background: var(--surface);
 
-    .hero-buttons {
+    border-radius: 10px;
 
-        flex-direction: column;
-    }
+}
 
 
-    .form-card,
-    .track-card {
+.security-note strong {
 
-        padding: 25px;
-    }
+    display: block;
 
+    font-size: 0.82rem;
 
-    .result-row {
-
-        flex-direction: column;
-
-        gap: 6px;
-    }
+}
 
 
-    .result-row strong {
+.security-note p {
 
-        text-align: left;
-    }
+    margin-top: 3px;
 
+    color: var(--muted);
 
-    .theme-menu {
+    font-size: 0.72rem;
 
-        position: fixed;
-
-        top: 125px;
-
-        right: 4%;
-
-        width: min(
-            285px,
-            92%
-        );
-    }
-
-
-    /* SUCCESS */
-
-    .success-page {
-
-        margin: 30px auto;
-    }
-
-
-    .success-card {
-
-        padding: 35px 25px;
-    }
-
-
-    .success-actions {
-
-        flex-direction: column;
-    }
-
-
-    .success-actions a {
-
-        width: 100%;
-    }
-
-
-    /* ADMIN LOGIN */
-
-    .admin-login-container {
-
-        padding: 35px 18px;
-    }
-
-
-    .admin-login-card {
-
-        padding: 35px 25px;
-
-        border-radius: 22px;
-    }
 }
 
 
 /* =========================================================
-   SMALL MOBILE
+   BACK HOME
+========================================================= */
+
+.back-home {
+
+    display: inline-block;
+
+    margin-top: 25px;
+
+    color: var(--muted);
+
+    text-decoration: none;
+
+    font-size: 0.82rem;
+
+    font-weight: 600;
+
+}
+
+
+.back-home:hover {
+
+    color: var(--primary);
+
+}
+
+
+/* =========================================================
+   ADMIN LOGIN MOBILE
 ========================================================= */
 
 @media (max-width: 500px) {
 
-    .splash-content h1 {
+    .admin-login-page {
 
-        font-size: 1.7rem;
-    }
+        padding: 30px 15px;
 
-
-    .splash-logo {
-
-        width: 62px;
-        height: 62px;
-
-        font-size: 24px;
-    }
-
-
-    .appearance-button {
-
-        padding: 7px 10px;
-
-        font-size: 0.72rem;
-    }
-
-
-    .hero h1 {
-
-        font-size: 3.4rem;
-    }
-
-
-    .section-heading h2 {
-
-        font-size: 1.9rem;
-    }
-
-
-    .student-login-card {
-
-        padding: 32px 22px;
     }
 
 
     .admin-login-card {
 
-        padding: 32px 20px;
+        padding: 30px 22px;
+
+        border-radius: 22px;
+
     }
 
 
     .admin-logo {
 
-        width: 60px;
-        height: 60px;
+        margin-bottom: 28px;
 
-        border-radius: 17px;
-
-        font-size: 22px;
     }
 
 
-    .admin-login-card h1 {
+    .login-heading h1 {
 
         font-size: 2rem;
+
     }
 
-
-    .success-card h1 {
-
-        font-size: 1.8rem;
-    }
 }
