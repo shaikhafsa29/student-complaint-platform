@@ -2,7 +2,7 @@
 
 
 /* =========================================================
-   01. THEME VARIABLES
+   DEFAULT THEME
 ========================================================= */
 
 :root {
@@ -19,21 +19,25 @@
     --soft: #f0f0ff;
 
     --success: #159957;
-    --success-bg: #e8fff2;
 
     --danger: #d14343;
     --danger-bg: #fff0f0;
 
     --hero-gradient:
-        linear-gradient(145deg, #ffffff, #f1f1ff);
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #f1f1ff
+        );
 
     --shadow:
-        0 20px 60px rgba(40, 40, 100, 0.08);
+        0 20px 60px
+        rgba(40, 40, 100, 0.08);
 }
 
 
 /* =========================================================
-   02. MIDNIGHT THEME
+   MIDNIGHT THEME
 ========================================================= */
 
 body[data-theme="midnight"] {
@@ -50,21 +54,25 @@ body[data-theme="midnight"] {
     --soft: #20243a;
 
     --success: #39d98a;
-    --success-bg: #172d25;
 
     --danger: #ff6b6b;
     --danger-bg: #321d25;
 
     --hero-gradient:
-        linear-gradient(145deg, #171a2b, #20243a);
+        linear-gradient(
+            145deg,
+            #171a2b,
+            #20243a
+        );
 
     --shadow:
-        0 25px 70px rgba(0, 0, 0, 0.35);
+        0 25px 70px
+        rgba(0, 0, 0, 0.35);
 }
 
 
 /* =========================================================
-   03. AURORA THEME
+   AURORA THEME
 ========================================================= */
 
 body[data-theme="aurora"] {
@@ -81,7 +89,6 @@ body[data-theme="aurora"] {
     --soft: #e6f3f3;
 
     --success: #159957;
-    --success-bg: #e8fff2;
 
     --danger: #d14343;
     --danger-bg: #fff0f0;
@@ -95,12 +102,13 @@ body[data-theme="aurora"] {
         );
 
     --shadow:
-        0 20px 60px rgba(40, 90, 100, 0.10);
+        0 20px 60px
+        rgba(40, 90, 100, 0.10);
 }
 
 
 /* =========================================================
-   04. GLOBAL RESET
+   GLOBAL
 ========================================================= */
 
 * {
@@ -152,13 +160,12 @@ article {
     transition:
         background-color 0.3s ease,
         color 0.3s ease,
-        border-color 0.3s ease,
-        transform 0.3s ease;
+        border-color 0.3s ease;
 }
 
 
 /* =========================================================
-   05. FAST SPLASH / OPENING SCREEN
+   FAST SPLASH SCREEN
 ========================================================= */
 
 .splash-screen {
@@ -172,7 +179,6 @@ article {
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
     background: var(--bg);
@@ -201,7 +207,6 @@ article {
     margin: 0 auto 18px;
 
     display: grid;
-
     place-items: center;
 
     border-radius: 22px;
@@ -210,7 +215,9 @@ article {
 
     color: white;
 
-    font-family: "Space Grotesk", sans-serif;
+    font-family:
+        "Space Grotesk",
+        sans-serif;
 
     font-size: 28px;
 
@@ -224,7 +231,9 @@ article {
 
 .splash-content h1 {
 
-    font-family: "Space Grotesk", sans-serif;
+    font-family:
+        "Space Grotesk",
+        sans-serif;
 
     font-size: 2.1rem;
 
@@ -343,7 +352,7 @@ article {
 
 
 /* =========================================================
-   06. NAVBAR
+   NAVBAR
 ========================================================= */
 
 .navbar {
@@ -356,7 +365,12 @@ article {
 
     padding: 15px 22px;
 
-    background: var(--surface);
+    background:
+        color-mix(
+            in srgb,
+            var(--surface) 88%,
+            transparent
+        );
 
     border:
         1px solid var(--border);
@@ -372,10 +386,6 @@ article {
     backdrop-filter: blur(15px);
 
     z-index: 1000;
-
-    box-shadow:
-        0 8px 30px
-        rgba(40, 40, 100, 0.04);
 }
 
 
@@ -439,7 +449,7 @@ article {
 
 
 /* =========================================================
-   07. MODE BUTTON
+   MODE / APPEARANCE BUTTON
 ========================================================= */
 
 .appearance-button {
@@ -447,29 +457,39 @@ article {
     border:
         1px solid var(--border);
 
-    background: var(--surface);
+    background:
+        var(--surface);
 
-    color: var(--text);
+    color:
+        var(--text);
 
-    padding: 8px 11px;
+    padding:
+        8px 11px;
 
-    border-radius: 9px;
+    border-radius:
+        9px;
 
-    font-size: 0.78rem;
+    font-size:
+        0.78rem;
 
-    font-weight: 700;
+    font-weight:
+        700;
 
-    cursor: pointer;
+    cursor:
+        pointer;
 
-    white-space: nowrap;
+    white-space:
+        nowrap;
 }
 
 
 .appearance-button:hover {
 
-    background: var(--soft);
+    background:
+        var(--soft);
 
-    color: var(--primary);
+    color:
+        var(--primary);
 
     transform:
         translateY(-1px);
@@ -477,14 +497,15 @@ article {
 
 
 /* =========================================================
-   08. THEME MENU
+   THEME MENU
 ========================================================= */
 
 .theme-menu {
 
     position: absolute;
 
-    top: calc(100% + 12px);
+    top:
+        calc(100% + 12px);
 
     right: 0;
 
@@ -492,12 +513,14 @@ article {
 
     padding: 14px;
 
-    background: var(--surface);
+    background:
+        var(--surface);
 
     border:
         1px solid var(--border);
 
-    border-radius: 18px;
+    border-radius:
+        18px;
 
     box-shadow:
         0 25px 60px
@@ -560,9 +583,11 @@ article {
 
     border-radius: 50%;
 
-    background: var(--soft);
+    background:
+        var(--soft);
 
-    color: var(--text);
+    color:
+        var(--text);
 
     font-size: 20px;
 
@@ -589,27 +614,34 @@ article {
 
     border-radius: 13px;
 
-    background: transparent;
+    background:
+        transparent;
 
-    color: var(--text);
+    color:
+        var(--text);
 
-    text-align: left;
+    text-align:
+        left;
 
-    cursor: pointer;
+    cursor:
+        pointer;
 }
 
 
 .theme-option:hover {
 
-    background: var(--soft);
+    background:
+        var(--soft);
 }
 
 
 .theme-option.selected {
 
-    border-color: var(--primary);
+    border-color:
+        var(--primary);
 
-    background: var(--soft);
+    background:
+        var(--soft);
 }
 
 
@@ -625,9 +657,11 @@ article {
 
 .theme-option small {
 
-    color: var(--muted);
+    color:
+        var(--muted);
 
-    font-size: 0.72rem;
+    font-size:
+        0.72rem;
 }
 
 
@@ -679,48 +713,62 @@ article {
 
 
 /* =========================================================
-   09. HERO
+   HERO
 ========================================================= */
 
 .hero {
 
-    width: min(1180px, 92%);
+    width:
+        min(1180px, 92%);
 
-    min-height: 580px;
+    min-height:
+        580px;
 
     margin:
         40px auto 70px;
 
-    display: grid;
+    display:
+        grid;
 
     grid-template-columns:
         1.2fr 0.8fr;
 
-    gap: 60px;
+    gap:
+        60px;
 
-    align-items: center;
+    align-items:
+        center;
 }
 
 
 .badge {
 
-    display: inline-block;
+    display:
+        inline-block;
 
-    padding: 9px 14px;
+    padding:
+        9px 14px;
 
-    background: var(--soft);
+    background:
+        var(--soft);
 
-    color: var(--primary);
+    color:
+        var(--primary);
 
-    border-radius: 100px;
+    border-radius:
+        100px;
 
-    font-size: 0.75rem;
+    font-size:
+        0.75rem;
 
-    font-weight: 800;
+    font-weight:
+        800;
 
-    letter-spacing: 1px;
+    letter-spacing:
+        1px;
 
-    margin-bottom: 20px;
+    margin-bottom:
+        20px;
 }
 
 
@@ -740,15 +788,18 @@ article {
             5.5rem
         );
 
-    line-height: 0.95;
+    line-height:
+        0.95;
 
-    letter-spacing: -3px;
+    letter-spacing:
+        -3px;
 }
 
 
 .hero h1 span {
 
-    color: var(--primary);
+    color:
+        var(--primary);
 }
 
 
@@ -757,25 +808,33 @@ article {
 .form-intro p,
 .track-intro p {
 
-    max-width: 620px;
+    max-width:
+        620px;
 
-    margin-top: 25px;
+    margin-top:
+        25px;
 
-    color: var(--muted);
+    color:
+        var(--muted);
 
-    font-size: 1.05rem;
+    font-size:
+        1.05rem;
 
-    line-height: 1.8;
+    line-height:
+        1.8;
 }
 
 
 .hero-buttons {
 
-    display: flex;
+    display:
+        flex;
 
-    gap: 14px;
+    gap:
+        14px;
 
-    margin-top: 35px;
+    margin-top:
+        35px;
 }
 
 
@@ -783,40 +842,51 @@ article {
 .secondary-btn,
 .submit-btn {
 
-    display: inline-flex;
+    display:
+        inline-flex;
 
-    align-items: center;
+    align-items:
+        center;
 
-    justify-content: center;
+    justify-content:
+        center;
 
     padding:
         14px 22px;
 
-    border-radius: 12px;
+    border-radius:
+        12px;
 
-    text-decoration: none;
+    text-decoration:
+        none;
 
-    font-weight: 700;
+    font-weight:
+        700;
 }
 
 
 .primary-btn,
 .submit-btn {
 
-    background: var(--primary);
+    background:
+        var(--primary);
 
-    color: white;
+    color:
+        white;
 
-    border: none;
+    border:
+        none;
 
-    cursor: pointer;
+    cursor:
+        pointer;
 }
 
 
 .primary-btn:hover,
 .submit-btn:hover {
 
-    background: var(--primary-dark);
+    background:
+        var(--primary-dark);
 
     transform:
         translateY(-2px);
@@ -825,19 +895,24 @@ article {
 
 .submit-btn:disabled {
 
-    opacity: 0.7;
+    opacity:
+        0.7;
 
-    cursor: not-allowed;
+    cursor:
+        not-allowed;
 
-    transform: none;
+    transform:
+        none;
 }
 
 
 .secondary-btn {
 
-    background: var(--surface);
+    background:
+        var(--surface);
 
-    color: var(--text);
+    color:
+        var(--text);
 
     border:
         1px solid var(--border);
@@ -846,12 +921,13 @@ article {
 
 .secondary-btn:hover {
 
-    background: var(--soft);
+    background:
+        var(--soft);
 }
 
 
 /* =========================================================
-   10. HERO CARD
+   HERO CARD
 ========================================================= */
 
 .hero-card {
@@ -859,55 +935,79 @@ article {
     background:
         var(--hero-gradient);
 
-    padding: 40px;
+    padding:
+        40px;
 
-    border-radius: 28px;
+    border-radius:
+        28px;
 
     border:
         1px solid var(--border);
 
-    box-shadow: var(--shadow);
+    box-shadow:
+        var(--shadow);
 
-    position: relative;
+    position:
+        relative;
 
-    overflow: hidden;
+    overflow:
+        hidden;
 }
 
 
 .hero-card::before {
 
-    content: "";
+    content:
+        "";
 
-    position: absolute;
+    position:
+        absolute;
 
-    width: 180px;
-    height: 180px;
+    width:
+        180px;
 
-    background: var(--soft);
+    height:
+        180px;
 
-    border-radius: 50%;
+    background:
+        var(--soft);
 
-    top: -80px;
-    right: -60px;
+    border-radius:
+        50%;
+
+    top:
+        -80px;
+
+    right:
+        -60px;
 }
 
 
 .floating-icon {
 
-    position: relative;
+    position:
+        relative;
 
-    width: 62px;
-    height: 62px;
+    width:
+        62px;
 
-    display: grid;
+    height:
+        62px;
 
-    place-items: center;
+    display:
+        grid;
 
-    font-size: 1.8rem;
+    place-items:
+        center;
 
-    background: var(--surface);
+    font-size:
+        1.8rem;
 
-    border-radius: 18px;
+    background:
+        var(--surface);
+
+    border-radius:
+        18px;
 
     box-shadow:
         0 10px 30px
@@ -917,126 +1017,162 @@ article {
 
 .hero-card h2 {
 
-    position: relative;
+    position:
+        relative;
 
-    margin-top: 30px;
+    margin-top:
+        30px;
 
-    font-size: 1.7rem;
+    font-size:
+        1.7rem;
 }
 
 
 .hero-card p {
 
-    position: relative;
+    position:
+        relative;
 
-    margin-top: 12px;
+    margin-top:
+        12px;
 
-    color: var(--muted);
+    color:
+        var(--muted);
 
-    line-height: 1.7;
+    line-height:
+        1.7;
 }
 
 
 .mini-status {
 
-    position: relative;
+    position:
+        relative;
 
-    margin-top: 30px;
+    margin-top:
+        30px;
 
-    padding: 14px;
+    padding:
+        14px;
 
-    background: var(--surface);
+    background:
+        var(--surface);
 
-    border-radius: 12px;
+    border-radius:
+        12px;
 
-    font-size: 0.85rem;
+    font-size:
+        0.85rem;
 
-    font-weight: 600;
+    font-weight:
+        600;
 }
 
 
 .status-dot {
 
-    display: inline-block;
+    display:
+        inline-block;
 
-    width: 8px;
-    height: 8px;
+    width:
+        8px;
 
-    background: var(--success);
+    height:
+        8px;
 
-    border-radius: 50%;
+    background:
+        var(--success);
 
-    margin-right: 8px;
+    border-radius:
+        50%;
+
+    margin-right:
+        8px;
 }
 
 
 /* =========================================================
-   11. FEATURES
+   FEATURES
 ========================================================= */
 
 .features {
 
-    width: min(1180px, 92%);
+    width:
+        min(1180px, 92%);
 
-    margin: 80px auto;
+    margin:
+        80px auto;
 }
 
 
 .section-heading {
 
-    text-align: center;
+    text-align:
+        center;
 
-    margin-bottom: 40px;
+    margin-bottom:
+        40px;
 }
 
 
 .section-heading p {
 
-    color: var(--primary);
+    color:
+        var(--primary);
 
-    font-size: 0.75rem;
+    font-size:
+        0.75rem;
 
-    font-weight: 800;
+    font-weight:
+        800;
 
-    letter-spacing: 1px;
+    letter-spacing:
+        1px;
 }
 
 
 .section-heading h2 {
 
-    margin-top: 12px;
+    margin-top:
+        12px;
 
     font-family:
         "Space Grotesk",
         sans-serif;
 
-    font-size: 2.3rem;
+    font-size:
+        2.3rem;
 }
 
 
 .feature-grid,
 .info-grid {
 
-    display: grid;
+    display:
+        grid;
 
     grid-template-columns:
         repeat(3, 1fr);
 
-    gap: 20px;
+    gap:
+        20px;
 }
 
 
 .feature-card,
 .info-card {
 
-    background: var(--surface);
+    background:
+        var(--surface);
 
     border:
         1px solid var(--border);
 
-    padding: 30px;
+    padding:
+        30px;
 
-    border-radius: 20px;
+    border-radius:
+        20px;
 }
 
 
@@ -1054,47 +1190,58 @@ article {
 
 .feature-number {
 
-    color: var(--primary);
+    color:
+        var(--primary);
 
-    font-weight: 800;
+    font-weight:
+        800;
 
-    font-size: 0.85rem;
+    font-size:
+        0.85rem;
 }
 
 
 .feature-card h3,
 .info-card h2 {
 
-    margin-top: 20px;
+    margin-top:
+        20px;
 
-    font-size: 1.2rem;
+    font-size:
+        1.2rem;
 }
 
 
 .feature-card p,
 .info-card p {
 
-    margin-top: 12px;
+    margin-top:
+        12px;
 
-    color: var(--muted);
+    color:
+        var(--muted);
 
-    line-height: 1.7;
+    line-height:
+        1.7;
 
-    font-size: 0.92rem;
+    font-size:
+        0.92rem;
 }
 
 
 /* =========================================================
-   12. ABOUT / GENERAL PAGES
+   ABOUT / COMPLAINT PAGE
 ========================================================= */
 
 .page-container,
 .complaint-page,
 .track-page {
 
-    width: min(1000px, 92%);
+    width:
+        min(1000px, 92%);
 
-    margin: 80px auto;
+    margin:
+        80px auto;
 }
 
 
@@ -1102,11 +1249,14 @@ article {
 .form-intro,
 .track-intro {
 
-    text-align: center;
+    text-align:
+        center;
 
-    max-width: 750px;
+    max-width:
+        750px;
 
-    margin: auto;
+    margin:
+        auto;
 }
 
 
@@ -1114,100 +1264,123 @@ article {
 .form-intro p,
 .track-intro p {
 
-    margin-left: auto;
+    margin-left:
+        auto;
 
-    margin-right: auto;
+    margin-right:
+        auto;
 }
 
 
 .info-grid {
 
-    margin-top: 60px;
+    margin-top:
+        60px;
 }
 
 
 .card-icon {
 
-    font-size: 2rem;
+    font-size:
+        2rem;
 }
 
 
 .important-note {
 
-    margin-top: 40px;
+    margin-top:
+        40px;
 
-    padding: 30px;
+    padding:
+        30px;
 
-    background: #fff8e8;
+    background:
+        #fff8e8;
 
     border:
         1px solid #f1dfaa;
 
-    border-radius: 20px;
+    border-radius:
+        20px;
 }
 
 
 .important-note p {
 
-    margin-top: 10px;
+    margin-top:
+        10px;
 
-    color: #76633c;
+    color:
+        #76633c;
 
-    line-height: 1.7;
+    line-height:
+        1.7;
 }
 
 
 /* =========================================================
-   13. COMPLAINT FORM
+   COMPLAINT FORM
 ========================================================= */
 
 .form-card,
 .track-card {
 
-    max-width: 800px;
+    max-width:
+        800px;
 
     margin:
         50px auto 0;
 
-    padding: 40px;
+    padding:
+        40px;
 
-    background: var(--surface);
+    background:
+        var(--surface);
 
     border:
         1px solid var(--border);
 
-    border-radius: 25px;
+    border-radius:
+        25px;
 
-    box-shadow: var(--shadow);
+    box-shadow:
+        var(--shadow);
 }
 
 
 .form-row {
 
-    display: grid;
+    display:
+        grid;
 
     grid-template-columns:
         1fr 1fr;
 
-    gap: 20px;
+    gap:
+        20px;
 }
 
 
 .input-group {
 
-    margin-bottom: 24px;
+    margin-bottom:
+        24px;
 }
 
 
 .input-group label {
 
-    display: block;
+    display:
+        block;
 
-    margin-bottom: 9px;
+    margin-bottom:
+        9px;
 
-    font-size: 0.9rem;
+    font-size:
+        0.9rem;
 
-    font-weight: 700;
+    font-weight:
+        700;
 }
 
 
@@ -1215,22 +1388,29 @@ article {
 .input-group select,
 .input-group textarea {
 
-    width: 100%;
+    width:
+        100%;
 
-    padding: 14px;
+    padding:
+        14px;
 
     border:
         1px solid var(--border);
 
-    border-radius: 12px;
+    border-radius:
+        12px;
 
-    font: inherit;
+    font:
+        inherit;
 
-    outline: none;
+    outline:
+        none;
 
-    background: var(--surface);
+    background:
+        var(--surface);
 
-    color: var(--text);
+    color:
+        var(--text);
 }
 
 
@@ -1238,7 +1418,8 @@ article {
 .input-group select:focus,
 .input-group textarea:focus {
 
-    border-color: var(--primary);
+    border-color:
+        var(--primary);
 
     box-shadow:
         0 0 0 4px
@@ -1248,124 +1429,153 @@ article {
 
 textarea {
 
-    min-height: 170px;
+    min-height:
+        170px;
 
-    resize: vertical;
+    resize:
+        vertical;
 }
 
 
 .text-info {
 
-    display: flex;
+    display:
+        flex;
 
-    justify-content: space-between;
+    justify-content:
+        space-between;
 
-    margin-top: 8px;
+    margin-top:
+        8px;
 
-    color: var(--muted);
+    color:
+        var(--muted);
 
-    font-size: 0.75rem;
+    font-size:
+        0.75rem;
 }
 
 
 .privacy-note {
 
-    padding: 14px;
+    padding:
+        14px;
 
-    margin-bottom: 22px;
+    margin-bottom:
+        22px;
 
-    background: var(--soft);
+    background:
+        var(--soft);
 
-    color: var(--primary);
+    color:
+        var(--primary);
 
-    border-radius: 12px;
+    border-radius:
+        12px;
 
-    font-size: 0.85rem;
+    font-size:
+        0.85rem;
 }
 
 
 .submit-btn {
 
-    width: 100%;
+    width:
+        100%;
 
-    font-size: 1rem;
+    font-size:
+        1rem;
 }
 
 
 /* =========================================================
-   14. SUCCESS PAGE
+   SUCCESS SCREEN
 ========================================================= */
 
 .success-page {
 
+    width:
+        min(800px, 92%);
+
     min-height:
-        calc(100vh - 180px);
+        calc(100vh - 220px);
 
-    width: min(900px, 92%);
+    margin:
+        50px auto;
 
-    margin: 60px auto;
+    display:
+        flex;
 
-    display: flex;
+    align-items:
+        center;
 
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 30px 0;
+    justify-content:
+        center;
 }
 
 
 .success-card {
 
-    width: 100%;
+    width:
+        100%;
 
-    max-width: 680px;
+    max-width:
+        650px;
 
-    padding: 55px 45px;
+    padding:
+        50px 45px;
 
-    text-align: center;
+    text-align:
+        center;
 
-    background: var(--surface);
+    background:
+        var(--surface);
 
     border:
         1px solid var(--border);
 
-    border-radius: 28px;
+    border-radius:
+        28px;
 
-    box-shadow: var(--shadow);
-
-    animation:
-        successCardIn 0.5s ease;
+    box-shadow:
+        var(--shadow);
 }
 
 
 .success-icon {
 
-    width: 82px;
-    height: 82px;
+    width:
+        78px;
 
-    margin: 0 auto 25px;
+    height:
+        78px;
 
-    display: grid;
+    margin:
+        0 auto 25px;
 
-    place-items: center;
+    display:
+        grid;
 
-    border-radius: 50%;
+    place-items:
+        center;
 
-    background: var(--success-bg);
+    border-radius:
+        50%;
 
-    color: var(--success);
+    background:
+        #e8fff2;
 
-    border:
-        1px solid
-        rgba(21, 153, 87, 0.15);
+    color:
+        var(--success);
 
-    font-size: 2.5rem;
+    font-size:
+        2.4rem;
 
-    font-weight: 800;
+    font-weight:
+        800;
 
     box-shadow:
-        0 12px 35px
+        0 12px 30px
         rgba(21, 153, 87, 0.12);
 }
 
@@ -1378,175 +1588,202 @@ textarea {
 
     font-size:
         clamp(
-            2rem,
-            5vw,
-            3rem
+            1.8rem,
+            4vw,
+            2.7rem
         );
 
-    line-height: 1.1;
-
-    letter-spacing: -1.5px;
+    line-height:
+        1.15;
 }
 
 
 .success-card > p {
 
-    max-width: 550px;
+    max-width:
+        520px;
 
     margin:
-        18px auto 0;
+        16px auto 0;
 
-    color: var(--muted);
+    color:
+        var(--muted);
 
-    line-height: 1.7;
+    line-height:
+        1.7;
 }
 
 
 .complaint-id-box {
 
-    max-width: 430px;
+    margin:
+        30px auto;
 
-    margin: 32px auto;
+    padding:
+        22px;
 
-    padding: 24px;
+    max-width:
+        450px;
 
-    background: var(--soft);
+    background:
+        var(--soft);
 
     border:
         1px solid var(--border);
 
-    border-radius: 18px;
+    border-radius:
+        18px;
 }
 
 
 .complaint-id-box span {
 
-    display: block;
+    display:
+        block;
 
-    color: var(--muted);
+    color:
+        var(--muted);
 
-    font-size: 0.78rem;
+    font-size:
+        0.75rem;
 
-    font-weight: 700;
+    font-weight:
+        700;
 
-    text-transform: uppercase;
+    text-transform:
+        uppercase;
 
-    letter-spacing: 1px;
+    letter-spacing:
+        1px;
 }
 
 
 .complaint-id-box strong {
 
-    display: block;
+    display:
+        block;
 
-    margin-top: 10px;
+    margin-top:
+        9px;
 
-    color: var(--primary);
+    color:
+        var(--primary);
 
     font-family:
         "Space Grotesk",
         sans-serif;
 
-    font-size: 1.6rem;
+    font-size:
+        1.5rem;
 
-    letter-spacing: 2px;
+    letter-spacing:
+        2px;
 
-    word-break: break-word;
+    word-break:
+        break-word;
 }
 
 
 .complaint-id-box small {
 
-    display: block;
+    display:
+        block;
 
-    margin-top: 9px;
+    margin-top:
+        9px;
 
-    color: var(--muted);
+    color:
+        var(--muted);
 
-    font-size: 0.75rem;
+    font-size:
+        0.78rem;
 }
 
 
 .success-actions {
 
-    display: flex;
+    display:
+        flex;
 
-    justify-content: center;
+    justify-content:
+        center;
 
-    gap: 14px;
+    gap:
+        12px;
 
-    margin-top: 30px;
+    flex-wrap:
+        wrap;
 
-    flex-wrap: wrap;
+    margin-top:
+        25px;
 }
 
 
-@keyframes successCardIn {
+.hidden {
 
-    from {
-
-        opacity: 0;
-
-        transform:
-            translateY(15px)
-            scale(0.98);
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
-    }
+    display:
+        none !important;
 }
 
 
 /* =========================================================
-   15. COMPLAINT TRACKING
+   COMPLAINT TRACKING
 ========================================================= */
 
 .track-card {
 
-    max-width: 650px;
+    max-width:
+        650px;
 }
 
 
 .tracking-result {
 
-    margin-top: 35px;
+    margin-top:
+        35px;
 
-    padding: 30px;
+    padding:
+        30px;
 
-    background: var(--surface);
+    background:
+        var(--surface);
 
     border:
         1px solid var(--border);
 
-    border-radius: 20px;
+    border-radius:
+        20px;
 
-    text-align: center;
+    text-align:
+        center;
 }
 
 
 .result-icon {
 
-    width: 65px;
-    height: 65px;
+    width:
+        65px;
+
+    height:
+        65px;
 
     margin:
         0 auto 15px;
 
-    display: grid;
+    display:
+        grid;
 
-    place-items: center;
+    place-items:
+        center;
 
-    background: var(--soft);
+    background:
+        var(--soft);
 
-    border-radius: 50%;
+    border-radius:
+        50%;
 
-    font-size: 1.7rem;
+    font-size:
+        1.7rem;
 }
 
 
@@ -1556,15 +1793,18 @@ textarea {
         "Space Grotesk",
         sans-serif;
 
-    font-size: 1.5rem;
+    font-size:
+        1.5rem;
 
-    margin-bottom: 25px;
+    margin-bottom:
+        25px;
 }
 
 
 .result-details {
 
-    text-align: left;
+    text-align:
+        left;
 
     border-top:
         1px solid var(--border);
@@ -1573,13 +1813,17 @@ textarea {
 
 .result-row {
 
-    display: flex;
+    display:
+        flex;
 
-    justify-content: space-between;
+    justify-content:
+        space-between;
 
-    gap: 20px;
+    gap:
+        20px;
 
-    padding: 17px 0;
+    padding:
+        17px 0;
 
     border-bottom:
         1px solid var(--border);
@@ -1588,70 +1832,104 @@ textarea {
 
 .result-row span {
 
-    color: var(--muted);
+    color:
+        var(--muted);
 
-    font-size: 0.88rem;
+    font-size:
+        0.88rem;
 }
 
 
 .result-row strong {
 
-    text-align: right;
+    text-align:
+        right;
 
-    font-size: 0.9rem;
+    font-size:
+        0.9rem;
 
-    color: var(--text);
+    color:
+        var(--text);
 }
 
 
 #resultStatus {
 
-    color: var(--primary);
+    color:
+        var(--primary);
 }
 
 
 .tracking-error {
 
-    margin-top: 30px;
+    margin-top:
+        30px;
 
-    padding: 25px;
+    padding:
+        25px;
 
-    text-align: center;
+    text-align:
+        center;
 
-    background: var(--danger-bg);
+    background:
+        var(--danger-bg);
 
     border:
         1px solid #f3caca;
 
-    border-radius: 18px;
+    border-radius:
+        18px;
 }
 
 
 .tracking-error h3 {
 
-    color: var(--danger);
+    color:
+        var(--danger);
 }
 
 
 .tracking-error p {
 
-    margin-top: 8px;
+    margin-top:
+        8px;
 
-    color: var(--muted);
+    color:
+        var(--muted);
 
-    font-size: 0.9rem;
+    font-size:
+        0.9rem;
 }
 
 
 /* =========================================================
-   16. STUDENT LOGIN PAGE
+   FOOTER
+========================================================= */
+
+footer {
+
+    padding:
+        30px;
+
+    text-align:
+        center;
+
+    color:
+        var(--muted);
+
+    font-size:
+        0.85rem;
+}
+
+
+/* =========================================================
+   STUDENT LOGIN
 ========================================================= */
 
 .login-page {
 
-    min-height: 100vh;
-
-    background: var(--bg);
+    min-height:
+        100vh;
 }
 
 
@@ -1660,78 +1938,84 @@ textarea {
     min-height:
         calc(100vh - 90px);
 
-    display: flex;
+    display:
+        flex;
 
-    align-items: center;
+    align-items:
+        center;
 
-    justify-content: center;
+    justify-content:
+        center;
 
-    padding: 40px 20px;
+    padding:
+        40px 20px;
 }
 
 
 .student-login-card {
 
-    width: 100%;
+    width:
+        100%;
 
-    max-width: 480px;
+    max-width:
+        480px;
 
-    padding: 45px;
+    padding:
+        45px;
 
-    border-radius: 24px;
+    border-radius:
+        24px;
 
-    background: var(--surface);
+    background:
+        var(--surface);
 
     border:
         1px solid var(--border);
 
-    backdrop-filter: blur(18px);
+    backdrop-filter:
+        blur(18px);
 
-    text-align: center;
+    text-align:
+        center;
 
-    box-shadow: var(--shadow);
-
-    animation:
-        loginCardIn 0.45s ease;
+    box-shadow:
+        var(--shadow);
 }
 
 
 .login-icon {
 
-    width: 70px;
-    height: 70px;
+    font-size:
+        52px;
 
-    margin: 0 auto 18px;
-
-    display: grid;
-
-    place-items: center;
-
-    border-radius: 20px;
-
-    background: var(--soft);
-
-    font-size: 2rem;
+    margin-bottom:
+        15px;
 }
 
 
 .login-badge {
 
-    font-size: 12px;
+    font-size:
+        12px;
 
-    font-weight: 700;
+    font-weight:
+        700;
 
-    letter-spacing: 2px;
+    letter-spacing:
+        2px;
 
-    margin-bottom: 15px;
+    margin-bottom:
+        15px;
 
-    color: var(--primary);
+    color:
+        var(--primary);
 }
 
 
 .student-login-card h1 {
 
-    margin-bottom: 12px;
+    margin-bottom:
+        12px;
 
     font-family:
         "Space Grotesk",
@@ -1741,64 +2025,69 @@ textarea {
 
 .student-login-card h1 span {
 
-    color: var(--primary);
+    color:
+        var(--primary);
 }
 
 
 .login-description {
 
-    margin-bottom: 30px;
+    margin-bottom:
+        30px;
 
-    color: var(--muted);
+    color:
+        var(--muted);
 
-    line-height: 1.6;
+    line-height:
+        1.6;
 }
 
 
 .student-login-card form {
 
-    text-align: left;
-}
-
-
-.student-login-card label {
-
-    display: block;
-
-    margin-bottom: 8px;
-
-    font-size: 0.9rem;
-
-    font-weight: 700;
+    text-align:
+        left;
 }
 
 
 .student-login-card input {
 
-    width: 100%;
+    width:
+        100%;
 
-    padding: 15px;
+    padding:
+        15px;
 
-    border-radius: 12px;
+    border-radius:
+        10px;
 
     border:
         1px solid var(--border);
 
-    background: var(--surface);
+    background:
+        var(--surface);
 
-    color: var(--text);
+    color:
+        var(--text);
 
-    margin-bottom: 20px;
+    margin-top:
+        8px;
 
-    font-size: 15px;
+    margin-bottom:
+        20px;
 
-    outline: none;
+    font-size:
+        15px;
+
+    outline:
+        none;
 }
 
 
 .student-login-card input:focus {
 
-    border-color: var(--primary);
+    border-color:
+        var(--primary);
 
     box-shadow:
         0 0 0 4px
@@ -1808,230 +2097,285 @@ textarea {
 
 .student-login-card .submit-btn {
 
-    width: 100%;
+    width:
+        100%;
 
-    cursor: pointer;
+    cursor:
+        pointer;
 }
 
 
 .login-note {
 
-    margin-top: 20px;
+    margin-top:
+        20px;
 
-    font-size: 13px;
+    font-size:
+        13px;
 
-    color: var(--muted);
+    color:
+        var(--muted);
 
-    line-height: 1.5;
+    line-height:
+        1.5;
 }
 
 
 .login-error {
 
-    color: var(--danger);
+    color:
+        var(--danger);
 
-    margin-bottom: 15px;
+    margin-bottom:
+        15px;
 
-    text-align: left;
+    text-align:
+        left;
 
-    font-size: 0.85rem;
-}
-
-
-@keyframes loginCardIn {
-
-    from {
-
-        opacity: 0;
-
-        transform:
-            translateY(12px)
-            scale(0.98);
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
-    }
+    font-size:
+        0.85rem;
 }
 
 
 /* =========================================================
-   17. ADMIN LOGIN PAGE
+   ADMIN LOGIN PAGE
 ========================================================= */
 
 .admin-login-page {
 
-    min-height: 100vh;
+    width:
+        min(500px, 92%);
 
-    background: var(--bg);
-
-    display: flex;
-
-    flex-direction: column;
-}
-
-
-.admin-login-container {
-
-    flex: 1;
+    margin:
+        80px auto;
 
     min-height:
-        calc(100vh - 100px);
+        calc(100vh - 240px);
 
-    display: flex;
+    display:
+        flex;
 
-    align-items: center;
+    align-items:
+        center;
 
-    justify-content: center;
-
-    padding: 50px 20px;
+    justify-content:
+        center;
 }
 
 
 .admin-login-card {
 
-    width: 100%;
+    width:
+        100%;
 
-    max-width: 450px;
+    padding:
+        45px;
 
-    padding: 45px;
-
-    background: var(--surface);
+    background:
+        var(--surface);
 
     border:
         1px solid var(--border);
 
-    border-radius: 26px;
+    border-radius:
+        25px;
 
-    box-shadow: var(--shadow);
+    box-shadow:
+        var(--shadow);
 
-    text-align: center;
+    text-align:
+        center;
 
-    animation:
-        adminLoginIn 0.45s ease;
+    position:
+        relative;
+
+    overflow:
+        hidden;
 }
 
 
-.admin-login-icon {
+.admin-login-card::before {
 
-    width: 72px;
-    height: 72px;
+    content:
+        "";
 
-    margin: 0 auto 20px;
+    position:
+        absolute;
 
-    display: grid;
+    width:
+        180px;
 
-    place-items: center;
+    height:
+        180px;
 
-    background: var(--soft);
+    border-radius:
+        50%;
 
-    color: var(--primary);
+    background:
+        var(--soft);
 
-    border-radius: 20px;
+    top:
+        -100px;
 
-    font-size: 2rem;
+    right:
+        -70px;
+
+    opacity:
+        0.7;
 }
 
 
-.admin-login-card .login-badge {
+.admin-icon {
 
-    margin-bottom: 10px;
+    width:
+        70px;
 
-    color: var(--primary);
+    height:
+        70px;
 
-    font-size: 0.72rem;
+    margin:
+        0 auto 20px;
 
-    font-weight: 800;
+    display:
+        grid;
 
-    letter-spacing: 2px;
+    place-items:
+        center;
+
+    background:
+        var(--soft);
+
+    color:
+        var(--primary);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        20px;
+
+    font-size:
+        2rem;
+
+    position:
+        relative;
+}
+
+
+.admin-login-card .badge {
+
+    margin-bottom:
+        15px;
 }
 
 
 .admin-login-card h1 {
 
+    position:
+        relative;
+
     font-family:
         "Space Grotesk",
         sans-serif;
 
-    font-size: 2rem;
+    font-size:
+        2.3rem;
 
-    letter-spacing: -1px;
+    line-height:
+        1.1;
 
-    margin-bottom: 10px;
+    letter-spacing:
+        -1.5px;
 }
 
 
 .admin-login-card h1 span {
 
-    color: var(--primary);
+    color:
+        var(--primary);
 }
 
 
-.admin-login-description {
+.admin-description {
 
-    color: var(--muted);
+    position:
+        relative;
 
-    font-size: 0.9rem;
+    margin:
+        14px auto 30px;
 
-    line-height: 1.6;
+    max-width:
+        390px;
 
-    margin-bottom: 30px;
+    color:
+        var(--muted);
+
+    font-size:
+        0.92rem;
+
+    line-height:
+        1.7;
 }
 
 
-.admin-login-card form {
+#adminLoginForm {
 
-    text-align: left;
+    position:
+        relative;
+
+    text-align:
+        left;
 }
 
 
-.admin-login-card .input-group {
+#adminLoginForm .input-group {
 
-    margin-bottom: 20px;
+    margin-bottom:
+        20px;
 }
 
 
-.admin-login-card .input-group label {
+#adminLoginForm .input-group label {
 
-    display: block;
-
-    margin-bottom: 8px;
-
-    font-size: 0.88rem;
-
-    font-weight: 700;
+    color:
+        var(--text);
 }
 
 
-.admin-login-card .input-group input {
+#adminUsername,
+#adminPassword {
 
-    width: 100%;
+    width:
+        100%;
 
-    padding: 14px 15px;
+    padding:
+        14px 15px;
 
     border:
         1px solid var(--border);
 
-    border-radius: 12px;
+    border-radius:
+        12px;
 
-    background: var(--surface);
+    background:
+        var(--surface);
 
-    color: var(--text);
+    color:
+        var(--text);
 
-    outline: none;
+    font-size:
+        0.95rem;
 
-    font-size: 0.92rem;
+    outline:
+        none;
 }
 
 
-.admin-login-card .input-group input:focus {
+#adminUsername:focus,
+#adminPassword:focus {
 
-    border-color: var(--primary);
+    border-color:
+        var(--primary);
 
     box-shadow:
         0 0 0 4px
@@ -2039,131 +2383,180 @@ textarea {
 }
 
 
-.admin-login-card .submit-btn {
+#adminLoginForm .submit-btn {
 
-    width: 100%;
+    width:
+        100%;
 
-    margin-top: 5px;
+    margin-top:
+        5px;
 
-    min-height: 50px;
+    padding:
+        15px;
+
+    font-size:
+        0.95rem;
 }
 
 
-.admin-login-note {
+.admin-login-card .login-error {
 
-    margin-top: 22px;
+    margin:
+        0 0 18px;
 
-    padding: 13px;
+    padding:
+        12px 14px;
 
-    background: var(--soft);
-
-    color: var(--muted);
-
-    border-radius: 12px;
-
-    font-size: 0.76rem;
-
-    line-height: 1.5;
-}
-
-
-.admin-login-error {
-
-    color: var(--danger);
-
-    background: var(--danger-bg);
+    background:
+        var(--danger-bg);
 
     border:
-        1px solid
-        rgba(209, 67, 67, 0.15);
+        1px solid #f3caca;
 
-    border-radius: 10px;
+    border-radius:
+        10px;
 
-    padding: 11px;
+    color:
+        var(--danger);
 
-    margin-bottom: 18px;
+    text-align:
+        center;
 
-    font-size: 0.82rem;
-
-    text-align: left;
+    font-size:
+        0.82rem;
 }
 
 
-@keyframes adminLoginIn {
+.admin-security {
 
-    from {
+    position:
+        relative;
 
-        opacity: 0;
+    margin-top:
+        25px;
 
-        transform:
-            translateY(15px)
-            scale(0.98);
-    }
+    padding:
+        18px;
 
-    to {
+    background:
+        var(--soft);
 
-        opacity: 1;
+    border:
+        1px solid var(--border);
 
-        transform:
-            translateY(0)
-            scale(1);
-    }
+    border-radius:
+        14px;
+
+    text-align:
+        center;
+}
+
+
+.admin-security-icon {
+
+    font-size:
+        1.4rem;
+
+    margin-bottom:
+        7px;
+}
+
+
+.admin-security strong {
+
+    display:
+        block;
+
+    font-family:
+        "Space Grotesk",
+        sans-serif;
+
+    font-size:
+        0.9rem;
+}
+
+
+.admin-security span {
+
+    display:
+        block;
+
+    margin-top:
+        5px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        0.75rem;
+}
+
+
+.admin-back {
+
+    display:
+        inline-flex;
+
+    margin-top:
+        22px;
+
+    color:
+        var(--primary);
+
+    text-decoration:
+        none;
+
+    font-size:
+        0.85rem;
+
+    font-weight:
+        700;
+}
+
+
+.admin-back:hover {
+
+    text-decoration:
+        underline;
+
+    transform:
+        translateX(-2px);
 }
 
 
 /* =========================================================
-   18. FOOTER
-========================================================= */
-
-footer {
-
-    padding: 30px;
-
-    text-align: center;
-
-    color: var(--muted);
-
-    font-size: 0.85rem;
-}
-
-
-/* =========================================================
-   19. HIDDEN UTILITY
-========================================================= */
-
-.hidden {
-
-    display: none !important;
-}
-
-
-/* =========================================================
-   20. MOBILE
+   MOBILE
 ========================================================= */
 
 @media (max-width: 750px) {
 
     .navbar {
 
-        flex-direction: column;
+        flex-direction:
+            column;
 
-        gap: 15px;
+        gap:
+            15px;
     }
 
 
     .hero {
 
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            1fr;
 
-        gap: 40px;
+        gap:
+            40px;
 
-        margin-top: 50px;
+        margin-top:
+            50px;
     }
 
 
     .hero h1 {
 
-        font-size: 4rem;
+        font-size:
+            4rem;
     }
 
 
@@ -2171,55 +2564,69 @@ footer {
     .info-grid,
     .form-row {
 
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            1fr;
     }
 
 
     .nav-links {
 
-        flex-wrap: wrap;
+        flex-wrap:
+            wrap;
 
-        justify-content: center;
+        justify-content:
+            center;
     }
 
 
     .hero-buttons {
 
-        flex-direction: column;
+        flex-direction:
+            column;
     }
 
 
     .form-card,
     .track-card {
 
-        padding: 25px;
+        padding:
+            25px;
     }
 
 
     .result-row {
 
-        flex-direction: column;
+        flex-direction:
+            column;
 
-        gap: 6px;
+        gap:
+            6px;
     }
 
 
     .result-row strong {
 
-        text-align: left;
+        text-align:
+            left;
     }
 
 
     .theme-menu {
 
-        position: fixed;
+        position:
+            fixed;
 
-        top: 125px;
+        top:
+            125px;
 
-        right: 4%;
+        right:
+            4%;
 
         width:
-            min(285px, 92%);
+            min(
+                285px,
+                92%
+            );
     }
 
 
@@ -2230,552 +2637,80 @@ footer {
     }
 
 
-    .success-actions {
+    .admin-login-page {
 
-        flex-direction: column;
+        width:
+            min(
+                92%,
+                500px
+            );
+
+        margin:
+            50px auto;
     }
 
 
-    .success-actions a {
-
-        width: 100%;
-    }
-
-
-    .student-login-card,
     .admin-login-card {
 
-        padding: 35px 25px;
+        padding:
+            35px 25px;
     }
+
 }
 
-
-/* =========================================================
-   21. SMALL MOBILE
-========================================================= */
 
 @media (max-width: 500px) {
 
     .splash-content h1 {
 
-        font-size: 1.7rem;
+        font-size:
+            1.7rem;
     }
 
 
     .splash-logo {
 
-        width: 62px;
-        height: 62px;
+        width:
+            62px;
 
-        font-size: 24px;
+        height:
+            62px;
+
+        font-size:
+            24px;
     }
 
 
     .appearance-button {
 
-        width: auto;
+        width:
+            auto;
 
         padding:
             7px 10px;
 
-        font-size: 0.75rem;
-    }
-
-
-    .hero h1 {
-
-        font-size: 3.2rem;
-
-        letter-spacing: -2px;
-    }
-
-
-    .navbar {
-
-        width: 94%;
-
-        padding:
-            14px 16px;
-    }
-
-
-    .success-icon {
-
-        width: 70px;
-        height: 70px;
-
-        font-size: 2rem;
-    }
-
-
-    .success-card h1 {
-
-        font-size: 1.8rem;
-    }
-
-
-    .complaint-id-box strong {
-
-        font-size: 1.3rem;
+        font-size:
+            0.75rem;
     }
 
 
     .admin-login-card h1 {
 
-        font-size: 1.7rem;
-    }
-}
-
-/* =========================================================
-   ADMIN LOGIN PAGE
-========================================================= */
-
-.admin-login-page {
-
-    min-height: 100vh;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 40px 20px;
-
-    background: var(--bg);
-
-}
-
-
-/* =========================================================
-   ADMIN LOGIN CARD
-========================================================= */
-
-.admin-login-container {
-
-    width: 100%;
-
-    max-width: 460px;
-
-}
-
-
-.admin-login-card {
-
-    background: var(--surface);
-
-    border: 1px solid var(--border);
-
-    border-radius: 28px;
-
-    padding: 45px;
-
-    box-shadow: var(--shadow);
-
-    text-align: center;
-
-}
-
-
-/* =========================================================
-   LOGO
-========================================================= */
-
-.admin-login-logo {
-
-    width: 68px;
-
-    height: 68px;
-
-    margin: 0 auto 20px;
-
-    display: grid;
-
-    place-items: center;
-
-    border-radius: 20px;
-
-    background: var(--primary);
-
-    color: white;
-
-    font-family: "Space Grotesk", sans-serif;
-
-    font-size: 25px;
-
-    font-weight: 800;
-
-    box-shadow:
-        0 12px 30px
-        rgba(91, 91, 214, 0.22);
-
-}
-
-
-/* =========================================================
-   BRAND
-========================================================= */
-
-.admin-login-card h1 {
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
-
-    font-size: 2rem;
-
-    letter-spacing: -1px;
-
-    color: var(--text);
-
-}
-
-
-.admin-login-card h1 span {
-
-    color: var(--primary);
-
-}
-
-
-.admin-login-brand {
-
-    margin-top: 7px;
-
-    color: var(--muted);
-
-    font-size: 0.85rem;
-
-}
-
-
-/* =========================================================
-   ADMIN BADGE
-========================================================= */
-
-.admin-login-badge {
-
-    display: inline-block;
-
-    margin-top: 28px;
-
-    padding: 8px 13px;
-
-    border-radius: 100px;
-
-    background: var(--soft);
-
-    color: var(--primary);
-
-    font-size: 0.72rem;
-
-    font-weight: 800;
-
-    letter-spacing: 1.3px;
-
-}
-
-
-/* =========================================================
-   WELCOME
-========================================================= */
-
-.admin-login-card h2 {
-
-    margin-top: 20px;
-
-    font-family:
-        "Space Grotesk",
-        sans-serif;
-
-    font-size: 2.3rem;
-
-    letter-spacing: -1.5px;
-
-    color: var(--text);
-
-}
-
-
-.admin-login-description {
-
-    margin-top: 10px;
-
-    color: var(--muted);
-
-    font-size: 0.92rem;
-
-    line-height: 1.6;
-
-}
-
-
-/* =========================================================
-   LOGIN FORM
-========================================================= */
-
-.admin-login-form {
-
-    margin-top: 30px;
-
-    text-align: left;
-
-}
-
-
-.admin-input-group {
-
-    margin-bottom: 20px;
-
-}
-
-
-.admin-input-group label {
-
-    display: block;
-
-    margin-bottom: 8px;
-
-    color: var(--text);
-
-    font-size: 0.88rem;
-
-    font-weight: 700;
-
-}
-
-
-.admin-input-group input {
-
-    width: 100%;
-
-    padding: 14px 15px;
-
-    border: 1px solid var(--border);
-
-    border-radius: 12px;
-
-    outline: none;
-
-    background: var(--surface);
-
-    color: var(--text);
-
-    font-size: 0.92rem;
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-
-}
-
-
-.admin-input-group input::placeholder {
-
-    color: var(--muted);
-
-}
-
-
-.admin-input-group input:focus {
-
-    border-color: var(--primary);
-
-    box-shadow:
-        0 0 0 4px
-        rgba(91, 91, 214, 0.10);
-
-}
-
-
-/* =========================================================
-   LOGIN ERROR
-========================================================= */
-
-.admin-login-error {
-
-    margin-bottom: 16px;
-
-    padding: 11px 13px;
-
-    border-radius: 10px;
-
-    background: var(--danger-bg);
-
-    color: var(--danger);
-
-    font-size: 0.85rem;
-
-    text-align: left;
-
-}
-
-
-/* =========================================================
-   LOGIN BUTTON
-========================================================= */
-
-.admin-login-button {
-
-    width: 100%;
-
-    padding: 14px 18px;
-
-    border: none;
-
-    border-radius: 12px;
-
-    background: var(--primary);
-
-    color: white;
-
-    font-size: 0.95rem;
-
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease;
-
-}
-
-
-.admin-login-button:hover {
-
-    background: var(--primary-dark);
-
-    transform: translateY(-2px);
-
-}
-
-
-.admin-login-button:disabled {
-
-    opacity: 0.7;
-
-    cursor: not-allowed;
-
-    transform: none;
-
-}
-
-
-/* =========================================================
-   SECURITY NOTE
-========================================================= */
-
-.admin-security-note {
-
-    margin-top: 25px;
-
-    padding: 16px;
-
-    border-radius: 14px;
-
-    background: var(--soft);
-
-    text-align: left;
-
-}
-
-
-.admin-security-icon {
-
-    font-size: 1.3rem;
-
-    margin-bottom: 6px;
-
-}
-
-
-.admin-security-note strong {
-
-    display: block;
-
-    color: var(--text);
-
-    font-size: 0.9rem;
-
-}
-
-
-.admin-security-note p {
-
-    margin-top: 5px;
-
-    color: var(--muted);
-
-    font-size: 0.78rem;
-
-    line-height: 1.5;
-
-}
-
-
-/* =========================================================
-   BACK LINK
-========================================================= */
-
-.admin-back-link {
-
-    display: inline-block;
-
-    margin-top: 25px;
-
-    color: var(--primary);
-
-    text-decoration: none;
-
-    font-size: 0.88rem;
-
-    font-weight: 600;
-
-}
-
-
-.admin-back-link:hover {
-
-    text-decoration: underline;
-
-}
-
-
-/* =========================================================
-   ADMIN LOGIN MOBILE
-========================================================= */
-
-@media (max-width: 500px) {
-
-    .admin-login-page {
-
-        padding: 25px 16px;
-
+        font-size:
+            2rem;
     }
 
-    .admin-login-card {
 
-        padding: 32px 24px;
+    .admin-icon {
 
-        border-radius: 22px;
+        width:
+            62px;
 
-    }
+        height:
+            62px;
 
-    .admin-login-card h2 {
-
-        font-size: 1.9rem;
-
-    }
-
-    .admin-login-logo {
-
-        width: 60px;
-
-        height: 60px;
-
-        font-size: 22px;
-
+        font-size:
+            1.7rem;
     }
 
 }
