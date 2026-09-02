@@ -20,8 +20,8 @@
         ===================================================== */
 
         .complaint-page {
-            min-height: calc(100vh - 70px);
-            padding: 45px 20px 60px;
+            min-height: calc(100vh - 76px);
+            padding: 55px 20px 70px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -32,9 +32,9 @@
             max-width: 850px;
             background: #ffffff;
             border: 1px solid #e5e7eb;
-            border-radius: 18px;
-            padding: 35px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            border-radius: 22px;
+            padding: 38px;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.07);
         }
 
         .complaint-header {
@@ -44,26 +44,29 @@
 
         .complaint-badge {
             display: inline-block;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.7px;
-            margin-bottom: 12px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: #eef2ff;
+            color: #4f46e5;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            margin-bottom: 13px;
         }
 
         .complaint-header h1 {
-            margin: 0 0 10px;
-            font-size: 30px;
-            line-height: 1.2;
+            margin: 0;
+            font-size: 32px;
+            font-weight: 800;
+            color: #171923;
         }
 
         .complaint-header p {
-            max-width: 600px;
-            margin: 0 auto;
+            margin: 10px auto 0;
+            max-width: 620px;
+            color: #6b7280;
             font-size: 14px;
             line-height: 1.6;
-            opacity: 0.75;
         }
 
         .complaint-form {
@@ -87,7 +90,8 @@
         .complaint-field label {
             display: block;
             margin-bottom: 8px;
-            font-size: 13px;
+            color: #171923;
+            font-size: 14px;
             font-weight: 700;
         }
 
@@ -96,10 +100,10 @@
         .complaint-field textarea {
             width: 100%;
             box-sizing: border-box;
-            padding: 13px 14px;
-            border: 1px solid #d9dde5;
-            border-radius: 10px;
+            border: 1px solid #d9dce5;
+            border-radius: 12px;
             background: #ffffff;
+            color: #171923;
             font-family: inherit;
             font-size: 14px;
             outline: none;
@@ -109,10 +113,12 @@
         .complaint-field input,
         .complaint-field select {
             height: 48px;
+            padding: 0 14px;
         }
 
         .complaint-field textarea {
             min-height: 180px;
+            padding: 14px;
             resize: vertical;
             line-height: 1.6;
         }
@@ -124,66 +130,93 @@
             box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.10);
         }
 
-        .complaint-field small {
+        .complaint-field input::placeholder,
+        .complaint-field textarea::placeholder {
+            color: #9ca3af;
+        }
+
+        .field-help {
             display: block;
             margin-top: 7px;
-            font-size: 11px;
-            line-height: 1.4;
-            opacity: 0.6;
+            color: #8a8f9c;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .character-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 7px;
         }
 
         .character-counter {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 7px;
-            font-size: 11px;
-            opacity: 0.65;
+            color: #8a8f9c;
+            font-size: 12px;
         }
 
-        .complaint-error {
-            margin-top: 20px;
+        .privacy-note {
+            margin-top: 22px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: #f8f9fc;
+            border: 1px solid #eceef3;
+            color: #666b78;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .error-message {
+            margin-top: 18px;
             padding: 12px 14px;
             border-radius: 10px;
+            background: #fff1f2;
+            border: 1px solid #fecdd3;
+            color: #be123c;
             font-size: 13px;
         }
 
-        .complaint-submit {
+        .hidden {
+            display: none;
+        }
+
+        .complaint-submit-area {
+            margin-top: 25px;
+        }
+
+        .submit-btn {
             width: 100%;
             height: 50px;
-            margin-top: 25px;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
+            background: #4f46e5;
+            color: #ffffff;
             font-family: inherit;
-            font-size: 14px;
-            font-weight: 700;
+            font-size: 15px;
+            font-weight: 800;
             cursor: pointer;
             transition: 0.2s ease;
         }
 
-        .complaint-submit:hover {
+        .submit-btn:hover {
+            background: #4338ca;
             transform: translateY(-1px);
         }
 
-        .complaint-submit:disabled {
+        .submit-btn:disabled {
             opacity: 0.65;
             cursor: not-allowed;
             transform: none;
         }
 
-        /* =====================================================
-           MOBILE
-        ===================================================== */
-
         @media (max-width: 700px) {
 
             .complaint-page {
-                padding: 25px 14px 40px;
+                padding: 30px 15px 50px;
             }
 
             .complaint-card {
-                padding: 24px 18px;
-                border-radius: 14px;
+                padding: 25px 18px;
+                border-radius: 17px;
             }
 
             .complaint-header {
@@ -191,11 +224,7 @@
             }
 
             .complaint-header h1 {
-                font-size: 25px;
-            }
-
-            .complaint-header p {
-                font-size: 13px;
+                font-size: 26px;
             }
 
             .complaint-grid {
@@ -217,16 +246,25 @@
 <body>
 
 
-<!-- =========================================================
+<!-- =====================================================
      NAVBAR
-========================================================= -->
+===================================================== -->
 
 <nav class="navbar">
 
     <a href="index.html"
        class="logo">
-        Vemu<span>Voice</span>
+
+        <span class="logo-icon">
+            Vv
+        </span>
+
+        <span>
+            VemuVoice
+        </span>
+
     </a>
+
 
     <div class="nav-links">
 
@@ -256,18 +294,16 @@
 </nav>
 
 
-<!-- =========================================================
-     MAIN CONTENT
-========================================================= -->
+<!-- =====================================================
+     COMPLAINT PAGE
+===================================================== -->
 
 <main class="complaint-page">
 
     <section class="complaint-card">
 
 
-        <!-- =================================================
-             HEADER
-        ================================================== -->
+        <!-- HEADER -->
 
         <div class="complaint-header">
 
@@ -280,19 +316,18 @@
             </h1>
 
             <p>
-                Share your concern with the appropriate
-                college authority. Your name is not required.
+                Share your concern with the appropriate college authority.
+                Your name is not required to submit a complaint.
             </p>
 
         </div>
 
 
-        <!-- =================================================
-             COMPLAINT FORM
-        ================================================== -->
+        <!-- FORM -->
 
         <form id="complaintForm"
               class="complaint-form">
+
 
             <div class="complaint-grid">
 
@@ -305,10 +340,9 @@
                         Year
                     </label>
 
-                    <select
-                        id="year"
-                        name="year"
-                        required>
+                    <select id="year"
+                            name="year"
+                            required>
 
                         <option value="">
                             Select your year
@@ -351,8 +385,8 @@
                         autocomplete="off"
                         required>
 
-                    <small>
-                        Example: CSE-A, AI&DS-B, ECE-A
+                    <small class="field-help">
+                        Example: CSE-A, CSE (AI & DS), ECE-B, etc.
                     </small>
 
                 </div>
@@ -366,13 +400,12 @@
                         Complaint Category
                     </label>
 
-                    <select
-                        id="category"
-                        name="category"
-                        required>
+                    <select id="category"
+                            name="category"
+                            required>
 
                         <option value="">
-                            Select complaint category
+                            Select category
                         </option>
 
                         <option value="Academic">
@@ -416,7 +449,7 @@
                 </div>
 
 
-                <!-- SEND TO -->
+                <!-- RECIPIENT -->
 
                 <div class="complaint-field">
 
@@ -424,10 +457,9 @@
                         Send Complaint To
                     </label>
 
-                    <select
-                        id="recipient"
-                        name="recipient"
-                        required>
+                    <select id="recipient"
+                            name="recipient"
+                            required>
 
                         <option value="">
                             Select recipient
@@ -450,7 +482,7 @@
                 </div>
 
 
-                <!-- COMPLAINT DESCRIPTION -->
+                <!-- DESCRIPTION -->
 
                 <div class="complaint-field full-width">
 
@@ -461,19 +493,19 @@
                     <textarea
                         id="message"
                         name="message"
-                        rows="7"
                         maxlength="1000"
                         placeholder="Describe your complaint clearly..."
                         required></textarea>
 
-                    <div class="character-counter">
+                    <div class="character-row">
 
-                        <span>
-                            Maximum 1000 characters
-                        </span>
+                        <span class="character-counter">
 
-                        <span id="charCount">
-                            0 / 1000
+                            <span id="charCount">
+                                0
+                            </span>
+                            / 1000
+
                         </span>
 
                     </div>
@@ -484,38 +516,49 @@
             </div>
 
 
-            <!-- ERROR -->
+            <!-- PRIVACY NOTE -->
 
-            <div id="complaintError"
-                 class="complaint-error hidden">
+            <div class="privacy-note">
+
+                🔒 Your name is not requested in this form.
+                Please provide clear and respectful information so that
+                the concerned authority can review your complaint properly.
+
             </div>
 
 
-            <!-- SUBMIT BUTTON -->
+            <!-- ERROR -->
 
-            <button
-                type="submit"
-                id="complaintSubmitBtn"
-                class="complaint-submit">
+            <div id="complaintError"
+                 class="error-message hidden">
+            </div>
 
-                Submit Complaint →
 
-            </button>
+            <!-- SUBMIT -->
+
+            <div class="complaint-submit-area">
+
+                <button
+                    type="submit"
+                    id="complaintSubmitBtn"
+                    class="submit-btn">
+
+                    Submit Complaint
+
+                </button>
+
+            </div>
 
 
         </form>
+
 
     </section>
 
 </main>
 
 
-<!-- =========================================================
-     JAVASCRIPT
-========================================================= -->
-
 <script src="script.js"></script>
-
 
 </body>
 
