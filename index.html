@@ -20,38 +20,6 @@
 
 
 <!-- =========================================================
-     INSTANT THEME LOADER
-     Prevents white background flash while changing pages
-========================================================= -->
-
-<script>
-(function () {
-
-    const savedTheme =
-        localStorage.getItem("vemuVoiceTheme") || "campus";
-
-    if (savedTheme === "midnight" ||
-        savedTheme === "aurora") {
-
-        document.body.setAttribute(
-            "data-theme",
-            savedTheme
-        );
-
-    } else {
-
-        document.body.removeAttribute(
-            "data-theme"
-        );
-
-    }
-
-})();
-</script>
-
-
-
-<!-- =========================================================
      FAST OPENING SCREEN
 ========================================================= -->
 
@@ -91,7 +59,6 @@
 
 <nav class="navbar">
 
-
     <a href="index.html"
        class="logo">
 
@@ -101,7 +68,6 @@
 
 
     <div class="nav-links">
-
 
         <a href="index.html"
            class="active">
@@ -137,150 +103,6 @@
             Admin
 
         </a>
-
-
-
-        <!-- =================================================
-             MODE BUTTON
-        ================================================= -->
-
-        <button
-            id="appearanceButton"
-            class="appearance-button"
-            type="button">
-
-            ☾ Mode
-
-        </button>
-
-
-
-        <!-- =================================================
-             THEME MENU
-        ================================================= -->
-
-        <div
-            id="themeMenu"
-            class="theme-menu">
-
-
-            <div class="theme-menu-header">
-
-                <strong>
-                    Choose Mode
-                </strong>
-
-
-                <button
-                    id="themeClose"
-                    class="theme-close"
-                    type="button">
-
-                    ×
-
-                </button>
-
-            </div>
-
-
-
-            <!-- =================================================
-                 CAMPUS
-            ================================================= -->
-
-            <button
-                class="theme-option"
-                data-theme="campus"
-                type="button">
-
-
-                <span
-                    class="theme-preview campus-preview">
-                </span>
-
-
-                <span>
-
-                    <strong>
-                        Campus
-                    </strong>
-
-                    <small>
-                        Clean & bright
-                    </small>
-
-                </span>
-
-
-            </button>
-
-
-
-            <!-- =================================================
-                 MIDNIGHT
-            ================================================= -->
-
-            <button
-                class="theme-option"
-                data-theme="midnight"
-                type="button">
-
-
-                <span
-                    class="theme-preview midnight-preview">
-                </span>
-
-
-                <span>
-
-                    <strong>
-                        Midnight
-                    </strong>
-
-                    <small>
-                        Dark & modern
-                    </small>
-
-                </span>
-
-
-            </button>
-
-
-
-            <!-- =================================================
-                 AURORA
-            ================================================= -->
-
-            <button
-                class="theme-option"
-                data-theme="aurora"
-                type="button">
-
-
-                <span
-                    class="theme-preview aurora-preview">
-                </span>
-
-
-                <span>
-
-                    <strong>
-                        Aurora
-                    </strong>
-
-                    <small>
-                        Soft & elegant
-                    </small>
-
-                </span>
-
-
-            </button>
-
-
-        </div>
-
 
     </div>
 
@@ -344,7 +166,6 @@
 
             </a>
 
-
         </div>
 
 
@@ -385,7 +206,7 @@
 
             <span class="status-dot"></span>
 
-            Anonymous submission enabled
+            Name-free submission enabled
 
         </div>
 
@@ -476,7 +297,7 @@
 
             <h3>
 
-                Stay Anonymous
+                Stay Private
 
             </h3>
 
@@ -548,7 +369,7 @@
 
 
 <!-- =========================================================
-     MAIN JAVASCRIPT
+     JAVASCRIPT
 ========================================================= -->
 
 <script src="script.js"></script>
