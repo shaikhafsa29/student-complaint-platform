@@ -1,122 +1,143 @@
+
 document.addEventListener("DOMContentLoaded", () => {
 
+    const isLocalhost =
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1";
 
-/* =========================================================
-   API BASE
-========================================================= */
-
-const isLocalhost =
-    window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1";
-
-const API_BASE =
-    isLocalhost
+    const API_BASE = isLocalhost
         ? "http://127.0.0.1:5000"
         : "";
 
 
+    function showElement(element) {
 
-/* =========================================================
-   HELPER FUNCTIONS
-========================================================= */
+        if (element) {
+            element.classList.remove("hidden");
+        }
 
-function showElement(element) {
-
-    if (element) {
-        element.classList.remove("hidden");
     }
 
-}
 
+    function hideElement(element) {
 
-function hideElement(element) {
+        if (element) {
+            element.classList.add("hidden");
+        }
 
-    if (element) {
-        element.classList.add("hidden");
     }
 
-}
+
+    function getStudentRollNumber() {
+
+        return (
+            sessionStorage.getItem("studentRollNumber") ||
+            ""
+        ).trim();
+
+    }
 
 
-function getStudentRollNumber() {
+    async function apiRequest(
+        endpoint,
+        options = {}
+    ) {
 
-    return sessionStorage.getItem(
-        "studentRollNumber"
-    );
-
-}
-
-
-
-/* =========================================================
-   STUDENT LOGIN
-========================================================= */
-
-const studentLoginForm =
-    document.getElementById("studentLoginForm");
-
-
-if (studentLoginForm) {
-
-    const rollInput =
-        document.getElementById("studentRollNumber");
-
-    const loginError =
-        document.getElementById("studentLoginError");
-
-    const loginButton =
-        document.getElementById("studentLoginBtn");
-
-
-    studentLoginForm.addEventListener(
-        "submit",
-        async (event) => {
-
-            event.preventDefault();
-
-
-            const rollNo =
-                rollInput.value.trim();
-
-
-            hideElement(loginError);
-
-
-            if (!rollNo) {
-
-                loginError.textContent =
-                    "Please enter your Roll Number.";
-
-                showElement(loginError);
-
-                return;
-
+        const response = await fetch(
+            `${API_BASE}${endpoint}`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    ...(options.headers || {})
+                },
+                ...options
             }
+        );
 
 
-            if (loginButton) {
+        let data = {};
+
+        try {
+
+            data = await response.json();
+
+        } catch {
+
+            data = {};
+
+        }
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                `Request failed with status ${response.status}.`
+            );
+
+        }
+
+
+        return data;
+
+    }
+
+
+    /* =========================================================
+       STUDENT LOGIN
+    ========================================================= */
+
+    const studentLoginForm =
+        document.getElementById("studentLoginForm");
+
+
+    if (studentLoginForm) {
+
+        const rollInput =
+            document.getElementById("studentRollNumber");
+
+        const loginButton =
+            document.getElementById("studentLoginBtn");
+
+        const loginError =
+            document.getElementById("studentLoginError");
+
+
+        studentLoginForm.addEventListener(
+            "submit",
+            async (event) => {
+
+                event.preventDefault();
+
+                hideElement(loginError);
+
+
+                const rollNo =
+                    rollInput.value.trim();
+
+
+                if (!rollNo) {
+
+                    loginError.textContent =
+                        "Please enter your Roll Number.";
+
+                    showElement(loginError);
+
+                    return;
+
+                }
+
 
                 loginButton.disabled = true;
-
-                loginButton.textContent =
-                    "Checking...";
-
-            }
+                loginButton.textContent = "Checking...";
 
 
-            try {
+                try {
 
-                const response =
-                    await fetch(
-                        `${API_BASE}/api/student/login`,
+                    const data = await apiRequest(
+                        "/api/student/login",
                         {
                             method: "POST",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
                             body: JSON.stringify({
                                 roll_no: rollNo
                             })
@@ -124,144 +145,33 @@ if (studentLoginForm) {
                     );
 
 
-                const data =
-                    await response.json();
+                    if (data.success) {
+
+                        sessionStorage.setItem(
+                            "studentRollNumber",
+                            data.roll_no || rollNo
+                        );
 
 
-                if (!response.ok ||
-                    !data.success) {
+                        window.location.href =
+                            "index.html";
 
-                    throw new Error(
-                        data.message ||
-                        "Login failed."
-                    );
+                    }
 
-                }
+                } catch (error) {
 
+                    loginError.textContent =
+                        error.message ||
+                        "Unable to login. Please try again.";
 
-                sessionStorage.setItem(
-                    "studentRollNumber",
-                    rollNo
-                );
+                    showElement(loginError);
 
-
-                window.location.href =
-                    "index.html";
-
-
-            } catch (error) {
-
-                console.error(
-                    "Student login error:",
-                    error
-                );
-
-
-                loginError.textContent =
-                    error.message ||
-                    "Unable to connect to server.";
-
-
-                showElement(loginError);
-
-            } finally {
-
-                if (loginButton) {
+                } finally {
 
                     loginButton.disabled = false;
-
-                    loginButton.textContent =
-                        "Continue →";
+                    loginButton.textContent = "Continue →";
 
                 }
-
-            }
-
-        }
-    );
-
-}
-
-
-
-/* =========================================================
-   STUDENT PAGE PROTECTION
-========================================================= */
-
-const protectedPages = [
-    "index.html",
-    "about.html",
-    "contact.html",
-    "track.html",
-    "success.html"
-];
-
-
-const currentPage =
-    window.location.pathname
-        .split("/")
-        .pop() || "index.html";
-
-
-if (
-    protectedPages.includes(currentPage) &&
-    !getStudentRollNumber()
-) {
-
-    window.location.href =
-        "login.html";
-
-    return;
-
-}
-
-
-
-/* =========================================================
-   COMPLAINT FORM
-========================================================= */
-
-const complaintForm =
-    document.getElementById("complaintForm");
-
-
-if (complaintForm) {
-
-
-    const messageInput =
-        document.getElementById("message");
-
-
-    const charCount =
-        document.getElementById("charCount");
-
-
-    const recipientInput =
-        document.getElementById("recipient");
-
-
-    const submitButton =
-        document.getElementById(
-            "complaintSubmitBtn"
-        );
-
-
-    const complaintError =
-        document.getElementById(
-            "complaintError"
-        );
-
-
-    /* CHARACTER COUNT */
-
-    if (messageInput && charCount) {
-
-        messageInput.addEventListener(
-            "input",
-            () => {
-
-                charCount.textContent =
-                    messageInput.value.length;
 
             }
         );
@@ -269,1282 +179,1034 @@ if (complaintForm) {
     }
 
 
+    /* =========================================================
+       STUDENT PAGE PROTECTION
+    ========================================================= */
 
-    /* FORM SUBMISSION */
-
-    complaintForm.addEventListener(
-        "submit",
-        async (event) => {
-
-            event.preventDefault();
-
-
-            hideElement(complaintError);
+    const currentPage =
+        window.location.pathname
+            .split("/")
+            .pop()
+            .toLowerCase();
 
 
-            const rollNo =
-                getStudentRollNumber();
+    const protectedStudentPages = [
+        "index.html",
+        "about.html",
+        "contact.html",
+        "track.html",
+        "success.html"
+    ];
 
 
-            if (!rollNo) {
+    if (
+        protectedStudentPages.includes(currentPage) &&
+        !getStudentRollNumber()
+    ) {
 
-                window.location.href =
-                    "login.html";
+        window.location.href = "login.html";
 
+        return;
+
+    }
+
+
+    /* =========================================================
+       COMPLAINT FORM
+    ========================================================= */
+
+    const complaintForm =
+        document.getElementById("complaintForm");
+
+
+    if (complaintForm) {
+
+        const yearInput =
+            document.getElementById("year");
+
+        const branchInput =
+            document.getElementById("branch");
+
+        const categoryInput =
+            document.getElementById("category");
+
+        const recipientInput =
+            document.getElementById("recipient");
+
+        const messageInput =
+            document.getElementById("message");
+
+        const charCount =
+            document.getElementById("charCount");
+
+        const errorBox =
+            document.getElementById("complaintError");
+
+        const submitButton =
+            document.getElementById("complaintSubmitBtn");
+
+
+        function updateCharacterCount() {
+
+            if (!messageInput || !charCount) {
                 return;
-
             }
 
+            charCount.textContent =
+                messageInput.value.length;
 
-            const year =
-                document.getElementById(
-                    "year"
-                ).value;
-
-
-            const branch =
-                document.getElementById(
-                    "branch"
-                ).value;
+        }
 
 
-            const category =
-                document.getElementById(
-                    "category"
-                ).value;
+        if (messageInput) {
+
+            messageInput.addEventListener(
+                "input",
+                updateCharacterCount
+            );
+
+            updateCharacterCount();
+
+        }
 
 
-            const recipient =
-                recipientInput
-                    ? recipientInput.value
-                    : "";
+        complaintForm.addEventListener(
+            "submit",
+            async (event) => {
+
+                event.preventDefault();
+
+                hideElement(errorBox);
 
 
-            const message =
-                messageInput.value.trim();
+                const rollNo =
+                    getStudentRollNumber();
+
+                const year =
+                    yearInput.value.trim();
+
+                const branch =
+                    branchInput.value.trim();
+
+                const category =
+                    categoryInput.value.trim();
+
+                const recipient =
+                    recipientInput.value.trim();
+
+                const message =
+                    messageInput.value.trim();
 
 
+                if (!rollNo) {
 
-            /* VALIDATION */
+                    errorBox.textContent =
+                        "Student login is required.";
 
-            if (!year ||
-                !branch ||
-                !category ||
-                !recipient ||
-                !message) {
+                    showElement(errorBox);
 
-                complaintError.textContent =
-                    "Please fill in all required fields.";
-
-                showElement(complaintError);
-
-                return;
-
-            }
-
-
-            if (message.length > 1000) {
-
-                complaintError.textContent =
-                    "Complaint description cannot exceed 1000 characters.";
-
-                showElement(complaintError);
-
-                return;
-
-            }
-
-
-
-            /* DISABLE BUTTON */
-
-            if (submitButton) {
-
-                submitButton.disabled = true;
-
-                submitButton.textContent =
-                    "Submitting...";
-
-            }
-
-
-
-            try {
-
-                const response =
-                    await fetch(
-                        `${API_BASE}/api/complaints`,
-                        {
-                            method: "POST",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
-                            body: JSON.stringify({
-
-                                roll_no:
-                                    rollNo,
-
-                                year:
-                                    year,
-
-                                branch:
-                                    branch,
-
-                                category:
-                                    category,
-
-                                recipient:
-                                    recipient,
-
-                                message:
-                                    message
-
-                            })
-
-                        }
-                    );
-
-
-                const data =
-                    await response.json();
-
-
-                if (!response.ok ||
-                    !data.success) {
-
-                    throw new Error(
-                        data.message ||
-                        "Complaint submission failed."
-                    );
+                    return;
 
                 }
 
 
-                /* SAVE COMPLAINT ID */
+                if (
+                    !year ||
+                    !branch ||
+                    !category ||
+                    !recipient ||
+                    !message
+                ) {
 
-                sessionStorage.setItem(
-                    "complaintId",
-                    data.complaint_id
-                );
+                    errorBox.textContent =
+                        "Please complete all required fields.";
 
+                    showElement(errorBox);
 
-                /* REDIRECT */
+                    return;
 
-                window.location.href =
-                    "success.html";
-
-
-            } catch (error) {
-
-                console.error(
-                    "Complaint submission error:",
-                    error
-                );
+                }
 
 
-                complaintError.textContent =
-                    error.message ||
-                    "Unable to submit complaint. Please try again.";
+                if (message.length > 1000) {
+
+                    errorBox.textContent =
+                        "Complaint description cannot exceed 1000 characters.";
+
+                    showElement(errorBox);
+
+                    return;
+
+                }
 
 
-                showElement(complaintError);
+                submitButton.disabled = true;
+                submitButton.textContent = "Submitting...";
 
 
-            } finally {
+                try {
 
-                if (submitButton) {
+                    const data = await apiRequest(
+                        "/api/complaints",
+                        {
+                            method: "POST",
+                            body: JSON.stringify({
+                                roll_no: rollNo,
+                                year: year,
+                                branch: branch,
+                                category: category,
+                                recipient: recipient,
+                                message: message
+                            })
+                        }
+                    );
+
+
+                    if (
+                        data.success &&
+                        data.complaint_id
+                    ) {
+
+                        sessionStorage.setItem(
+                            "complaintId",
+                            data.complaint_id
+                        );
+
+
+                        complaintForm.reset();
+
+                        updateCharacterCount();
+
+
+                        window.location.href =
+                            "success.html";
+
+                    } else {
+
+                        throw new Error(
+                            data.message ||
+                            "Complaint submission failed."
+                        );
+
+                    }
+
+                } catch (error) {
+
+                    errorBox.textContent =
+                        error.message ||
+                        "Unable to submit complaint. Please try again.";
+
+                    showElement(errorBox);
+
+                } finally {
 
                     submitButton.disabled = false;
-
                     submitButton.textContent =
                         "Submit Complaint →";
 
                 }
 
             }
-
-        }
-    );
-
-}
-
-
-
-/* =========================================================
-   SUCCESS PAGE
-========================================================= */
-
-const successComplaintId =
-    document.getElementById(
-        "successComplaintId"
-    );
-
-
-if (successComplaintId) {
-
-    const complaintId =
-        sessionStorage.getItem(
-            "complaintId"
         );
-
-
-    if (complaintId) {
-
-        successComplaintId.textContent =
-            complaintId;
-
-    } else {
-
-        successComplaintId.textContent =
-            "Not available";
 
     }
 
-}
+
+    /* =========================================================
+       SUCCESS PAGE
+    ========================================================= */
+
+    const successComplaintId =
+        document.getElementById("successComplaintId");
 
 
+    if (successComplaintId) {
 
-/* =========================================================
-   TRACK COMPLAINT
-========================================================= */
-
-const trackForm =
-    document.getElementById(
-        "trackForm"
-    );
+        const complaintId =
+            sessionStorage.getItem("complaintId");
 
 
-if (trackForm) {
+        if (complaintId) {
+
+            successComplaintId.textContent =
+                complaintId;
+
+        } else {
+
+            successComplaintId.textContent =
+                "Not available";
+
+        }
+
+    }
 
 
-    trackForm.addEventListener(
-        "submit",
-        async (event) => {
+    /* =========================================================
+       TRACK COMPLAINT
+    ========================================================= */
 
-            event.preventDefault();
-
-
-            const complaintInput =
-                document.getElementById(
-                    "complaintId"
-                );
+    const trackForm =
+        document.getElementById("trackForm");
 
 
-            const resultBox =
-                document.getElementById(
-                    "trackingResult"
-                );
+    if (trackForm) {
+
+        const complaintIdInput =
+            document.getElementById("trackComplaintId");
+
+        const resultBox =
+            document.getElementById("trackingResult");
+
+        const errorBox =
+            document.getElementById("trackingError");
+
+        const resultComplaintId =
+            document.getElementById("resultComplaintId");
+
+        const resultCategory =
+            document.getElementById("resultCategory");
+
+        const resultStatus =
+            document.getElementById("resultStatus");
+
+        const resultDate =
+            document.getElementById("resultDate");
 
 
-            const errorBox =
-                document.getElementById(
-                    "trackingError"
-                );
+        const savedComplaintId =
+            sessionStorage.getItem("complaintId");
 
 
-            const complaintId =
-                complaintInput.value
-                    .trim();
+        if (
+            savedComplaintId &&
+            complaintIdInput
+        ) {
+
+            complaintIdInput.value =
+                savedComplaintId;
+
+        }
 
 
-            hideElement(errorBox);
+        trackForm.addEventListener(
+            "submit",
+            async (event) => {
+
+                event.preventDefault();
+
+                hideElement(resultBox);
+                hideElement(errorBox);
 
 
-            if (!complaintId) {
-
-                errorBox.textContent =
-                    "Please enter your Complaint ID.";
-
-                showElement(errorBox);
-
-                return;
-
-            }
+                const complaintId =
+                    complaintIdInput.value.trim();
 
 
-            try {
+                if (!complaintId) {
 
-                const response =
-                    await fetch(
-                        `${API_BASE}/api/complaints/${encodeURIComponent(
-                            complaintId
-                        )}`
-                    );
+                    errorBox.querySelector("p").textContent =
+                        "Please enter your Complaint ID.";
 
+                    showElement(errorBox);
 
-                const data =
-                    await response.json();
-
-
-                if (!response.ok ||
-                    !data.success) {
-
-                    throw new Error(
-                        data.message ||
-                        "Complaint not found."
-                    );
+                    return;
 
                 }
 
 
-                const complaint =
-                    data.complaint;
+                try {
+
+                    const data = await apiRequest(
+                        `/api/complaints/${encodeURIComponent(complaintId)}`
+                    );
 
 
-                if (resultBox) {
+                    const complaint =
+                        data.complaint;
 
-                    resultBox.innerHTML = `
 
-                        <div class="tracking-card">
+                    resultComplaintId.textContent =
+                        complaint.complaint_id || "-";
 
-                            <h3>
-                                Complaint Details
-                            </h3>
 
-                            <p>
-                                <strong>
-                                    Complaint ID:
-                                </strong>
-                                ${escapeHtml(
-                                    complaint.complaint_id
-                                )}
-                            </p>
+                    resultCategory.textContent =
+                        complaint.category || "-";
 
-                            <p>
-                                <strong>
-                                    Year:
-                                </strong>
-                                ${escapeHtml(
-                                    complaint.year
-                                )}
-                            </p>
 
-                            <p>
-                                <strong>
-                                    Branch:
-                                </strong>
-                                ${escapeHtml(
-                                    complaint.branch
-                                )}
-                            </p>
+                    resultStatus.textContent =
+                        complaint.status || "-";
 
-                            <p>
-                                <strong>
-                                    Category:
-                                </strong>
-                                ${escapeHtml(
-                                    complaint.category
-                                )}
-                            </p>
 
-                            <p>
-                                <strong>
-                                    Sent To:
-                                </strong>
-                                ${escapeHtml(
-                                    complaint.recipient ||
-                                    "Not specified"
-                                )}
-                            </p>
+                    resultDate.textContent =
+                        complaint.created_at || "-";
 
-                            <p>
-                                <strong>
-                                    Status:
-                                </strong>
-                                ${escapeHtml(
-                                    complaint.status
-                                )}
-                            </p>
-
-                            <p>
-                                <strong>
-                                    Submitted:
-                                </strong>
-                                ${escapeHtml(
-                                    complaint.created_at
-                                )}
-                            </p>
-
-                        </div>
-
-                    `;
 
                     showElement(resultBox);
 
+                } catch (error) {
+
+                    errorBox.querySelector("p").textContent =
+                        error.message ||
+                        "Please check your Complaint ID and try again.";
+
+                    showElement(errorBox);
+
                 }
 
-
-            } catch (error) {
-
-                console.error(
-                    "Tracking error:",
-                    error
-                );
-
-
-                errorBox.textContent =
-                    error.message ||
-                    "Complaint not found.";
-
-                showElement(errorBox);
-
             }
-
-        }
-    );
-
-}
-
-
-
-/* =========================================================
-   ADMIN LOGIN
-========================================================= */
-
-const adminLoginForm =
-    document.getElementById(
-        "adminLoginForm"
-    );
-
-
-if (adminLoginForm) {
-
-    const adminUsername =
-        document.getElementById(
-            "adminUsername"
         );
 
-
-    const adminPassword =
-        document.getElementById(
-            "adminPassword"
-        );
+    }
 
 
-    const adminLoginError =
-        document.getElementById(
-            "adminLoginError"
-        );
+    /* =========================================================
+       ADMIN LOGIN
+    ========================================================= */
+
+    const adminLoginForm =
+        document.getElementById("adminLoginForm");
 
 
-    const adminLoginButton =
-        document.getElementById(
-            "adminLoginBtn"
-        );
+    if (adminLoginForm) {
+
+        const usernameInput =
+            document.getElementById("adminUsername");
+
+        const passwordInput =
+            document.getElementById("adminPassword");
+
+        const loginError =
+            document.getElementById("loginError");
 
 
-    adminLoginForm.addEventListener(
-        "submit",
-        async (event) => {
+        adminLoginForm.addEventListener(
+            "submit",
+            async (event) => {
 
-            event.preventDefault();
+                event.preventDefault();
 
-
-            hideElement(
-                adminLoginError
-            );
+                hideElement(loginError);
 
 
-            const username =
-                adminUsername.value.trim();
+                const username =
+                    usernameInput.value.trim();
+
+                const password =
+                    passwordInput.value;
 
 
-            const password =
-                adminPassword.value;
+                try {
 
-
-            if (!username ||
-                !password) {
-
-                adminLoginError.textContent =
-                    "Please enter username and password.";
-
-                showElement(
-                    adminLoginError
-                );
-
-                return;
-
-            }
-
-
-            if (adminLoginButton) {
-
-                adminLoginButton.disabled = true;
-
-                adminLoginButton.textContent =
-                    "Signing in...";
-
-            }
-
-
-            try {
-
-                const response =
-                    await fetch(
-                        `${API_BASE}/api/admin/login`,
+                    const data = await apiRequest(
+                        "/api/admin/login",
                         {
                             method: "POST",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
                             body: JSON.stringify({
-                                username:
-                                    username,
-
-                                password:
-                                    password
+                                username: username,
+                                password: password
                             })
                         }
                     );
 
 
-                const data =
-                    await response.json();
+                    if (data.success) {
+
+                        sessionStorage.setItem(
+                            "adminLoggedIn",
+                            "true"
+                        );
 
 
-                if (!response.ok ||
-                    !data.success) {
+                        window.location.href =
+                            "admin-dashboard.html";
 
-                    throw new Error(
-                        data.message ||
-                        "Invalid admin credentials."
-                    );
+                    }
 
-                }
+                } catch (error) {
 
+                    loginError.textContent =
+                        error.message ||
+                        "Invalid username or password.";
 
-                sessionStorage.setItem(
-                    "adminLoggedIn",
-                    "true"
-                );
-
-
-                window.location.href =
-                    "admin-dashboard.html";
-
-
-            } catch (error) {
-
-                console.error(
-                    "Admin login error:",
-                    error
-                );
-
-
-                adminLoginError.textContent =
-                    error.message ||
-                    "Unable to login.";
-
-                showElement(
-                    adminLoginError
-                );
-
-
-            } finally {
-
-                if (adminLoginButton) {
-
-                    adminLoginButton.disabled =
-                        false;
-
-                    adminLoginButton.textContent =
-                        "Login →";
+                    showElement(loginError);
 
                 }
 
             }
-
-        }
-    );
-
-}
-
-
-
-/* =========================================================
-   ADMIN DASHBOARD
-========================================================= */
-
-const complaintsTable =
-    document.getElementById(
-        "complaintsTableBody"
-    );
-
-
-if (complaintsTable) {
-
-    const isAdminLoggedIn =
-        sessionStorage.getItem(
-            "adminLoggedIn"
-        );
-
-
-    if (isAdminLoggedIn !== "true") {
-
-        window.location.href =
-            "admin-login.html";
-
-        return;
-
-    }
-
-
-    loadAdminComplaints();
-
-}
-
-
-
-async function loadAdminComplaints() {
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_BASE}/api/complaints`
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (!response.ok ||
-            !data.success) {
-
-            throw new Error(
-                data.message ||
-                "Unable to load complaints."
-            );
-
-        }
-
-
-        renderAdminComplaints(
-            data.complaints || []
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Admin complaints error:",
-            error
         );
 
     }
 
-}
+
+    /* =========================================================
+       ADMIN DASHBOARD
+    ========================================================= */
+
+    const complaintsContainer =
+        document.getElementById("complaintsContainer");
 
 
+    if (complaintsContainer) {
 
-function renderAdminComplaints(
-    complaints
-) {
-
-    const tableBody =
-        document.getElementById(
-            "complaintsTableBody"
-        );
+        const adminLoggedIn =
+            sessionStorage.getItem("adminLoggedIn");
 
 
-    if (!tableBody) {
-        return;
-    }
+        if (adminLoggedIn !== "true") {
 
+            window.location.href =
+                "admin-login.html";
 
-    tableBody.innerHTML = "";
-
-
-    if (!complaints.length) {
-
-        tableBody.innerHTML = `
-
-            <tr>
-
-                <td colspan="8"
-                    style="text-align:center;">
-
-                    No complaints found.
-
-                </td>
-
-            </tr>
-
-        `;
-
-        return;
-
-    }
-
-
-    complaints.forEach(
-        (complaint) => {
-
-            const row =
-                document.createElement(
-                    "tr"
-                );
-
-
-            row.innerHTML = `
-
-                <td>
-                    ${escapeHtml(
-                        complaint.complaint_id
-                    )}
-                </td>
-
-                <td>
-                    ${escapeHtml(
-                        complaint.roll_no
-                    )}
-                </td>
-
-                <td>
-                    ${escapeHtml(
-                        complaint.year
-                    )}
-                </td>
-
-                <td>
-                    ${escapeHtml(
-                        complaint.branch
-                    )}
-                </td>
-
-                <td>
-                    ${escapeHtml(
-                        complaint.category
-                    )}
-                </td>
-
-                <td>
-                    ${escapeHtml(
-                        complaint.recipient ||
-                        "Not specified"
-                    )}
-                </td>
-
-                <td>
-                    ${escapeHtml(
-                        complaint.status
-                    )}
-                </td>
-
-                <td>
-                    <button
-                        class="view-btn"
-                        data-id="${escapeHtml(
-                            complaint.complaint_id
-                        )}">
-                        View
-                    </button>
-                </td>
-
-            `;
-
-
-            tableBody.appendChild(
-                row
-            );
-
-        }
-    );
-
-
-    attachViewButtons();
-
-}
-
-
-
-/* =========================================================
-   ADMIN VIEW COMPLAINT
-========================================================= */
-
-function attachViewButtons() {
-
-    const buttons =
-        document.querySelectorAll(
-            ".view-btn"
-        );
-
-
-    buttons.forEach(
-        (button) => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    const complaintId =
-                        button.dataset.id;
-
-                    openComplaintModal(
-                        complaintId
-                    );
-
-                }
-            );
-
-        }
-    );
-
-}
-
-
-
-async function openComplaintModal(
-    complaintId
-) {
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_BASE}/api/complaints/${encodeURIComponent(
-                    complaintId
-                )}`
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (!response.ok ||
-            !data.success) {
-
-            throw new Error(
-                data.message ||
-                "Unable to load complaint."
-            );
+            return;
 
         }
 
 
-        const complaint =
-            data.complaint;
+        const totalComplaints =
+            document.getElementById("totalComplaints");
+
+        const submittedCount =
+            document.getElementById("submittedCount");
+
+        const reviewCount =
+            document.getElementById("reviewCount");
+
+        const resolvedCount =
+            document.getElementById("resolvedCount");
+
+        const searchInput =
+            document.getElementById("searchComplaint");
+
+        const statusFilter =
+            document.getElementById("statusFilter");
+
+        const refreshButton =
+            document.getElementById("refreshComplaints");
+
+        const logoutButton =
+            document.getElementById("logoutButton");
 
 
         const modal =
-            document.getElementById(
-                "complaintModal"
-            );
+            document.getElementById("complaintModal");
+
+        const closeModalButton =
+            document.getElementById("closeModal");
+
+        const modalComplaintId =
+            document.getElementById("modalComplaintId");
+
+        const modalRollNo =
+            document.getElementById("modalRollNo");
+
+        const modalYear =
+            document.getElementById("modalYear");
+
+        const modalBranch =
+            document.getElementById("modalBranch");
+
+        const modalCategory =
+            document.getElementById("modalCategory");
+
+        const modalRecipient =
+            document.getElementById("modalRecipient");
+
+        const modalDate =
+            document.getElementById("modalDate");
+
+        const modalStatus =
+            document.getElementById("modalStatus");
+
+        const modalMessage =
+            document.getElementById("modalMessage");
+
+        const statusSelect =
+            document.getElementById("statusSelect");
+
+        const updateStatusButton =
+            document.getElementById("updateStatusButton");
+
+        const statusUpdateMessage =
+            document.getElementById("statusUpdateMessage");
 
 
-        if (!modal) {
-            return;
+        let complaints = [];
+
+        let currentComplaintId = "";
+
+
+        function escapeHtml(value) {
+
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
         }
 
 
-        const modalContent =
-            document.getElementById(
-                "modalContent"
-            );
+        function statusClass(status) {
 
-
-        if (modalContent) {
-
-            modalContent.innerHTML = `
-
-                <h2>
-                    Complaint Details
-                </h2>
-
-                <p>
-                    <strong>
-                        Complaint ID:
-                    </strong>
-                    ${escapeHtml(
-                        complaint.complaint_id
-                    )}
-                </p>
-
-                <p>
-                    <strong>
-                        Roll Number:
-                    </strong>
-                    ${escapeHtml(
-                        complaint.roll_no
-                    )}
-                </p>
-
-                <p>
-                    <strong>
-                        Year:
-                    </strong>
-                    ${escapeHtml(
-                        complaint.year
-                    )}
-                </p>
-
-                <p>
-                    <strong>
-                        Branch:
-                    </strong>
-                    ${escapeHtml(
-                        complaint.branch
-                    )}
-                </p>
-
-                <p>
-                    <strong>
-                        Category:
-                    </strong>
-                    ${escapeHtml(
-                        complaint.category
-                    )}
-                </p>
-
-                <p>
-                    <strong>
-                        Sent To:
-                    </strong>
-                    ${escapeHtml(
-                        complaint.recipient ||
-                        "Not specified"
-                    )}
-                </p>
-
-                <p>
-                    <strong>
-                        Complaint:
-                    </strong>
-                </p>
-
-                <p>
-                    ${escapeHtml(
-                        complaint.message
-                    )}
-                </p>
-
-                <p>
-                    <strong>
-                        Current Status:
-                    </strong>
-                    ${escapeHtml(
-                        complaint.status
-                    )}
-                </p>
-
-                <div class="status-update">
-
-                    <label for="newStatus">
-                        Update Status
-                    </label>
-
-                    <select id="newStatus">
-
-                        <option value="Submitted">
-                            Submitted
-                        </option>
-
-                        <option value="Under Review">
-                            Under Review
-                        </option>
-
-                        <option value="In Progress">
-                            In Progress
-                        </option>
-
-                        <option value="Resolved">
-                            Resolved
-                        </option>
-
-                    </select>
-
-                    <button
-                        id="updateStatusBtn"
-                        class="submit-btn">
-
-                        Update Status
-
-                    </button>
-
-                </div>
-
-            `;
-
-
-            const statusSelect =
-                document.getElementById(
-                    "newStatus"
-                );
-
-
-            if (statusSelect) {
-
-                statusSelect.value =
-                    complaint.status;
-
+            if (status === "Submitted") {
+                return "status-submitted";
             }
 
+            if (status === "Under Review") {
+                return "status-review";
+            }
 
-            const updateButton =
-                document.getElementById(
-                    "updateStatusBtn"
-                );
+            if (status === "In Progress") {
+                return "status-progress";
+            }
+
+            if (status === "Resolved") {
+                return "status-resolved";
+            }
+
+            return "";
+
+        }
 
 
-            if (updateButton) {
+        function updateStats() {
 
-                updateButton.addEventListener(
-                    "click",
-                    () => {
+            totalComplaints.textContent =
+                complaints.length;
 
-                        updateComplaintStatus(
+
+            submittedCount.textContent =
+                complaints.filter(
+                    item => item.status === "Submitted"
+                ).length;
+
+
+            reviewCount.textContent =
+                complaints.filter(
+                    item => item.status === "Under Review"
+                ).length;
+
+
+            resolvedCount.textContent =
+                complaints.filter(
+                    item => item.status === "Resolved"
+                ).length;
+
+        }
+
+
+        function renderComplaints() {
+
+            const searchTerm =
+                (searchInput.value || "")
+                    .trim()
+                    .toLowerCase();
+
+
+            const selectedStatus =
+                statusFilter.value;
+
+
+            const filtered =
+                complaints.filter(
+                    complaint => {
+
+                        const matchesSearch =
+                            !searchTerm ||
                             complaint.complaint_id
+                                .toLowerCase()
+                                .includes(searchTerm);
+
+
+                        const matchesStatus =
+                            selectedStatus === "All" ||
+                            complaint.status === selectedStatus;
+
+
+                        return (
+                            matchesSearch &&
+                            matchesStatus
                         );
 
                     }
                 );
 
+
+            if (!filtered.length) {
+
+                complaintsContainer.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="empty-table">
+                            No complaints found.
+                        </td>
+                    </tr>
+                `;
+
+                return;
+
+            }
+
+
+            complaintsContainer.innerHTML =
+                filtered.map(
+                    complaint => {
+
+                        const classBranch =
+                            `${complaint.year || "-"} / ${complaint.branch || "-"}`;
+
+
+                        return `
+                            <tr>
+
+                                <td>
+                                    <strong>
+                                        ${escapeHtml(complaint.complaint_id)}
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    ${escapeHtml(classBranch)}
+                                </td>
+
+                                <td>
+                                    ${escapeHtml(complaint.category || "-")}
+                                </td>
+
+                                <td>
+                                    <span class="status-badge ${statusClass(complaint.status)}">
+                                        ${escapeHtml(complaint.status || "-")}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    ${escapeHtml(complaint.created_at || "-")}
+                                </td>
+
+                                <td>
+                                    <button
+                                        class="view-btn"
+                                        data-complaint-id="${escapeHtml(complaint.complaint_id)}">
+
+                                        View
+
+                                    </button>
+                                </td>
+
+                            </tr>
+                        `;
+
+                    }
+                ).join("");
+
+        }
+
+
+        async function loadComplaints() {
+
+            complaintsContainer.innerHTML = `
+                <tr>
+                    <td colspan="6" class="empty-table">
+                        Loading complaints...
+                    </td>
+                </tr>
+            `;
+
+
+            try {
+
+                const data =
+                    await apiRequest(
+                        "/api/complaints"
+                    );
+
+
+                complaints =
+                    Array.isArray(data.complaints)
+                        ? data.complaints
+                        : [];
+
+
+                updateStats();
+                renderComplaints();
+
+            } catch (error) {
+
+                complaintsContainer.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="empty-table">
+                            Unable to load complaints.
+                        </td>
+                    </tr>
+                `;
+
+                console.error(
+                    "Unable to load complaints:",
+                    error
+                );
+
             }
 
         }
 
 
-        modal.classList.remove(
-            "hidden"
-        );
+        function openModal(complaint) {
 
-    } catch (error) {
-
-        console.error(
-            "Modal error:",
-            error
-        );
-
-        alert(
-            error.message ||
-            "Unable to load complaint."
-        );
-
-    }
-
-}
+            currentComplaintId =
+                complaint.complaint_id;
 
 
-
-/* =========================================================
-   UPDATE COMPLAINT STATUS
-========================================================= */
-
-async function updateComplaintStatus(
-    complaintId
-) {
-
-    const statusSelect =
-        document.getElementById(
-            "newStatus"
-        );
+            modalComplaintId.textContent =
+                complaint.complaint_id || "-";
 
 
-    if (!statusSelect) {
-        return;
-    }
+            modalRollNo.textContent =
+                complaint.roll_no || "-";
 
 
-    const status =
-        statusSelect.value;
+            modalYear.textContent =
+                complaint.year || "-";
 
 
-    try {
+            modalBranch.textContent =
+                complaint.branch || "-";
 
-        const response =
-            await fetch(
-                `${API_BASE}/api/complaints/${encodeURIComponent(
-                    complaintId
-                )}/status`,
-                {
-                    method: "PUT",
 
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
+            modalCategory.textContent =
+                complaint.category || "-";
 
-                    body: JSON.stringify({
-                        status: status
-                    })
+
+            modalRecipient.textContent =
+                complaint.recipient || "-";
+
+
+            modalDate.textContent =
+                complaint.created_at || "-";
+
+
+            modalStatus.textContent =
+                complaint.status || "-";
+
+
+            modalMessage.textContent =
+                complaint.message || "-";
+
+
+            statusSelect.value =
+                complaint.status || "Submitted";
+
+
+            statusUpdateMessage.textContent =
+                "";
+
+
+            modal.classList.add("show");
+
+        }
+
+
+        function closeModal() {
+
+            modal.classList.remove("show");
+
+            currentComplaintId = "";
+
+        }
+
+
+        complaintsContainer.addEventListener(
+            "click",
+            event => {
+
+                const button =
+                    event.target.closest(
+                        ".view-btn"
+                    );
+
+
+                if (!button) {
+                    return;
                 }
-            );
 
 
-        const data =
-            await response.json();
+                const complaintId =
+                    button.dataset.complaintId;
 
 
-        if (!response.ok ||
-            !data.success) {
-
-            throw new Error(
-                data.message ||
-                "Unable to update status."
-            );
-
-        }
+                const complaint =
+                    complaints.find(
+                        item =>
+                            item.complaint_id === complaintId
+                    );
 
 
-        alert(
-            "Complaint status updated successfully."
-        );
+                if (complaint) {
 
+                    openModal(complaint);
 
-        const modal =
-            document.getElementById(
-                "complaintModal"
-            );
-
-
-        if (modal) {
-
-            modal.classList.add(
-                "hidden"
-            );
-
-        }
-
-
-        loadAdminComplaints();
-
-
-    } catch (error) {
-
-        console.error(
-            "Status update error:",
-            error
-        );
-
-
-        alert(
-            error.message ||
-            "Unable to update complaint status."
-        );
-
-    }
-
-}
-
-
-
-/* =========================================================
-   ADMIN LOGOUT
-========================================================= */
-
-const adminLogoutButton =
-    document.getElementById(
-        "adminLogout"
-    );
-
-
-if (adminLogoutButton) {
-
-    adminLogoutButton.addEventListener(
-        "click",
-        () => {
-
-            sessionStorage.removeItem(
-                "adminLoggedIn"
-            );
-
-            window.location.href =
-                "admin-login.html";
-
-        }
-    );
-
-}
-
-
-
-/* =========================================================
-   CLOSE MODAL
-========================================================= */
-
-const modalClose =
-    document.querySelector(
-        ".modal-close"
-    );
-
-
-if (modalClose) {
-
-    modalClose.addEventListener(
-        "click",
-        () => {
-
-            const modal =
-                document.getElementById(
-                    "complaintModal"
-                );
-
-            if (modal) {
-
-                modal.classList.add(
-                    "hidden"
-                );
+                }
 
             }
-
-        }
-    );
-
-}
-
-
-
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHtml(value) {
-
-    if (value === null ||
-        value === undefined) {
-
-        return "";
-
-    }
-
-
-    return String(value)
-
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
         );
 
-}
 
+        closeModalButton.addEventListener(
+            "click",
+            closeModal
+        );
+
+
+        modal.addEventListener(
+            "click",
+            event => {
+
+                if (event.target === modal) {
+
+                    closeModal();
+
+                }
+
+            }
+        );
+
+
+        document.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key === "Escape" &&
+                    modal.classList.contains("show")
+                ) {
+
+                    closeModal();
+
+                }
+
+            }
+        );
+
+
+        updateStatusButton.addEventListener(
+            "click",
+            async () => {
+
+                if (!currentComplaintId) {
+                    return;
+                }
+
+
+                const newStatus =
+                    statusSelect.value;
+
+
+                updateStatusButton.disabled = true;
+
+                updateStatusButton.textContent =
+                    "Updating...";
+
+                statusUpdateMessage.textContent =
+                    "";
+
+
+                try {
+
+                    const data =
+                        await apiRequest(
+                            `/api/complaints/${encodeURIComponent(currentComplaintId)}/status`,
+                            {
+                                method: "PUT",
+                                body: JSON.stringify({
+                                    status: newStatus
+                                })
+                            }
+                        );
+
+
+                    statusUpdateMessage.textContent =
+                        data.message ||
+                        "Status updated successfully.";
+
+
+                    const complaint =
+                        complaints.find(
+                            item =>
+                                item.complaint_id ===
+                                currentComplaintId
+                        );
+
+
+                    if (complaint) {
+
+                        complaint.status =
+                            newStatus;
+
+                    }
+
+
+                    modalStatus.textContent =
+                        newStatus;
+
+
+                    updateStats();
+                    renderComplaints();
+
+                } catch (error) {
+
+                    statusUpdateMessage.textContent =
+                        error.message ||
+                        "Unable to update status.";
+
+                } finally {
+
+                    updateStatusButton.disabled = false;
+
+                    updateStatusButton.textContent =
+                        "✓ Update Status";
+
+                }
+
+            }
+        );
+
+
+        searchInput.addEventListener(
+            "input",
+            renderComplaints
+        );
+
+
+        statusFilter.addEventListener(
+            "change",
+            renderComplaints
+        );
+
+
+        refreshButton.addEventListener(
+            "click",
+            loadComplaints
+        );
+
+
+        logoutButton.addEventListener(
+            "click",
+            () => {
+
+                sessionStorage.removeItem(
+                    "adminLoggedIn"
+                );
+
+
+                window.location.href =
+                    "admin-login.html";
+
+            }
+        );
+
+
+        loadComplaints();
+
+    }
 
 });
+
