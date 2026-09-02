@@ -2,29 +2,57 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Admin Login | VEMU Voice</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+          href="style.css">
+
 </head>
 
 <body>
 
     <nav class="navbar">
 
-        <a href="index.html" class="logo">
+        <a href="index.html"
+           class="logo">
+
             VEMU<span>VOICE</span>
+
         </a>
 
-    <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Submit Complaint</a>
-        <a href="track.html">Track Complaint</a>
-        <a href="admin-login.html" class="active">Admin</a>
-    </div>
+
+        <div class="nav-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="about.html">
+                About
+            </a>
+
+            <a href="contact.html">
+                Submit Complaint
+            </a>
+
+            <a href="track.html">
+                Track Complaint
+            </a>
+
+            <a href="admin-login.html"
+               class="active">
+
+                Admin
+
+            </a>
+
+        </div>
 
     </nav>
 
@@ -33,11 +61,17 @@
 
         <section class="admin-login-card">
 
-            <div class="admin-icon">🔐</div>
+            <div class="admin-icon">
+                🔐
+            </div>
 
-            <p class="badge">AUTHORIZED ACCESS ONLY</p>
+            <p class="badge">
+                AUTHORIZED ACCESS ONLY
+            </p>
 
-            <h1>Admin Login</h1>
+            <h1>
+                Admin Login
+            </h1>
 
             <p class="admin-description">
                 Sign in to access the complaint management dashboard.
@@ -56,6 +90,7 @@
                         type="text"
                         id="adminUsername"
                         placeholder="Enter username"
+                        autocomplete="username"
                         required
                     >
 
@@ -72,14 +107,19 @@
                         type="password"
                         id="adminPassword"
                         placeholder="Enter password"
+                        autocomplete="current-password"
                         required
                     >
 
                 </div>
 
 
-                <button type="submit" class="submit-btn">
+                <button
+                    type="submit"
+                    class="submit-btn">
+
                     Login to Dashboard →
+
                 </button>
 
             </form>
@@ -87,9 +127,10 @@
 
             <div
                 id="loginError"
-                class="login-error hidden"
-            >
+                class="login-error hidden">
+
                 Invalid username or password.
+
             </div>
 
         </section>
@@ -98,7 +139,11 @@
 
 
     <footer>
-        <p>© 2026 VEMU Voice • Student Support Platform</p>
+
+        <p>
+            © 2026 VEMU Voice · Student Support Platform
+        </p>
+
     </footer>
 
 
@@ -107,3 +152,4 @@
 </body>
 
 </html>
+
