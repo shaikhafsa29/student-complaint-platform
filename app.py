@@ -5,20 +5,20 @@ from datetime import datetime
 import sqlite3
 import uuid
 import os
-import secrets
 
 
 app = Flask(__name__)
 CORS(app)
+
 
 PROJECT_DIR = Path(__file__).resolve().parent
 
 RAILWAY_VOLUME = os.environ.get("RAILWAY_VOLUME_MOUNT_PATH")
 
 if RAILWAY_VOLUME:
-    DATABASE_PATH = Path(RAILWAY_VOLUME) / "complaints.db"
+    DATABASE = Path(RAILWAY_VOLUME) / "complaints.db"
 else:
-    DATABASE_PATH = PROJECT_DIR / "complaints.db"
+    DATABASE = PROJECT_DIR / "complaints.db"
 
 
 ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
@@ -31,6 +31,7 @@ ALLOWED_RECIPIENTS = [
     "Principal"
 ]
 
+
 ALLOWED_STATUSES = [
     "Submitted",
     "Under Review",
@@ -39,14 +40,9 @@ ALLOWED_STATUSES = [
 ]
 
 
-admin_tokens = set()
-
-
 def get_db():
-    DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
-
     connection = sqlite3.connect(
-        DATABASE_PATH,
+        DATABASE,
         timeout=10
     )
 
@@ -56,6 +52,11 @@ def get_db():
 
 
 def create_database():
+    DATABASE.parent.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
     connection = get_db()
 
     cursor = connection.cursor()
@@ -65,7 +66,7 @@ def create_database():
         CREATE TABLE IF NOT EXISTS complaints (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             complaint_id TEXT UNIQUE NOT NULL,
-            roll_no TEXT NOT NULL,
+            roll_no TEXT,
             year TEXT NOT NULL,
             branch TEXT NOT NULL,
             category TEXT NOT NULL,
@@ -78,51 +79,63 @@ def create_database():
     )
 
     connection.commit()
+
+    cursor.execute(
+        "PRAGMA table_info(complaints)"
+    )
+
+    columns = [
+        row["name"]
+        for row in cursor.fetchall()
+    ]
+
+    if "roll_no" not in columns:
+        cursor.execute(
+            "ALTER TABLE complaints ADD COLUMN roll_no TEXT"
+        )
+
+    if "recipient" not in columns:
+        cursor.execute(
+            "ALTER TABLE complaints ADD COLUMN recipient TEXT DEFAULT 'HOD'"
+        )
+
+    if "status" not in columns:
+        cursor.execute(
+            "ALTER TABLE complaints ADD COLUMN status TEXT DEFAULT 'Submitted'"
+        )
+
+    if "created_at" not in columns:
+        cursor.execute(
+            "ALTER TABLE complaints ADD COLUMN created_at TEXT"
+        )
+
+    connection.commit()
     connection.close()
 
 
-def generate_complaint_id():
-    while True:
-        complaint_id = "CMP-" + uuid.uuid4().hex[:8].upper()
-
-        connection = get_db()
-
-        existing = connection.execute(
-            "SELECT complaint_id FROM complaints WHERE complaint_id = ?",
-            (complaint_id,)
-        ).fetchone()
-
-        connection.close()
-
-        if existing is None:
-            return complaint_id
-
-
-def is_admin_authenticated():
-    authorization = request.headers.get("Authorization", "")
-
-    if not authorization.startswith("Bearer "):
-        return False
-
-    token = authorization.replace("Bearer ", "", 1).strip()
-
-    return token in admin_tokens
+create_database()
 
 
 @app.route("/")
 def home():
-    return send_from_directory(PROJECT_DIR, "index.html")
+    return send_from_directory(
+        PROJECT_DIR,
+        "index.html"
+    )
 
 
 @app.route("/<path:filename>")
-def serve_frontend(filename):
+def serve_file(filename):
     file_path = PROJECT_DIR / filename
 
-    if file_path.is_file():
-        return send_from_directory(PROJECT_DIR, filename)
+    if file_path.exists() and file_path.is_file():
+        return send_from_directory(
+            PROJECT_DIR,
+            filename
+        )
 
     return jsonify({
-        "error": "Page not found"
+        "error": "File not found"
     }), 404
 
 
@@ -133,7 +146,7 @@ def health():
 
         connection.execute(
             "SELECT 1"
-        ).fetchone()
+        )
 
         connection.close()
 
@@ -160,18 +173,18 @@ def student_login():
     if not roll_no:
         return jsonify({
             "success": False,
-            "message": "Please enter your Roll Number."
+            "message": "Roll number is required"
         }), 400
 
     if len(roll_no) > 50:
         return jsonify({
             "success": False,
-            "message": "Roll Number is too long."
+            "message": "Invalid roll number"
         }), 400
 
     return jsonify({
         "success": True,
-        "message": "Student login successful.",
+        "message": "Student login successful",
         "roll_no": roll_no
     })
 
@@ -188,37 +201,19 @@ def admin_login():
         data.get("password", "")
     )
 
-    if username != ADMIN_USERNAME or password != ADMIN_PASSWORD:
+    if (
+        username == ADMIN_USERNAME
+        and password == ADMIN_PASSWORD
+    ):
         return jsonify({
-            "success": False,
-            "message": "Invalid admin username or password."
-        }), 401
-
-    token = secrets.token_urlsafe(32)
-
-    admin_tokens.add(token)
+            "success": True,
+            "message": "Admin login successful"
+        })
 
     return jsonify({
-        "success": True,
-        "message": "Admin login successful.",
-        "token": token
-    })
-
-
-@app.route("/api/admin/logout", methods=["POST"])
-def admin_logout():
-    authorization = request.headers.get("Authorization", "")
-
-    if authorization.startswith("Bearer "):
-        token = authorization.replace(
-            "Bearer ", "", 1
-        ).strip()
-
-        admin_tokens.discard(token)
-
-    return jsonify({
-        "success": True
-    })
+        "success": False,
+        "message": "Invalid username or password"
+    }), 401
 
 
 @app.route("/api/complaints", methods=["POST"])
@@ -252,46 +247,49 @@ def create_complaint():
     if not roll_no:
         return jsonify({
             "success": False,
-            "message": "Roll Number is required."
+            "message": "Roll number is required"
         }), 400
 
     if not year:
         return jsonify({
             "success": False,
-            "message": "Please select your year."
+            "message": "Year is required"
         }), 400
 
     if not branch:
         return jsonify({
             "success": False,
-            "message": "Please select your branch."
+            "message": "Branch is required"
         }), 400
 
     if not category:
         return jsonify({
             "success": False,
-            "message": "Please select a complaint category."
+            "message": "Category is required"
         }), 400
 
     if recipient not in ALLOWED_RECIPIENTS:
         return jsonify({
             "success": False,
-            "message": "Please select a valid recipient."
+            "message": "Invalid complaint recipient"
         }), 400
 
     if not message:
         return jsonify({
             "success": False,
-            "message": "Please enter your complaint."
+            "message": "Complaint description is required"
         }), 400
 
     if len(message) > 1000:
         return jsonify({
             "success": False,
-            "message": "Complaint cannot exceed 1000 characters."
+            "message": "Complaint must be 1000 characters or less"
         }), 400
 
-    complaint_id = generate_complaint_id()
+    complaint_id = (
+        "CMP-"
+        + uuid.uuid4().hex[:8].upper()
+    )
 
     created_at = datetime.now().strftime(
         "%Y-%m-%d %H:%M:%S"
@@ -299,7 +297,9 @@ def create_complaint():
 
     connection = get_db()
 
-    connection.execute(
+    cursor = connection.cursor()
+
+    cursor.execute(
         """
         INSERT INTO complaints
         (
@@ -333,60 +333,21 @@ def create_complaint():
 
     return jsonify({
         "success": True,
-        "message": "Complaint submitted successfully.",
+        "message": "Complaint submitted successfully",
         "complaint_id": complaint_id
     }), 201
 
 
-@app.route("/api/complaints/<complaint_id>", methods=["GET"])
-def get_complaint(complaint_id):
-    complaint_id = complaint_id.strip().upper()
-
-    connection = get_db()
-
-    complaint = connection.execute(
-        """
-        SELECT
-            complaint_id,
-            year,
-            branch,
-            category,
-            recipient,
-            status,
-            created_at
-        FROM complaints
-        WHERE complaint_id = ?
-        """,
-        (complaint_id,)
-    ).fetchone()
-
-    connection.close()
-
-    if complaint is None:
-        return jsonify({
-            "success": False,
-            "message": "Complaint not found."
-        }), 404
-
-    return jsonify({
-        "success": True,
-        "complaint": dict(complaint)
-    })
-
-
 @app.route("/api/complaints", methods=["GET"])
-def get_all_complaints():
-    if not is_admin_authenticated():
-        return jsonify({
-            "success": False,
-            "message": "Admin authentication required."
-        }), 401
-
+def get_complaints():
     connection = get_db()
 
-    complaints = connection.execute(
+    cursor = connection.cursor()
+
+    cursor.execute(
         """
         SELECT
+            id,
             complaint_id,
             roll_no,
             year,
@@ -399,27 +360,66 @@ def get_all_complaints():
         FROM complaints
         ORDER BY id DESC
         """
-    ).fetchall()
+    )
+
+    complaints = [
+        dict(row)
+        for row in cursor.fetchall()
+    ]
 
     connection.close()
 
     return jsonify({
         "success": True,
-        "complaints": [
-            dict(complaint)
-            for complaint in complaints
-        ]
+        "complaints": complaints
     })
 
 
-@app.route("/api/complaints/<complaint_id>/status", methods=["PUT"])
-def update_complaint_status(complaint_id):
-    if not is_admin_authenticated():
+@app.route("/api/complaints/<complaint_id>", methods=["GET"])
+def get_single_complaint(complaint_id):
+    connection = get_db()
+
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        SELECT
+            complaint_id,
+            roll_no,
+            year,
+            branch,
+            category,
+            recipient,
+            message,
+            status,
+            created_at
+        FROM complaints
+        WHERE complaint_id = ?
+        """,
+        (complaint_id.strip(),)
+    )
+
+    complaint = cursor.fetchone()
+
+    connection.close()
+
+    if complaint is None:
         return jsonify({
             "success": False,
-            "message": "Admin authentication required."
-        }), 401
+            "message": "Complaint not found"
+        }), 404
 
+    return jsonify({
+        "success": True,
+        "complaint": dict(complaint)
+    })
+
+
+@app.route(
+    "/api/complaints/<complaint_id>/status",
+    methods=["PUT"]
+)
+def update_complaint_status(complaint_id):
     data = request.get_json(silent=True) or {}
 
     status = str(
@@ -429,14 +429,34 @@ def update_complaint_status(complaint_id):
     if status not in ALLOWED_STATUSES:
         return jsonify({
             "success": False,
-            "message": "Invalid complaint status."
+            "message": "Invalid complaint status",
+            "allowed_statuses": ALLOWED_STATUSES
         }), 400
-
-    complaint_id = complaint_id.strip().upper()
 
     connection = get_db()
 
-    cursor = connection.execute(
+    cursor = connection.cursor()
+
+    cursor.execute(
+        """
+        SELECT complaint_id
+        FROM complaints
+        WHERE complaint_id = ?
+        """,
+        (complaint_id.strip(),)
+    )
+
+    complaint = cursor.fetchone()
+
+    if complaint is None:
+        connection.close()
+
+        return jsonify({
+            "success": False,
+            "message": "Complaint not found"
+        }), 404
+
+    cursor.execute(
         """
         UPDATE complaints
         SET status = ?
@@ -444,43 +464,35 @@ def update_complaint_status(complaint_id):
         """,
         (
             status,
-            complaint_id
+            complaint_id.strip()
         )
     )
 
     connection.commit()
-
-    updated = cursor.rowcount
-
     connection.close()
-
-    if updated == 0:
-        return jsonify({
-            "success": False,
-            "message": "Complaint not found."
-        }), 404
 
     return jsonify({
         "success": True,
-        "message": "Complaint status updated successfully."
+        "message": "Complaint status updated successfully",
+        "complaint_id": complaint_id,
+        "status": status
     })
 
 
 @app.errorhandler(404)
-def not_found(error):
+def page_not_found(error):
     return jsonify({
-        "error": "The requested page or resource was not found."
+        "success": False,
+        "message": "Page not found"
     }), 404
 
 
 @app.errorhandler(500)
-def server_error(error):
+def internal_server_error(error):
     return jsonify({
-        "error": "Internal server error."
+        "success": False,
+        "message": "Internal server error"
     }), 500
-
-
-create_database()
 
 
 if __name__ == "__main__":
