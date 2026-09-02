@@ -20,6 +20,38 @@
 
 
 <!-- =========================================================
+     INSTANT THEME LOADER
+     Prevents white background flash while changing pages
+========================================================= -->
+
+<script>
+(function () {
+
+    const savedTheme =
+        localStorage.getItem("vemuVoiceTheme") || "campus";
+
+    if (savedTheme === "midnight" ||
+        savedTheme === "aurora") {
+
+        document.body.setAttribute(
+            "data-theme",
+            savedTheme
+        );
+
+    } else {
+
+        document.body.removeAttribute(
+            "data-theme"
+        );
+
+    }
+
+})();
+</script>
+
+
+
+<!-- =========================================================
      FAST OPENING SCREEN
 ========================================================= -->
 
@@ -153,7 +185,7 @@
 
 
             <!-- =================================================
-                 CAMPUS THEME
+                 CAMPUS
             ================================================= -->
 
             <button
@@ -185,7 +217,7 @@
 
 
             <!-- =================================================
-                 MIDNIGHT THEME
+                 MIDNIGHT
             ================================================= -->
 
             <button
@@ -217,7 +249,7 @@
 
 
             <!-- =================================================
-                 AURORA THEME
+                 AURORA
             ================================================= -->
 
             <button
@@ -262,10 +294,6 @@
 
 <main class="hero">
 
-
-    <!-- =====================================================
-         HERO CONTENT
-    ===================================================== -->
 
     <section class="hero-content">
 
@@ -520,7 +548,7 @@
 
 
 <!-- =========================================================
-     JAVASCRIPT
+     MAIN JAVASCRIPT
 ========================================================= -->
 
 <script src="script.js"></script>
