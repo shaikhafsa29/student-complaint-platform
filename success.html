@@ -1,138 +1,89 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Complaint Submitted | VEMU Voice</title>
 
-    <link rel="stylesheet"
-          href="style.css">
-
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <nav class="navbar">
+<nav class="navbar">
+    <div class="nav-container">
 
-        <a href="index.html"
-           class="logo">
-
-            VEMU<span>VOICE</span>
-
+        <a href="index.html" class="logo">
+            VEMU <span>VOICE</span>
         </a>
 
-
         <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="login.html">Submit Complaint</a>
+            <a href="track.html">Track Complaint</a>
+        </div>
 
-            <a href="index.html">
-                Home
-            </a>
+    </div>
+</nav>
 
-            <a href="about.html">
-                About
-            </a>
 
-            <a href="contact.html">
-                Submit Complaint
-            </a>
+<main class="center-page">
 
-            <a href="track.html">
+    <section class="success-card">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <p class="section-label">
+            SUCCESS
+        </p>
+
+        <h1>
+            Complaint Submitted
+        </h1>
+
+        <p>
+            Your complaint has been successfully submitted.
+        </p>
+
+
+        <div class="complaint-id-box">
+
+            <span>Your Complaint ID</span>
+
+            <strong id="successComplaintId">
+                Loading...
+            </strong>
+
+        </div>
+
+
+        <p class="success-note">
+            Please save this Complaint ID. You can use it later
+            to track the status of your complaint.
+        </p>
+
+
+        <div class="hero-buttons">
+
+            <a href="track.html" class="btn btn-primary">
                 Track Complaint
             </a>
 
-            <a href="admin-login.html">
-                Admin
+            <a href="index.html" class="btn btn-secondary">
+                Go Home
             </a>
 
         </div>
 
-    </nav>
+    </section>
+
+</main>
 
 
-    <main class="success-page">
-
-        <div class="success-box">
-
-            <div class="success-icon">
-                ✓
-            </div>
-
-            <span class="badge">
-                COMPLAINT SUBMITTED
-            </span>
-
-            <h1>
-                Complaint Submitted Successfully!
-            </h1>
-
-            <p>
-                Your complaint has been submitted to the
-                selected college authority.
-            </p>
-
-
-            <div class="complaint-id">
-
-                <span>
-                    Your Complaint ID
-                </span>
-
-                <strong id="successComplaintId">
-                    Loading...
-                </strong>
-
-            </div>
-
-
-            <p class="save-note">
-                Please save this Complaint ID.
-                You can use it later to track the status
-                of your complaint.
-            </p>
-
-
-            <div class="success-actions">
-
-                <a href="track.html"
-                   class="submit-btn">
-
-                    Track Complaint →
-
-                </a>
-
-
-                <a href="index.html"
-                   class="secondary-btn">
-
-                    Back to Home
-
-                </a>
-
-            </div>
-
-        </div>
-
-    </main>
-
-
-    <footer>
-
-        <p>
-            © 2026 VEMU Voice · Student Support Platform
-        </p>
-
-    </footer>
-
-
-    <script src="script.js"></script>
+<script src="script.js"></script>
 
 </body>
-
 </html>
-
