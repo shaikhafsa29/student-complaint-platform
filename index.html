@@ -107,7 +107,9 @@
         </a>
 
 
-        <!-- MODE BUTTON -->
+        <!-- =================================================
+             MODE BUTTON
+        ================================================= -->
 
         <button
             id="appearanceButton"
@@ -119,7 +121,9 @@
         </button>
 
 
-        <!-- THEME MENU -->
+        <!-- =================================================
+             THEME MENU
+        ================================================= -->
 
         <div
             id="themeMenu"
@@ -144,13 +148,17 @@
             </div>
 
 
+            <!-- CAMPUS -->
+
             <button
                 class="theme-option"
                 data-theme="campus"
                 type="button">
 
 
-                <span class="theme-preview campus-preview"></span>
+                <span
+                    class="theme-preview campus-preview">
+                </span>
 
 
                 <span>
@@ -170,13 +178,17 @@
 
 
 
+            <!-- MIDNIGHT -->
+
             <button
                 class="theme-option"
                 data-theme="midnight"
                 type="button">
 
 
-                <span class="theme-preview midnight-preview"></span>
+                <span
+                    class="theme-preview midnight-preview">
+                </span>
 
 
                 <span>
@@ -196,13 +208,17 @@
 
 
 
+            <!-- AURORA -->
+
             <button
                 class="theme-option"
                 data-theme="aurora"
                 type="button">
 
 
-                <span class="theme-preview aurora-preview"></span>
+                <span
+                    class="theme-preview aurora-preview">
+                </span>
 
 
                 <span>
@@ -293,7 +309,9 @@
 
 
 
-    <!-- HERO CARD -->
+    <!-- =====================================================
+         HERO CARD
+    ===================================================== -->
 
     <section class="hero-card">
 
@@ -365,6 +383,8 @@
     <div class="feature-grid">
 
 
+        <!-- FEATURE 1 -->
+
         <article class="feature-card">
 
 
@@ -393,6 +413,8 @@
 
 
 
+        <!-- FEATURE 2 -->
+
         <article class="feature-card">
 
 
@@ -420,6 +442,8 @@
         </article>
 
 
+
+        <!-- FEATURE 3 -->
 
         <article class="feature-card">
 
@@ -473,7 +497,7 @@
 
 
 <!-- =========================================================
-     EXISTING JAVASCRIPT
+     JAVASCRIPT
 ========================================================= -->
 
 <script src="script.js"></script>
@@ -490,19 +514,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     const appearanceButton =
-        document.getElementById("appearanceButton");
+        document.getElementById(
+            "appearanceButton"
+        );
 
 
     const themeMenu =
-        document.getElementById("themeMenu");
+        document.getElementById(
+            "themeMenu"
+        );
 
 
     const themeClose =
-        document.getElementById("themeClose");
+        document.getElementById(
+            "themeClose"
+        );
 
 
     const themeOptions =
-        document.querySelectorAll(".theme-option");
+        document.querySelectorAll(
+            ".theme-option"
+        );
+
+
+    /* =====================================================
+       APPLY THEME
+    ===================================================== */
+
+    function applyTheme(theme) {
+
+        if (
+            theme === "midnight" ||
+            theme === "aurora"
+        ) {
+
+            document.body.setAttribute(
+                "data-theme",
+                theme
+            );
+
+        }
+        else {
+
+            document.body.removeAttribute(
+                "data-theme"
+            );
+
+        }
+
+    }
 
 
     /* =====================================================
@@ -510,39 +570,52 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
 
     const savedTheme =
-        localStorage.getItem("vemuVoiceTheme") || "campus";
+        localStorage.getItem(
+            "vemuVoiceTheme"
+        ) || "campus";
 
 
-    if (savedTheme === "midnight") {
+    applyTheme(savedTheme);
 
-        document.body.setAttribute(
-            "data-theme",
-            "midnight"
+
+    /* =====================================================
+       MARK SELECTED THEME
+    ===================================================== */
+
+    function updateSelectedTheme() {
+
+        const currentTheme =
+            localStorage.getItem(
+                "vemuVoiceTheme"
+            ) || "campus";
+
+
+        themeOptions.forEach(
+            (option) => {
+
+                option.classList.toggle(
+                    "selected",
+                    option.dataset.theme ===
+                        currentTheme
+                );
+
+            }
         );
 
     }
-    else if (savedTheme === "aurora") {
 
-        document.body.setAttribute(
-            "data-theme",
-            "aurora"
-        );
 
-    }
-    else {
-
-        document.body.removeAttribute(
-            "data-theme"
-        );
-
-    }
+    updateSelectedTheme();
 
 
     /* =====================================================
        OPEN MODE MENU
     ===================================================== */
 
-    if (appearanceButton) {
+    if (
+        appearanceButton &&
+        themeMenu
+    ) {
 
         appearanceButton.addEventListener(
             "click",
@@ -550,7 +623,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 event.stopPropagation();
 
-                themeMenu.classList.toggle("show");
+                themeMenu.classList.toggle(
+                    "show"
+                );
 
             }
         );
@@ -562,13 +637,20 @@ document.addEventListener("DOMContentLoaded", () => {
        CLOSE MODE MENU
     ===================================================== */
 
-    if (themeClose) {
+    if (
+        themeClose &&
+        themeMenu
+    ) {
 
         themeClose.addEventListener(
             "click",
-            () => {
+            (event) => {
 
-                themeMenu.classList.remove("show");
+                event.stopPropagation();
+
+                themeMenu.classList.remove(
+                    "show"
+                );
 
             }
         );
@@ -580,78 +662,43 @@ document.addEventListener("DOMContentLoaded", () => {
        CHANGE THEME
     ===================================================== */
 
-    themeOptions.forEach((option) => {
+    themeOptions.forEach(
+        (option) => {
+
+            option.addEventListener(
+                "click",
+                (event) => {
+
+                    event.stopPropagation();
 
 
-        option.addEventListener(
-            "click",
-            () => {
+                    const selectedTheme =
+                        option.dataset.theme;
 
 
-                const selectedTheme =
-                    option.dataset.theme;
+                    applyTheme(
+                        selectedTheme
+                    );
 
 
-                if (selectedTheme === "midnight") {
+                    localStorage.setItem(
+                        "vemuVoiceTheme",
+                        selectedTheme
+                    );
 
-                    document.body.setAttribute(
-                        "data-theme",
-                        "midnight"
+
+                    updateSelectedTheme();
+
+
+                    themeMenu.classList.remove(
+                        "show"
                     );
 
                 }
-                else if (selectedTheme === "aurora") {
-
-                    document.body.setAttribute(
-                        "data-theme",
-                        "aurora"
-                    );
-
-                }
-                else {
-
-                    document.body.removeAttribute(
-                        "data-theme"
-                    );
-
-                }
-
-
-                localStorage.setItem(
-                    "vemuVoiceTheme",
-                    selectedTheme
-                );
-
-
-                themeOptions.forEach(
-                    item => item.classList.remove("selected")
-                );
-
-
-                option.classList.add("selected");
-
-
-                themeMenu.classList.remove("show");
-
-            }
-        );
-
-    });
-
-
-    /* =====================================================
-       MARK CURRENT THEME
-    ===================================================== */
-
-    themeOptions.forEach((option) => {
-
-        if (option.dataset.theme === savedTheme) {
-
-            option.classList.add("selected");
+            );
 
         }
-
-    });
+    );
 
 
     /* =====================================================
@@ -664,11 +711,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (
                 themeMenu &&
-                !themeMenu.contains(event.target) &&
-                !appearanceButton.contains(event.target)
+                appearanceButton &&
+                !themeMenu.contains(
+                    event.target
+                ) &&
+                !appearanceButton.contains(
+                    event.target
+                )
             ) {
 
-                themeMenu.classList.remove("show");
+                themeMenu.classList.remove(
+                    "show"
+                );
 
             }
 
