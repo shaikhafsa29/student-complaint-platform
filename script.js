@@ -1,6 +1,148 @@
+javascript
 document.addEventListener("DOMContentLoaded", () => {
 
-    const API_BASE = "http://127.0.0.1:5000";
+    /* =========================================================
+       API BASE
+       Local VS Code  -> Flask on port 5000
+       Railway        -> same website/server
+    ========================================================= */
+
+    const API_BASE =
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1"
+            ? "http://127.0.0.1:5000"
+            : "";
+
+
+    /* =========================================================
+       STUDENT LOGIN
+    ========================================================= */
+
+    const studentLoginForm =
+        document.getElementById("studentLoginForm");
+
+    if (studentLoginForm) {
+
+        const rollNumberInput =
+            document.getElementById("studentRollNumber");
+
+        const studentLoginError =
+            document.getElementById("studentLoginError");
+
+
+        studentLoginForm.addEventListener(
+            "submit",
+            async (event) => {
+
+                event.preventDefault();
+
+                const rollNumber =
+                    rollNumberInput.value.trim().toUpperCase();
+
+
+                if (!rollNumber) {
+
+                    studentLoginError.textContent =
+                        "Please enter your Roll Number.";
+
+                    studentLoginError.classList.remove("hidden");
+
+                    return;
+                }
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            `${API_BASE}/api/student/login`,
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body: JSON.stringify({
+                                    roll_no: rollNumber
+                                })
+                            }
+                        );
+
+
+                    const result =
+                        await response.json();
+
+
+                    if (!response.ok || !result.success) {
+
+                        throw new Error(
+                            result.message ||
+                            "Login failed."
+                        );
+                    }
+
+
+                    sessionStorage.setItem(
+                        "studentRollNumber",
+                        rollNumber
+                    );
+
+
+                    window.location.href =
+                        "index.html";
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Student login error:",
+                        error
+                    );
+
+                    studentLoginError.textContent =
+                        error.message ||
+                        "Unable to connect to the server.";
+
+                    studentLoginError.classList.remove(
+                        "hidden"
+                    );
+                }
+            }
+        );
+    }
+
+
+    /* =========================================================
+       PROTECT STUDENT PAGES
+    ========================================================= */
+
+    const currentPage =
+        window.location.pathname
+            .split("/")
+            .pop();
+
+
+    const studentPages = [
+        "index.html",
+        "contact.html",
+        "track.html",
+        "success.html",
+        "about.html"
+    ];
+
+
+    if (
+        studentPages.includes(currentPage) &&
+        !sessionStorage.getItem("studentRollNumber")
+    ) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+    }
 
 
     /* =========================================================
@@ -19,12 +161,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const charCount =
             document.getElementById("charCount");
 
-        const successBox =
-            document.getElementById("successBox");
-
-        const complaintIdElement =
-            document.getElementById("complaintId");
-
 
         if (message && charCount) {
 
@@ -37,7 +173,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 }
             );
-
         }
 
 
@@ -48,20 +183,53 @@ document.addEventListener("DOMContentLoaded", () => {
                 event.preventDefault();
 
 
+                const rollNumber =
+                    sessionStorage.getItem(
+                        "studentRollNumber"
+                    );
+
+
+                if (!rollNumber) {
+
+                    window.location.href =
+                        "login.html";
+
+                    return;
+                }
+
+
                 const year =
-                    document.getElementById(
-                        "year"
-                    ).value;
+                    document
+                        .getElementById("year")
+                        .value
+                        .trim();
+
 
                 const branch =
-                    document.getElementById(
-                        "branch"
-                    ).value;
+                    document
+                        .getElementById("branch")
+                        .value
+                        .trim();
+
 
                 const category =
+                    document
+                        .getElementById("category")
+                        .value
+                        .trim();
+
+
+                const recipientElement =
                     document.getElementById(
-                        "category"
-                    ).value;
+                        "recipient"
+                    );
+
+
+                const recipient =
+                    recipientElement
+                        ? recipientElement.value.trim()
+                        : "";
+
 
                 const complaintMessage =
                     message.value.trim();
@@ -88,11 +256,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
 
-                submitButton.disabled =
-                    true;
+                if (submitButton) {
 
-                submitButton.textContent =
-                    "Submitting...";
+                    submitButton.disabled =
+                        true;
+
+                    submitButton.textContent =
+                        "Submitting...";
+                }
 
 
                 try {
@@ -108,14 +279,26 @@ document.addEventListener("DOMContentLoaded", () => {
                                         "application/json"
                                 },
 
-                                body:
-                                    JSON.stringify({
+                                body: JSON.stringify({
+
+                                    roll_no:
+                                        rollNumber,
+
+                                    year:
                                         year,
+
+                                    branch:
                                         branch,
+
+                                    category:
                                         category,
-                                        message:
-                                            complaintMessage
-                                    })
+
+                                    recipient:
+                                        recipient,
+
+                                    message:
+                                        complaintMessage
+                                })
                             }
                         );
 
@@ -133,55 +316,48 @@ document.addEventListener("DOMContentLoaded", () => {
                             result.message ||
                             "Failed to submit complaint."
                         );
-
                     }
 
 
-                    if (complaintIdElement) {
+                    /* SAVE COMPLAINT ID */
 
-                        complaintIdElement.textContent =
-                            result.complaint_id;
-
-                    }
-
-
-                    complaintForm.style.display =
-                        "none";
+                    sessionStorage.setItem(
+                        "complaintId",
+                        result.complaint_id
+                    );
 
 
-                    if (successBox) {
+                    /* GO TO SUCCESS PAGE */
 
-                        successBox.style.display =
-                            "block";
-
-                    }
+                    window.location.href =
+                        "success.html";
 
 
                 } catch (error) {
 
                     console.error(
-                        "Submission error:",
+                        "Complaint submission error:",
                         error
                     );
 
 
                     alert(
                         error.message ||
-                        "Something went wrong. Please make sure the backend is running."
+                        "Failed to fetch. Please check the server connection."
                     );
 
 
-                    submitButton.disabled =
-                        false;
+                    if (submitButton) {
 
-                    submitButton.textContent =
-                        "Submit Complaint →";
+                        submitButton.disabled =
+                            false;
 
+                        submitButton.textContent =
+                            "Submit Complaint →";
+                    }
                 }
-
             }
         );
-
     }
 
 
@@ -200,34 +376,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 "trackComplaintId"
             );
 
+
         const trackingResult =
             document.getElementById(
                 "trackingResult"
             );
 
+
         const trackingError =
             document.getElementById(
                 "trackingError"
-            );
-
-        const resultComplaintId =
-            document.getElementById(
-                "resultComplaintId"
-            );
-
-        const resultCategory =
-            document.getElementById(
-                "resultCategory"
-            );
-
-        const resultStatus =
-            document.getElementById(
-                "resultStatus"
-            );
-
-        const resultDate =
-            document.getElementById(
-                "resultDate"
             );
 
 
@@ -263,19 +421,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
-                const trackButton =
-                    trackForm.querySelector(
-                        ".submit-btn"
-                    );
-
-
-                trackButton.disabled =
-                    true;
-
-                trackButton.textContent =
-                    "Searching...";
-
-
                 try {
 
                     const response =
@@ -305,100 +450,35 @@ document.addEventListener("DOMContentLoaded", () => {
                         result.complaint;
 
 
-                    resultComplaintId.textContent =
+                    document.getElementById(
+                        "resultComplaintId"
+                    ).textContent =
                         complaint.complaint_id;
 
 
-                    resultCategory.textContent =
+                    document.getElementById(
+                        "resultCategory"
+                    ).textContent =
                         complaint.category;
 
 
-                    resultStatus.textContent =
+                    document.getElementById(
+                        "resultStatus"
+                    ).textContent =
                         complaint.status;
 
 
-                    const statusMessage =
+                    const resultDate =
                         document.getElementById(
-                            "statusMessage"
+                            "resultDate"
                         );
 
 
-                    if (statusMessage) {
+                    if (resultDate) {
 
-                        if (
-                            complaint.status ===
-                            "Submitted"
-                        ) {
-
-                            statusMessage.textContent =
-                                "Your complaint has been submitted successfully and is waiting for review.";
-
-                        }
-
-                        else if (
-                            complaint.status ===
-                            "Under Review"
-                        ) {
-
-                            statusMessage.textContent =
-                                "Your complaint is currently being reviewed by the administration.";
-
-                        }
-
-                        else if (
-                            complaint.status ===
-                            "In Progress"
-                        ) {
-
-                            statusMessage.textContent =
-                                "Action is currently being taken regarding your complaint.";
-
-                        }
-
-                        else if (
-                            complaint.status ===
-                            "Resolved"
-                        ) {
-
-                            statusMessage.textContent =
-                                "Your complaint has been resolved.";
-
-                        }
-
-                        else {
-
-                            statusMessage.textContent =
-                                "Your complaint status has been updated.";
-
-                        }
-
+                        resultDate.textContent =
+                            complaint.created_at;
                     }
-
-
-                    const date =
-                        new Date(
-                            complaint.created_at.replace(
-                                " ",
-                                "T"
-                            )
-                        );
-
-
-                    resultDate.textContent =
-                        date.toLocaleString(
-                            "en-IN",
-                            {
-                                day: "numeric",
-
-                                month: "short",
-
-                                year: "numeric",
-
-                                hour: "numeric",
-
-                                minute: "2-digit"
-                            }
-                        );
 
 
                     trackingResult.classList.remove(
@@ -413,25 +493,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         error
                     );
 
-
                     trackingError.classList.remove(
                         "hidden"
                     );
-
-
-                } finally {
-
-                    trackButton.disabled =
-                        false;
-
-                    trackButton.textContent =
-                        "Track Status 🔍";
-
                 }
-
             }
         );
-
     }
 
 
@@ -452,10 +519,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 "adminUsername"
             );
 
+
         const adminPassword =
             document.getElementById(
                 "adminPassword"
             );
+
 
         const loginError =
             document.getElementById(
@@ -468,24 +537,6 @@ document.addEventListener("DOMContentLoaded", () => {
             async (event) => {
 
                 event.preventDefault();
-
-
-                loginError.classList.add(
-                    "hidden"
-                );
-
-
-                const loginButton =
-                    adminLoginForm.querySelector(
-                        ".submit-btn"
-                    );
-
-
-                loginButton.disabled =
-                    true;
-
-                loginButton.textContent =
-                    "Logging in...";
 
 
                 try {
@@ -501,14 +552,14 @@ document.addEventListener("DOMContentLoaded", () => {
                                         "application/json"
                                 },
 
-                                body:
-                                    JSON.stringify({
-                                        username:
-                                            adminUsername.value.trim(),
+                                body: JSON.stringify({
 
-                                        password:
-                                            adminPassword.value
-                                    })
+                                    username:
+                                        adminUsername.value.trim(),
+
+                                    password:
+                                        adminPassword.value
+                                })
                             }
                         );
 
@@ -524,9 +575,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         throw new Error(
                             result.message ||
-                            "Invalid username or password"
+                            "Invalid username or password."
                         );
-
                     }
 
 
@@ -542,35 +592,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 } catch (error) {
 
-                    console.error(
-                        "Admin login error:",
-                        error
-                    );
-
-
                     loginError.textContent =
                         error.message ||
-                        "Login failed. Please try again.";
-
+                        "Unable to connect to the server.";
 
                     loginError.classList.remove(
                         "hidden"
                     );
-
-
-                } finally {
-
-                    loginButton.disabled =
-                        false;
-
-                    loginButton.textContent =
-                        "Login to Dashboard →";
-
                 }
-
             }
         );
-
     }
 
 
@@ -586,11 +617,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (complaintsContainer) {
 
-
-        /* =====================================================
-           LOGIN CHECK
-        ===================================================== */
-
         if (
             sessionStorage.getItem(
                 "adminLoggedIn"
@@ -604,44 +630,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /* =====================================================
-           DASHBOARD ELEMENTS
-        ===================================================== */
-
-        const totalComplaints =
-            document.getElementById(
-                "totalComplaints"
-            );
-
-        const submittedCount =
-            document.getElementById(
-                "submittedCount"
-            );
-
-        const reviewCount =
-            document.getElementById(
-                "reviewCount"
-            );
-
-        const resolvedCount =
-            document.getElementById(
-                "resolvedCount"
-            );
-
         const refreshButton =
             document.getElementById(
                 "refreshComplaints"
             );
 
-        const searchComplaint =
-            document.getElementById(
-                "searchComplaint"
-            );
-
-        const statusFilter =
-            document.getElementById(
-                "statusFilter"
-            );
 
         const logoutButton =
             document.getElementById(
@@ -649,161 +642,105 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-        /* =====================================================
-           MODAL ELEMENTS
-        ===================================================== */
-
         const complaintModal =
             document.getElementById(
                 "complaintModal"
             );
+
 
         const closeModal =
             document.getElementById(
                 "closeModal"
             );
 
-        const modalComplaintId =
-            document.getElementById(
-                "modalComplaintId"
-            );
-
-        const modalYear =
-            document.getElementById(
-                "modalYear"
-            );
-
-        const modalBranch =
-            document.getElementById(
-                "modalBranch"
-            );
-
-        const modalCategory =
-            document.getElementById(
-                "modalCategory"
-            );
-
-        const modalStatus =
-            document.getElementById(
-                "modalStatus"
-            );
-
-        const modalDate =
-            document.getElementById(
-                "modalDate"
-            );
-
-        const modalMessage =
-            document.getElementById(
-                "modalMessage"
-            );
-
-
-        const statusSelect =
-            document.getElementById(
-                "statusSelect"
-            );
 
         const updateStatusButton =
             document.getElementById(
                 "updateStatusButton"
             );
 
-        const statusUpdateMessage =
+
+        const searchComplaint =
             document.getElementById(
-                "statusUpdateMessage"
+                "searchComplaint"
             );
 
 
-        let selectedComplaintId =
-            null;
+        const statusFilter =
+            document.getElementById(
+                "statusFilter"
+            );
 
-
-        /* =====================================================
-           STORE COMPLAINTS
-        ===================================================== */
 
         let allComplaints = [];
 
+        let currentComplaintId = null;
 
-        /* =====================================================
-           FORMAT DATE
-        ===================================================== */
 
-        function formatDate(
-            dateString
-        ) {
+        async function loadComplaints() {
 
-            const date =
-                new Date(
-                    dateString.replace(
-                        " ",
-                        "T"
-                    )
+            complaintsContainer.innerHTML =
+                `<tr>
+                    <td colspan="8">
+                        Loading complaints...
+                    </td>
+                </tr>`;
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_BASE}/api/complaints`
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !result.success
+                ) {
+
+                    throw new Error(
+                        "Failed to load complaints."
+                    );
+                }
+
+
+                allComplaints =
+                    result.complaints;
+
+
+                renderComplaints(
+                    allComplaints
                 );
 
 
-            return date.toLocaleString(
-                "en-IN",
-                {
-                    day: "numeric",
+                updateStatistics();
 
-                    month: "short",
 
-                    year: "numeric",
+            } catch (error) {
 
-                    hour: "numeric",
+                console.error(
+                    "Admin dashboard error:",
+                    error
+                );
 
-                    minute: "2-digit"
-                }
-            );
 
+                complaintsContainer.innerHTML =
+                    `<tr>
+                        <td colspan="8">
+                            Unable to load complaints.
+                        </td>
+                    </tr>`;
+            }
         }
 
 
-        /* =====================================================
-           UPDATE STATISTICS
-        ===================================================== */
-
-        function updateStatistics(
-            complaints
-        ) {
-
-            totalComplaints.textContent =
-                complaints.length;
-
-
-            submittedCount.textContent =
-                complaints.filter(
-                    complaint =>
-                        complaint.status ===
-                        "Submitted"
-                ).length;
-
-
-            reviewCount.textContent =
-                complaints.filter(
-                    complaint =>
-                        complaint.status ===
-                        "Under Review"
-                ).length;
-
-
-            resolvedCount.textContent =
-                complaints.filter(
-                    complaint =>
-                        complaint.status ===
-                        "Resolved"
-                ).length;
-
-        }
-
-
-        /* =====================================================
-           DISPLAY COMPLAINTS
-        ===================================================== */
-
-        function displayComplaints(
+        function renderComplaints(
             complaints
         ) {
 
@@ -811,20 +748,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 "";
 
 
-            if (
-                complaints.length === 0
-            ) {
+            if (complaints.length === 0) {
 
-                complaintsContainer.innerHTML = `
-                    <tr>
-                        <td
-                            colspan="6"
-                            class="empty-table"
-                        >
+                complaintsContainer.innerHTML =
+                    `<tr>
+                        <td colspan="8">
                             No complaints found.
                         </td>
-                    </tr>
-                `;
+                    </tr>`;
 
                 return;
             }
@@ -839,274 +770,83 @@ document.addEventListener("DOMContentLoaded", () => {
                         );
 
 
-                    let statusClass =
-                        "submitted";
-
-
-                    if (
-                        complaint.status ===
-                        "Under Review"
-                    ) {
-
-                        statusClass =
-                            "review";
-
-                    }
-
-
-                    if (
-                        complaint.status ===
-                        "In Progress"
-                    ) {
-
-                        statusClass =
-                            "progress";
-
-                    }
-
-
-                    if (
-                        complaint.status ===
-                        "Resolved"
-                    ) {
-
-                        statusClass =
-                            "resolved";
-
-                    }
-
-
                     row.innerHTML = `
 
                         <td>
-
-                            <strong
-                                class="complaint-id-cell"
-                            >
-                                ${complaint.complaint_id}
-                            </strong>
-
+                            ${complaint.complaint_id}
                         </td>
-
 
                         <td>
-
-                            ${complaint.year}
-
-                            <br>
-
-                            <span
-                                class="branch-text"
-                            >
-                                ${complaint.branch}
-                            </span>
-
+                            ${complaint.roll_no || "-"}
                         </td>
 
+                        <td>
+                            ${complaint.year}/${complaint.branch}
+                        </td>
 
                         <td>
                             ${complaint.category}
                         </td>
 
-
                         <td>
-
-                            <span
-                                class="status-badge ${statusClass}"
-                            >
-                                ${complaint.status}
-                            </span>
-
+                            ${complaint.recipient || "-"}
                         </td>
 
-
                         <td>
-                            ${formatDate(
-                                complaint.created_at
-                            )}
+                            ${complaint.status}
                         </td>
 
+                        <td>
+                            ${complaint.created_at}
+                        </td>
 
                         <td>
 
                             <button
                                 class="view-btn"
-                                data-id="${complaint.complaint_id}"
-                            >
+                                data-id="${complaint.complaint_id}">
                                 View
                             </button>
 
                         </td>
-
                     `;
 
 
                     complaintsContainer.appendChild(
                         row
                     );
-
                 }
             );
 
-        }
 
+            document
+                .querySelectorAll(".view-btn")
+                .forEach(
+                    (button) => {
 
-        /* =====================================================
-           SEARCH + FILTER
-        ===================================================== */
+                        button.addEventListener(
+                            "click",
+                            () => {
 
-        function filterComplaints() {
-
-            const searchValue =
-                searchComplaint.value
-                    .trim()
-                    .toUpperCase();
-
-
-            const selectedStatus =
-                statusFilter.value;
-
-
-            const filteredComplaints =
-                allComplaints.filter(
-                    (complaint) => {
-
-                        const matchesSearch =
-                            complaint.complaint_id
-                                .toUpperCase()
-                                .includes(
-                                    searchValue
+                                openComplaintModal(
+                                    button.dataset.id
                                 );
-
-
-                        const matchesStatus =
-                            selectedStatus ===
-                                "All" ||
-                            complaint.status ===
-                                selectedStatus;
-
-
-                        return (
-                            matchesSearch &&
-                            matchesStatus
+                            }
                         );
-
                     }
                 );
-
-
-            displayComplaints(
-                filteredComplaints
-            );
-
         }
 
 
-        /* =====================================================
-           OPEN MODAL
-        ===================================================== */
-
-        function openComplaintModal(
-            complaint
-        ) {
-
-            if (!complaint) {
-
-                console.error(
-                    "Complaint not found."
-                );
-
-                return;
-            }
-
-
-            selectedComplaintId =
-                complaint.complaint_id;
-
-
-            modalComplaintId.textContent =
-                complaint.complaint_id;
-
-
-            modalYear.textContent =
-                complaint.year;
-
-
-            modalBranch.textContent =
-                complaint.branch;
-
-
-            modalCategory.textContent =
-                complaint.category;
-
-
-            modalStatus.textContent =
-                complaint.status;
-
-
-            modalDate.textContent =
-                formatDate(
-                    complaint.created_at
-                );
-
-
-            modalMessage.textContent =
-                complaint.message;
-
-
-            if (statusSelect) {
-
-                statusSelect.value =
-                    complaint.status;
-
-            }
-
-
-            if (statusUpdateMessage) {
-
-                statusUpdateMessage.textContent =
-                    "";
-
-            }
-
-
-            complaintModal.classList.add(
-                "show"
-            );
-
-        }
-
-
-        /* =====================================================
-           VIEW COMPLAINT
-           
-           Submitted → Under Review
-        ===================================================== */
-
-        async function viewComplaint(
-            complaintId,
-            viewButton
+        async function openComplaintModal(
+            complaintId
         ) {
 
             try {
 
-                if (viewButton) {
-
-                    viewButton.disabled =
-                        true;
-
-                    viewButton.textContent =
-                        "Opening...";
-
-                }
-
-
                 const response =
                     await fetch(
-                        `${API_BASE}/api/admin/complaints/${complaintId}/view`,
-                        {
-                            method: "POST"
-                        }
+                        `${API_BASE}/api/complaints/${complaintId}`
                     );
 
 
@@ -1121,78 +861,115 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     throw new Error(
                         result.message ||
-                        "Unable to open complaint."
+                        "Unable to load complaint."
                     );
-
                 }
 
 
-                const updatedComplaint =
+                const complaint =
                     result.complaint;
 
 
-                const index =
-                    allComplaints.findIndex(
-                        complaint =>
-                            complaint.complaint_id ===
-                            complaintId
+                currentComplaintId =
+                    complaint.complaint_id;
+
+
+                document.getElementById(
+                    "modalComplaintId"
+                ).textContent =
+                    complaint.complaint_id;
+
+
+                const modalRollNo =
+                    document.getElementById(
+                        "modalRollNo"
                     );
 
 
-                if (index !== -1) {
+                if (modalRollNo) {
 
-                    allComplaints[index] =
-                        updatedComplaint;
-
+                    modalRollNo.textContent =
+                        complaint.roll_no || "-";
                 }
 
 
-                updateStatistics(
-                    allComplaints
-                );
+                document.getElementById(
+                    "modalYear"
+                ).textContent =
+                    complaint.year;
 
 
-                filterComplaints();
+                document.getElementById(
+                    "modalBranch"
+                ).textContent =
+                    complaint.branch;
 
 
-                openComplaintModal(
-                    updatedComplaint
+                document.getElementById(
+                    "modalCategory"
+                ).textContent =
+                    complaint.category;
+
+
+                document.getElementById(
+                    "modalRecipient"
+                ).textContent =
+                    complaint.recipient ||
+                    "Not specified";
+
+
+                document.getElementById(
+                    "modalDate"
+                ).textContent =
+                    complaint.created_at;
+
+
+                document.getElementById(
+                    "modalStatus"
+                ).textContent =
+                    complaint.status;
+
+
+                document.getElementById(
+                    "statusSelect"
+                ).value =
+                    complaint.status;
+
+
+                document.getElementById(
+                    "modalMessage"
+                ).textContent =
+                    complaint.message;
+
+
+                complaintModal.classList.add(
+                    "show"
                 );
 
 
             } catch (error) {
 
-                console.error(
-                    "View complaint error:",
-                    error
-                );
-
-
                 alert(
                     error.message ||
-                    "Unable to open complaint."
+                    "Unable to load complaint details."
                 );
-
-            } finally {
-
-                if (viewButton) {
-
-                    viewButton.disabled =
-                        false;
-
-                    viewButton.textContent =
-                        "View";
-
-                }
-
             }
-
         }
 
 
-        /* =====================================================
-           UPDATE STATUS
-        ===================================================== */
+        if (closeModal) {
+
+            closeModal.addEventListener(
+                "click",
+                () => {
+
+                    complaintModal.classList.remove(
+                        "show"
+                    );
+                }
+            );
+        }
+
 
         if (updateStatusButton) {
 
@@ -1200,36 +977,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 "click",
                 async () => {
 
-                    if (!selectedComplaintId) {
-
-                        alert(
-                            "No complaint selected."
-                        );
-
+                    if (!currentComplaintId) {
                         return;
                     }
 
 
-                    const newStatus =
-                        statusSelect.value;
-
-
-                    updateStatusButton.disabled =
-                        true;
-
-                    updateStatusButton.textContent =
-                        "Updating...";
-
-
-                    statusUpdateMessage.textContent =
-                        "";
+                    const status =
+                        document.getElementById(
+                            "statusSelect"
+                        ).value;
 
 
                     try {
 
                         const response =
                             await fetch(
-                                `${API_BASE}/api/admin/complaints/${selectedComplaintId}/status`,
+                                `${API_BASE}/api/complaints/${currentComplaintId}/status`,
                                 {
                                     method: "PUT",
 
@@ -1238,11 +1001,9 @@ document.addEventListener("DOMContentLoaded", () => {
                                             "application/json"
                                     },
 
-                                    body:
-                                        JSON.stringify({
-                                            status:
-                                                newStatus
-                                        })
+                                    body: JSON.stringify({
+                                        status: status
+                                    })
                                 }
                             );
 
@@ -1260,188 +1021,162 @@ document.addEventListener("DOMContentLoaded", () => {
                                 result.message ||
                                 "Failed to update status."
                             );
-
                         }
 
 
-                        const updatedComplaint =
-                            result.complaint;
+                        document.getElementById(
+                            "modalStatus"
+                        ).textContent =
+                            status;
 
 
-                        const index =
-                            allComplaints.findIndex(
-                                complaint =>
-                                    complaint.complaint_id ===
-                                    selectedComplaintId
-                            );
-
-
-                        if (index !== -1) {
-
-                            allComplaints[index] =
-                                updatedComplaint;
-
-                        }
-
-
-                        modalStatus.textContent =
-                            updatedComplaint.status;
-
-
-                        statusSelect.value =
-                            updatedComplaint.status;
-
-
-                        updateStatistics(
-                            allComplaints
-                        );
-
-
-                        filterComplaints();
-
-
-                        statusUpdateMessage.textContent =
-                            "✓ Status updated successfully";
+                        await loadComplaints();
 
 
                     } catch (error) {
 
-                        console.error(
-                            "Status update error:",
-                            error
-                        );
-
-
-                        statusUpdateMessage.textContent =
+                        alert(
                             error.message ||
-                            "Failed to update status.";
-
-                    } finally {
-
-                        updateStatusButton.disabled =
-                            false;
-
-                        updateStatusButton.textContent =
-                            "✓ Update Status";
-
+                            "Failed to update status."
+                        );
                     }
-
                 }
             );
-
         }
 
 
-        /* =====================================================
-           VIEW BUTTON EVENT
-        ===================================================== */
+        function applyFilters() {
 
-        complaintsContainer.addEventListener(
-            "click",
-            (event) => {
-
-                const viewButton =
-                    event.target.closest(
-                        ".view-btn"
-                    );
+            const searchValue =
+                searchComplaint
+                    ? searchComplaint.value
+                        .trim()
+                        .toUpperCase()
+                    : "";
 
 
-                if (!viewButton) {
-                    return;
-                }
+            const selectedStatus =
+                statusFilter
+                    ? statusFilter.value
+                    : "All";
 
 
-                const complaintId =
-                    viewButton.dataset.id;
+            const filteredComplaints =
+                allComplaints.filter(
+                    (complaint) => {
+
+                        const matchesSearch =
+                            complaint.complaint_id
+                                .toUpperCase()
+                                .includes(
+                                    searchValue
+                                );
 
 
-                viewComplaint(
-                    complaintId,
-                    viewButton
+                        const matchesStatus =
+                            selectedStatus === "All" ||
+                            complaint.status ===
+                                selectedStatus;
+
+
+                        return (
+                            matchesSearch &&
+                            matchesStatus
+                        );
+                    }
                 );
 
-            }
-        );
 
-
-        /* =====================================================
-           CLOSE MODAL
-        ===================================================== */
-
-        if (closeModal) {
-
-            closeModal.addEventListener(
-                "click",
-                () => {
-
-                    complaintModal.classList.remove(
-                        "show"
-                    );
-
-                }
+            renderComplaints(
+                filteredComplaints
             );
-
         }
 
-
-        /* =====================================================
-           CLOSE MODAL OUTSIDE
-        ===================================================== */
-
-        if (complaintModal) {
-
-            complaintModal.addEventListener(
-                "click",
-                (event) => {
-
-                    if (
-                        event.target ===
-                        complaintModal
-                    ) {
-
-                        complaintModal.classList.remove(
-                            "show"
-                        );
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        /* =====================================================
-           SEARCH
-        ===================================================== */
 
         if (searchComplaint) {
 
             searchComplaint.addEventListener(
                 "input",
-                filterComplaints
+                applyFilters
             );
-
         }
 
-
-        /* =====================================================
-           STATUS FILTER
-        ===================================================== */
 
         if (statusFilter) {
 
             statusFilter.addEventListener(
                 "change",
-                filterComplaints
+                applyFilters
             );
-
         }
 
 
-        /* =====================================================
-           REFRESH
-        ===================================================== */
+        function updateStatistics() {
+
+            const totalComplaints =
+                document.getElementById(
+                    "totalComplaints"
+                );
+
+
+            const submittedCount =
+                document.getElementById(
+                    "submittedCount"
+                );
+
+
+            const reviewCount =
+                document.getElementById(
+                    "reviewCount"
+                );
+
+
+            const resolvedCount =
+                document.getElementById(
+                    "resolvedCount"
+                );
+
+
+            if (totalComplaints) {
+
+                totalComplaints.textContent =
+                    allComplaints.length;
+            }
+
+
+            if (submittedCount) {
+
+                submittedCount.textContent =
+                    allComplaints.filter(
+                        (c) =>
+                            c.status ===
+                            "Submitted"
+                    ).length;
+            }
+
+
+            if (reviewCount) {
+
+                reviewCount.textContent =
+                    allComplaints.filter(
+                        (c) =>
+                            c.status ===
+                            "Under Review"
+                    ).length;
+            }
+
+
+            if (resolvedCount) {
+
+                resolvedCount.textContent =
+                    allComplaints.filter(
+                        (c) =>
+                            c.status ===
+                            "Resolved"
+                    ).length;
+            }
+        }
+
 
         if (refreshButton) {
 
@@ -1449,13 +1184,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 "click",
                 loadComplaints
             );
-
         }
 
-
-        /* =====================================================
-           LOGOUT
-        ===================================================== */
 
         if (logoutButton) {
 
@@ -1470,91 +1200,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     window.location.href =
                         "admin-login.html";
-
                 }
             );
-
         }
 
-
-        /* =====================================================
-           LOAD COMPLAINTS
-        ===================================================== */
-
-        async function loadComplaints() {
-
-            complaintsContainer.innerHTML = `
-                <tr>
-                    <td
-                        colspan="6"
-                        class="empty-table"
-                    >
-                        Loading complaints...
-                    </td>
-                </tr>
-            `;
-
-
-            try {
-
-                const response =
-                    await fetch(
-                        `${API_BASE}/api/complaints`
-                    );
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        "Failed to load complaints"
-                    );
-
-                }
-
-
-                allComplaints =
-                    await response.json();
-
-
-                updateStatistics(
-                    allComplaints
-                );
-
-
-                filterComplaints();
-
-
-            } catch (error) {
-
-                console.error(
-                    "Dashboard error:",
-                    error
-                );
-
-
-                complaintsContainer.innerHTML = `
-                    <tr>
-                        <td
-                            colspan="6"
-                            class="empty-table"
-                        >
-                            Unable to load complaints.
-                            Make sure Flask is running.
-                        </td>
-                    </tr>
-                `;
-
-            }
-
-        }
-
-
-        /* =====================================================
-           INITIAL LOAD
-        ===================================================== */
 
         loadComplaints();
-
     }
 
 });
+
