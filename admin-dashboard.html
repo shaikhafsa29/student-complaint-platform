@@ -33,8 +33,15 @@
         </div>
 
         <div>
-            <h2>VemuVoice</h2>
-            <span>Admin Panel</span>
+
+            <h2>
+                VemuVoice
+            </h2>
+
+            <span>
+                Admin Panel
+            </span>
+
         </div>
 
     </div>
@@ -45,7 +52,7 @@
         <a href="admin-dashboard.html"
            class="nav-item active">
 
-            <span>▦</span>
+            <span>📊</span>
 
             Dashboard
 
@@ -55,7 +62,7 @@
         <a href="index.html"
            class="nav-item">
 
-            <span>⌂</span>
+            <span>🏠</span>
 
             Main Website
 
@@ -92,14 +99,14 @@
             id="logoutButton"
             class="logout-btn">
 
-            Logout
+            🚪 Logout
 
         </button>
-
 
     </div>
 
 </aside>
+
 
 
 <!-- =========================================================
@@ -108,6 +115,8 @@
 
 <main class="main-content">
 
+
+    <!-- TOPBAR -->
 
     <header class="topbar">
 
@@ -132,11 +141,12 @@
             id="refreshComplaints"
             class="refresh-btn">
 
-            Refresh
+            🔄 Refresh
 
         </button>
 
     </header>
+
 
 
     <!-- =====================================================
@@ -149,7 +159,7 @@
         <div class="stat-card">
 
             <div class="stat-icon total">
-                #
+                📋
             </div>
 
             <div>
@@ -170,7 +180,7 @@
         <div class="stat-card">
 
             <div class="stat-icon submitted">
-                1
+                🟡
             </div>
 
             <div>
@@ -191,7 +201,7 @@
         <div class="stat-card">
 
             <div class="stat-icon review">
-                2
+                🔵
             </div>
 
             <div>
@@ -212,7 +222,7 @@
         <div class="stat-card">
 
             <div class="stat-icon resolved">
-                ✓
+                🟢
             </div>
 
             <div>
@@ -233,6 +243,7 @@
     </section>
 
 
+
     <!-- =====================================================
          COMPLAINT SECTION
     ===================================================== -->
@@ -242,17 +253,13 @@
 
         <div class="section-header">
 
-            <div>
+            <h2>
+                All Complaints
+            </h2>
 
-                <h2>
-                    All Complaints
-                </h2>
-
-                <p>
-                    Review and manage submitted complaints.
-                </p>
-
-            </div>
+            <p>
+                Review and manage submitted complaints.
+            </p>
 
         </div>
 
@@ -265,7 +272,7 @@
             <div class="search-box">
 
                 <span>
-                    Search
+                    🔍
                 </span>
 
                 <input
@@ -310,8 +317,8 @@
 
             </div>
 
-
         </div>
+
 
 
         <!-- =================================================
@@ -379,7 +386,6 @@
 
                 </tbody>
 
-
             </table>
 
         </div>
@@ -391,19 +397,20 @@
 </main>
 
 
+
 <!-- =========================================================
      COMPLAINT MODAL
 ========================================================= -->
 
-<div
-    id="complaintModal"
-    class="modal">
+<div id="complaintModal"
+     class="modal">
 
 
     <div class="modal-content">
 
 
         <div class="modal-header">
+
 
             <div>
 
@@ -429,7 +436,8 @@
         </div>
 
 
-        <!-- COMPLAINT INFORMATION -->
+
+        <!-- INFORMATION -->
 
         <div class="complaint-info-grid">
 
@@ -515,7 +523,8 @@
         </div>
 
 
-        <!-- STATUS MANAGEMENT -->
+
+        <!-- STATUS -->
 
         <div class="status-management">
 
@@ -538,6 +547,7 @@
                 <label for="statusSelect">
                     Change Status
                 </label>
+
 
                 <select id="statusSelect">
 
@@ -564,7 +574,7 @@
                     id="updateStatusButton"
                     class="update-status-btn">
 
-                    Update Status
+                    ✓ Update Status
 
                 </button>
 
@@ -576,8 +586,8 @@
 
             </div>
 
-
         </div>
+
 
 
         <!-- DESCRIPTION -->
@@ -598,6 +608,7 @@
     </div>
 
 </div>
+
 
 
 <script src="script.js"></script>
