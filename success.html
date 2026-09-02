@@ -1,8 +1,8 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta name="viewport"
@@ -12,26 +12,20 @@
 
     <link rel="stylesheet"
           href="style.css">
-
 </head>
 
 
 <body>
 
 
-<!-- =========================================================
-     NAVIGATION
-========================================================= -->
+<!-- ================= NAVBAR ================= -->
 
 <nav class="navbar">
 
     <a href="index.html"
        class="logo">
-
         VEMU<span>VOICE</span>
-
     </a>
-
 
     <div class="nav-links">
 
@@ -60,142 +54,95 @@
 </nav>
 
 
+<!-- ================= SUCCESS SECTION ================= -->
 
-<!-- =========================================================
-     SUCCESS PAGE
-========================================================= -->
+<main class="success-page">
 
-<main class="complaint-page">
+    <div class="success-box">
 
+        <div class="success-icon">
+            ✓
+        </div>
 
-    <div class="form-card">
+        <span class="badge">
+            COMPLAINT SUBMITTED
+        </span>
 
+        <h1>
+            Complaint Submitted Successfully!
+        </h1>
 
-        <div class="success-box">
-
-
-            <!-- SUCCESS ICON -->
-
-            <div class="success-icon">
-
-                ✓
-
-            </div>
-
-
-            <!-- SUCCESS TITLE -->
-
-            <h2>
-
-                Complaint Submitted Successfully!
-
-            </h2>
+        <p>
+            Your complaint has been submitted to the
+            selected college authority.
+        </p>
 
 
-            <!-- SUCCESS DESCRIPTION -->
+        <!-- Complaint ID -->
 
-            <p>
+        <div class="complaint-id">
 
-                Thank you for bringing this issue to our attention.
-                Your complaint has been recorded securely.
+            <span>
+                Your Complaint ID
+            </span>
 
-            </p>
-
-
-            <!-- COMPLAINT ID -->
-
-            <div class="complaint-id">
-
-                <span>
-
-                    YOUR COMPLAINT ID
-
-                </span>
-
-
-                <strong id="complaintId">
-
-                    Loading...
-
-                </strong>
-
-            </div>
-
-
-            <!-- SAVE MESSAGE -->
-
-            <p class="save-note">
-
-                Please save this ID to track your complaint.
-
-            </p>
-
-
-            <!-- ACTION BUTTONS -->
-
-            <div class="hero-buttons">
-
-
-                <a href="track.html"
-                   class="primary-btn">
-
-                    Track Complaint →
-
-                </a>
-
-
-                <a href="index.html"
-                   class="secondary-btn">
-
-                    Back to Home
-
-                </a>
-
-
-            </div>
-
+            <strong id="successComplaintId">
+                Loading...
+            </strong>
 
         </div>
 
 
-    </div>
+        <p class="save-note">
+            Please save this Complaint ID.
+            You can use it later to track the status
+            of your complaint.
+        </p>
 
+
+        <!-- Buttons -->
+
+        <div class="success-actions">
+
+            <a href="track.html"
+               class="submit-btn">
+                Track Complaint →
+            </a>
+
+            <a href="index.html"
+               class="secondary-btn">
+                Back to Home
+            </a>
+
+        </div>
+
+    </div>
 
 </main>
 
 
-
-<!-- =========================================================
-     FOOTER
-========================================================= -->
+<!-- ================= FOOTER ================= -->
 
 <footer>
 
     <p>
-
-        © 2026 VEMU Voice • Student Support Platform
-
+        © 2026 VEMU Voice · Student Support Platform
     </p>
 
 </footer>
 
 
-
-<!-- =========================================================
-     JAVASCRIPT
-========================================================= -->
-
-<script src="script.js"></script>
-
+<!-- ================= SCRIPT ================= -->
 
 <script>
+
+document.addEventListener("DOMContentLoaded", () => {
 
     const complaintId =
         sessionStorage.getItem("complaintId");
 
-
     const complaintIdElement =
-        document.getElementById("complaintId");
+        document.getElementById("successComplaintId");
 
 
     if (complaintId) {
@@ -206,9 +153,11 @@
     } else {
 
         complaintIdElement.textContent =
-            "Complaint ID unavailable";
+            "Not available";
 
     }
+
+});
 
 </script>
 
@@ -216,3 +165,4 @@
 </body>
 
 </html>
+
