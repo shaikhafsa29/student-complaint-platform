@@ -13,209 +13,6 @@
     <link rel="stylesheet"
           href="style.css">
 
-    <style>
-
-        /* =========================================================
-           VEMUVOICE COMPLAINT PAGE
-        ========================================================= */
-
-        .complaint-page {
-            min-height: calc(100vh - 76px);
-            padding: 55px 6% 80px;
-            background: #f6f7f9;
-        }
-
-        .complaint-container {
-            width: min(900px, 100%);
-            margin: 0 auto;
-        }
-
-        .complaint-header {
-            text-align: center;
-            margin-bottom: 35px;
-        }
-
-        .complaint-header .badge {
-            display: inline-block;
-            padding: 8px 15px;
-            background: #e9eaed;
-            color: #171923;
-            border-radius: 30px;
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            margin-bottom: 16px;
-        }
-
-        .complaint-header h1 {
-            margin-bottom: 12px;
-            color: #171923;
-            font-family: "Space Grotesk", sans-serif;
-            font-size: clamp(2rem, 5vw, 3.4rem);
-            line-height: 1.05;
-        }
-
-        .complaint-header p {
-            max-width: 650px;
-            margin: 0 auto;
-            color: #6b7280;
-            font-size: 15px;
-            line-height: 1.7;
-        }
-
-        .complaint-card {
-            background: #ffffff;
-            border: 1px solid #e1e3e7;
-            border-radius: 18px;
-            padding: 38px;
-            box-shadow: 0 12px 35px rgba(20, 25, 35, 0.07);
-        }
-
-        .complaint-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group.full-width {
-            grid-column: 1 / -1;
-        }
-
-        .form-group label {
-            margin-bottom: 9px;
-            color: #171923;
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            border: 1px solid #d9dce2;
-            border-radius: 11px;
-            padding: 13px 14px;
-            background: #ffffff;
-            color: #171923;
-            font-family: "Inter", sans-serif;
-            font-size: 14px;
-            outline: none;
-            transition: 0.2s ease;
-        }
-
-        .form-group input,
-        .form-group select {
-            height: 48px;
-        }
-
-        .form-group textarea {
-            min-height: 190px;
-            resize: vertical;
-            line-height: 1.6;
-        }
-
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: #9aa0aa;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: #171923;
-            box-shadow: 0 0 0 3px rgba(23, 25, 35, 0.07);
-        }
-
-        .field-hint {
-            margin-top: 7px;
-            color: #8a909a;
-            font-size: 12px;
-        }
-
-        .character-counter {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 7px;
-            color: #8a909a;
-            font-size: 12px;
-        }
-
-        .error-message {
-            margin-top: 18px;
-            padding: 12px 14px;
-            border-radius: 10px;
-            background: #f3eeee;
-            color: #a33a3a;
-            font-size: 13px;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .privacy-note {
-            margin-top: 25px;
-            padding: 15px 16px;
-            border-left: 3px solid #171923;
-            background: #f5f5f6;
-            color: #666c76;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        .submit-btn {
-            width: 100%;
-            margin-top: 25px;
-            padding: 14px 20px;
-            border: none;
-            border-radius: 11px;
-            background: #171923;
-            color: #ffffff;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s ease;
-        }
-
-        .submit-btn:hover {
-            background: #30333b;
-            transform: translateY(-1px);
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        @media (max-width: 800px) {
-
-            .complaint-page {
-                padding: 35px 5% 60px;
-            }
-
-            .complaint-card {
-                padding: 25px 20px;
-            }
-
-            .complaint-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .form-group.full-width {
-                grid-column: auto;
-            }
-
-        }
-
-    </style>
-
 </head>
 
 
@@ -230,9 +27,8 @@
 
     <a href="index.html"
        class="logo">
-        Vv VemuVoice
+        Vv Vemu<span>Voice</span>
     </a>
-
 
     <div class="nav-links">
 
@@ -268,254 +64,268 @@
 
 <main class="complaint-page">
 
-    <div class="complaint-container">
 
+    <!-- PAGE INTRO -->
 
-        <div class="complaint-header">
+    <section class="form-intro">
 
-            <span class="badge">
-                STUDENT SUPPORT
-            </span>
-
-            <h1>
-                Submit a Complaint
-            </h1>
-
-            <p>
-                Share your concern with the appropriate college
-                authority. Your name is not required to submit a complaint.
-            </p>
-
+        <div class="badge">
+            STUDENT SUPPORT
         </div>
 
+        <h1>
+            Submit a Complaint
+        </h1>
 
-        <section class="complaint-card">
+        <p>
+            Share your concern with the appropriate college
+            authority. Your name is not required to submit a complaint.
+        </p>
 
-
-            <form id="complaintForm">
-
-
-                <div class="complaint-grid">
-
-
-                    <!-- YEAR -->
-
-                    <div class="form-group">
-
-                        <label for="year">
-                            Year
-                        </label>
-
-                        <select id="year"
-                                name="year"
-                                required>
-
-                            <option value="">
-                                Select your year
-                            </option>
-
-                            <option value="1st Year">
-                                1st Year
-                            </option>
-
-                            <option value="2nd Year">
-                                2nd Year
-                            </option>
-
-                            <option value="3rd Year">
-                                3rd Year
-                            </option>
-
-                            <option value="4th Year">
-                                4th Year
-                            </option>
-
-                        </select>
-
-                    </div>
+    </section>
 
 
-                    <!-- CLASS / BRANCH -->
+    <!-- FORM CARD -->
 
-                    <div class="form-group">
+    <section class="form-card">
 
-                        <label for="branch">
-                            Classroom / Branch
-                        </label>
-
-                        <input
-                            type="text"
-                            id="branch"
-                            name="branch"
-                            placeholder="Enter your classroom / branch"
-                            autocomplete="off"
-                            required
-                        >
-
-                        <span class="field-hint">
-                            Example: CSE-A, CSE (AI & DS), ECE-B, etc.
-                        </span>
-
-                    </div>
+        <form id="complaintForm">
 
 
-                    <!-- CATEGORY -->
+            <!-- YEAR + CLASSROOM -->
 
-                    <div class="form-group">
-
-                        <label for="category">
-                            Complaint Category
-                        </label>
-
-                        <select id="category"
-                                name="category"
-                                required>
-
-                            <option value="">
-                                Select category
-                            </option>
-
-                            <option value="Academic">
-                                Academic
-                            </option>
-
-                            <option value="Faculty">
-                                Faculty
-                            </option>
-
-                            <option value="Infrastructure">
-                                Infrastructure
-                            </option>
-
-                            <option value="Hostel">
-                                Hostel
-                            </option>
-
-                            <option value="Transport">
-                                Transport
-                            </option>
-
-                            <option value="Canteen">
-                                Canteen
-                            </option>
-
-                            <option value="Examination">
-                                Examination
-                            </option>
-
-                            <option value="Fees">
-                                Fees
-                            </option>
-
-                            <option value="Other">
-                                Other
-                            </option>
-
-                        </select>
-
-                    </div>
+            <div class="form-row">
 
 
-                    <!-- RECIPIENT -->
+                <div class="input-group">
 
-                    <div class="form-group">
+                    <label for="year">
+                        Year
+                    </label>
 
-                        <label for="recipient">
-                            Send Complaint To
-                        </label>
+                    <select id="year"
+                            name="year"
+                            required>
 
-                        <select id="recipient"
-                                name="recipient"
-                                required>
+                        <option value="">
+                            Select your year
+                        </option>
 
-                            <option value="">
-                                Select recipient
-                            </option>
+                        <option value="1st Year">
+                            1st Year
+                        </option>
 
-                            <option value="Class Teacher">
-                                Class Teacher
-                            </option>
+                        <option value="2nd Year">
+                            2nd Year
+                        </option>
 
-                            <option value="HOD">
-                                HOD
-                            </option>
+                        <option value="3rd Year">
+                            3rd Year
+                        </option>
 
-                            <option value="Principal">
-                                Principal
-                            </option>
+                        <option value="4th Year">
+                            4th Year
+                        </option>
 
-                        </select>
-
-                    </div>
-
-
-                    <!-- DESCRIPTION -->
-
-                    <div class="form-group full-width">
-
-                        <label for="message">
-                            Complaint Description
-                        </label>
-
-                        <textarea
-                            id="message"
-                            name="message"
-                            maxlength="1000"
-                            placeholder="Describe your complaint clearly..."
-                            required
-                        ></textarea>
-
-                        <div class="character-counter">
-                            <span id="charCount">
-                                0
-                            </span>
-                            &nbsp;/ 1000
-                        </div>
-
-                    </div>
-
+                    </select>
 
                 </div>
 
 
-                <!-- ERROR -->
+                <div class="input-group">
 
-                <div id="complaintError"
-                     class="error-message hidden">
+                    <label for="branch">
+                        Classroom / Branch
+                    </label>
+
+                    <input
+                        type="text"
+                        id="branch"
+                        name="branch"
+                        placeholder="Enter your classroom / branch"
+                        autocomplete="off"
+                        required
+                    >
+
                 </div>
 
 
-                <!-- PRIVACY NOTE -->
+            </div>
 
-                <div class="privacy-note">
 
-                    Your name is not collected in the complaint
-                    form. Your Roll Number is used internally to
-                    identify your submission.
+            <!-- CATEGORY + RECIPIENT -->
+
+            <div class="form-row">
+
+
+                <div class="input-group">
+
+                    <label for="category">
+                        Complaint Category
+                    </label>
+
+                    <select id="category"
+                            name="category"
+                            required>
+
+                        <option value="">
+                            Select category
+                        </option>
+
+                        <option value="Academic">
+                            Academic
+                        </option>
+
+                        <option value="Faculty">
+                            Faculty
+                        </option>
+
+                        <option value="Infrastructure">
+                            Infrastructure
+                        </option>
+
+                        <option value="Hostel">
+                            Hostel
+                        </option>
+
+                        <option value="Transport">
+                            Transport
+                        </option>
+
+                        <option value="Canteen">
+                            Canteen
+                        </option>
+
+                        <option value="Examination">
+                            Examination
+                        </option>
+
+                        <option value="Fees">
+                            Fees
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
 
                 </div>
 
 
-                <!-- SUBMIT -->
+                <div class="input-group">
 
-                <button
-                    type="submit"
-                    id="complaintSubmitBtn"
-                    class="submit-btn">
+                    <label for="recipient">
+                        Send Complaint To
+                    </label>
 
-                    Submit Complaint →
+                    <select id="recipient"
+                            name="recipient"
+                            required>
 
-                </button>
+                        <option value="">
+                            Select recipient
+                        </option>
+
+                        <option value="Class Teacher">
+                            Class Teacher
+                        </option>
+
+                        <option value="HOD">
+                            HOD
+                        </option>
+
+                        <option value="Principal">
+                            Principal
+                        </option>
+
+                    </select>
+
+                </div>
 
 
-            </form>
+            </div>
 
 
-        </section>
+            <!-- DESCRIPTION -->
 
-    </div>
+            <div class="input-group">
+
+                <label for="message">
+                    Complaint Description
+                </label>
+
+                <textarea
+                    id="message"
+                    name="message"
+                    maxlength="1000"
+                    placeholder="Describe your complaint clearly..."
+                    required
+                ></textarea>
+
+
+                <div class="text-info">
+
+                    <span>
+                        Please provide clear and relevant details.
+                    </span>
+
+                    <span>
+                        <span id="charCount">0</span> / 1000
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- PRIVACY NOTE -->
+
+            <div class="privacy-note">
+
+                🔒 Your name is not required.
+                Your complaint will be sent to the authority
+                you select above.
+
+            </div>
+
+
+            <!-- ERROR -->
+
+            <p id="complaintError"
+               class="tracking-error hidden">
+            </p>
+
+
+            <!-- SUBMIT -->
+
+            <button
+                type="submit"
+                id="complaintSubmitBtn"
+                class="submit-btn">
+
+                Submit Complaint →
+
+            </button>
+
+
+        </form>
+
+    </section>
+
 
 </main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+    VemuVoice | Student Support Platform
+
+</footer>
 
 
 <script src="script.js"></script>
