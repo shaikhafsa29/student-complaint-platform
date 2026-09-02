@@ -1,4 +1,4 @@
-javascript
+
 document.addEventListener("DOMContentLoaded", () => {
 
     /* =========================================================
