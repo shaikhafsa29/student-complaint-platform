@@ -2,29 +2,59 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import sqlite3
 import uuid
-from datetime import datetime
-from zoneinfo import ZoneInfo
 import os
+from datetime import datetime
 from pathlib import Path
 
 
 # =========================================================
-# APP SETUP
+# APP CONFIGURATION
 # =========================================================
 
 app = Flask(__name__)
 CORS(app)
 
+
+# =========================================================
+# PROJECT PATHS
+# =========================================================
+
+# app.py and all frontend files are in the SAME folder
 PROJECT_DIR = Path(__file__).resolve().parent
-DATABASE = PROJECT_DIR / "complaints.db"
+
+
+# =========================================================
+# DATABASE CONFIGURATION
+# =========================================================
+
+# Railway Volume support
+RAILWAY_VOLUME = os.environ.get("RAILWAY_VOLUME_MOUNT_PATH")
+
+if RAILWAY_VOLUME:
+    DATABASE = os.path.join(
+        RAILWAY_VOLUME,
+        "complaints.db"
+    )
+else:
+    DATABASE = os.path.join(
+        PROJECT_DIR,
+        "complaints.db"
+    )
 
 
 # =========================================================
 # ADMIN CREDENTIALS
 # =========================================================
 
-ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "vemu123")
+ADMIN_USERNAME = os.environ.get(
+    "ADMIN_USERNAME",
+    "admin"
+)
+
+ADMIN_PASSWORD = os.environ.get(
+    "ADMIN_PASSWORD",
+    "vemu123"
+)
 
 
 # =========================================================
@@ -32,173 +62,348 @@ ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "vemu123")
 # =========================================================
 
 def get_db_connection():
-    connection = sqlite3.connect(DATABASE)
-    connection.row_factory = sqlite3.Row
-    return connection
+
+    conn = sqlite3.connect(
+        DATABASE,
+        timeout=10
+    )
+
+    conn.row_factory = sqlite3.Row
+
+    return conn
 
 
 # =========================================================
-# CREATE DATABASE TABLE
+# CREATE DATABASE
 # =========================================================
 
-def init_db():
-    connection = get_db_connection()
-    cursor = connection.cursor()
+def create_database():
 
-    cursor.execute("""
+    database_directory = os.path.dirname(DATABASE)
+
+    if database_directory:
+        os.makedirs(
+            database_directory,
+            exist_ok=True
+        )
+
+    conn = get_db_connection()
+
+    conn.execute("""
         CREATE TABLE IF NOT EXISTS complaints (
+
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+
             complaint_id TEXT UNIQUE NOT NULL,
-            roll_no TEXT NOT NULL,
+
             year TEXT NOT NULL,
+
             branch TEXT NOT NULL,
+
             category TEXT NOT NULL,
-            recipient TEXT NOT NULL DEFAULT '',
+
             message TEXT NOT NULL,
-            status TEXT NOT NULL DEFAULT 'Submitted',
+
+            status TEXT DEFAULT 'Submitted',
+
             created_at TEXT NOT NULL
+
         )
     """)
 
-    # Add recipient column if the database already exists
-    cursor.execute("PRAGMA table_info(complaints)")
-    columns = [column["name"] for column in cursor.fetchall()]
+    conn.commit()
 
-    if "recipient" not in columns:
-        cursor.execute("""
-            ALTER TABLE complaints
-            ADD COLUMN recipient TEXT NOT NULL DEFAULT ''
-        """)
-
-    connection.commit()
-    connection.close()
-
-
-init_db()
+    conn.close()
 
 
 # =========================================================
-# HOME PAGE
+# FRONTEND FILE SERVING
 # =========================================================
 
 @app.route("/")
 def home():
-    return send_from_directory(PROJECT_DIR, "index.html")
+
+    return send_from_directory(
+        PROJECT_DIR,
+        "index.html"
+    )
+
+
+@app.route("/index.html")
+def index_page():
+
+    return send_from_directory(
+        PROJECT_DIR,
+        "index.html"
+    )
+
+
+@app.route("/about.html")
+def about_page():
+
+    return send_from_directory(
+        PROJECT_DIR,
+        "about.html"
+    )
+
+
+@app.route("/contact.html")
+def contact_page():
+
+    return send_from_directory(
+        PROJECT_DIR,
+        "contact.html"
+    )
+
+
+@app.route("/track.html")
+def track_page():
+
+    return send_from_directory(
+        PROJECT_DIR,
+        "track.html"
+    )
+
+
+@app.route("/admin-login.html")
+def admin_login_page():
+
+    return send_from_directory(
+        PROJECT_DIR,
+        "admin-login.html"
+    )
+
+
+@app.route("/admin-dashboard.html")
+def admin_dashboard_page():
+
+    return send_from_directory(
+        PROJECT_DIR,
+        "admin-dashboard.html"
+    )
 
 
 # =========================================================
-# SERVE FRONTEND FILES
+# FRONTEND CSS / JS
 # =========================================================
 
-@app.route("/<path:filename>")
-def frontend_files(filename):
-    return send_from_directory(PROJECT_DIR, filename)
+@app.route("/style.css")
+def style_css():
+
+    return send_from_directory(
+        PROJECT_DIR,
+        "style.css"
+    )
+
+
+@app.route("/admin-dashboard.css")
+def admin_dashboard_css():
+
+    return send_from_directory(
+        PROJECT_DIR,
+        "admin-dashboard.css"
+    )
+
+
+@app.route("/script.js")
+def script_js():
+
+    return send_from_directory(
+        PROJECT_DIR,
+        "script.js"
+    )
 
 
 # =========================================================
-# STUDENT LOGIN
+# ADMIN LOGIN
 # =========================================================
 
-@app.route("/api/student/login", methods=["POST"])
-def student_login():
-    data = request.get_json()
+@app.route(
+    "/api/admin/login",
+    methods=["POST"]
+)
+def admin_login():
+
+    data = request.get_json(
+        silent=True
+    )
 
     if not data:
+
         return jsonify({
             "success": False,
-            "message": "No login data received."
+            "message": "No login data received"
         }), 400
 
-    roll_no = data.get("roll_no", "").strip().upper()
+    username = str(
+        data.get("username", "")
+    ).strip()
 
-    if not roll_no:
+    password = str(
+        data.get("password", "")
+    )
+
+    if (
+        username == ADMIN_USERNAME
+        and password == ADMIN_PASSWORD
+    ):
+
         return jsonify({
-            "success": False,
-            "message": "Please enter your roll number."
-        }), 400
+
+            "success": True,
+
+            "message": "Login successful"
+
+        }), 200
 
     return jsonify({
-        "success": True,
-        "message": "Login successful.",
-        "roll_no": roll_no
-    })
+
+        "success": False,
+
+        "message": "Invalid username or password"
+
+    }), 401
 
 
 # =========================================================
 # SUBMIT COMPLAINT
 # =========================================================
 
-@app.route("/api/complaints", methods=["POST"])
+@app.route(
+    "/api/complaints",
+    methods=["POST"]
+)
 def submit_complaint():
-    data = request.get_json()
+
+    data = request.get_json(
+        silent=True
+    )
 
     if not data:
+
         return jsonify({
+
             "success": False,
-            "message": "No complaint data received."
+
+            "message": "No data received"
+
         }), 400
 
-    roll_no = data.get("roll_no", "").strip().upper()
-    year = data.get("year", "").strip()
-    branch = data.get("branch", "").strip()
-    category = data.get("category", "").strip()
-    recipient = data.get("recipient", "").strip()
-    message = data.get("message", "").strip()
+    year = str(
+        data.get("year", "")
+    ).strip()
 
-    if not roll_no or not year or not branch or not category or not message:
+    branch = str(
+        data.get("branch", "")
+    ).strip()
+
+    category = str(
+        data.get("category", "")
+    ).strip()
+
+    message = str(
+        data.get("message", "")
+    ).strip()
+
+    # =====================================================
+    # VALIDATION
+    # =====================================================
+
+    if (
+        not year
+        or not branch
+        or not category
+        or not message
+    ):
+
         return jsonify({
+
             "success": False,
-            "message": "Please fill in all required fields."
+
+            "message": "Please fill in all required fields"
+
         }), 400
 
-    # Generate unique complaint ID
-    complaint_id = "CMP-" + uuid.uuid4().hex[:8].upper()
-
     # =====================================================
-    # INDIA TIME (IST)
-    # Railway servers may use UTC, so explicitly use
-    # Asia/Kolkata timezone.
+    # GENERATE UNIQUE COMPLAINT ID
     # =====================================================
 
-    created_at = datetime.now(
-        ZoneInfo("Asia/Kolkata")
-    ).strftime("%Y-%m-%d %H:%M:%S")
+    complaint_id = (
+        f"CMP-{uuid.uuid4().hex[:8].upper()}"
+    )
 
-    connection = get_db_connection()
-    cursor = connection.cursor()
+    # =====================================================
+    # CURRENT DATE AND TIME
+    # =====================================================
 
-    cursor.execute("""
-        INSERT INTO complaints (
+    created_at = datetime.now().strftime(
+        "%Y-%m-%d %H:%M:%S"
+    )
+
+    # =====================================================
+    # SAVE COMPLAINT
+    # =====================================================
+
+    conn = get_db_connection()
+
+    try:
+
+        conn.execute("""
+            INSERT INTO complaints
+            (
+                complaint_id,
+                year,
+                branch,
+                category,
+                message,
+                status,
+                created_at
+            )
+
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+
+        """, (
+
             complaint_id,
-            roll_no,
             year,
             branch,
             category,
-            recipient,
             message,
-            status,
+            "Submitted",
             created_at
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (
-        complaint_id,
-        roll_no,
-        year,
-        branch,
-        category,
-        recipient,
-        message,
-        "Submitted",
-        created_at
-    ))
 
-    connection.commit()
-    connection.close()
+        ))
+
+        conn.commit()
+
+    except sqlite3.IntegrityError:
+
+        conn.close()
+
+        return jsonify({
+
+            "success": False,
+
+            "message": "Could not generate complaint ID. Please try again."
+
+        }), 500
+
+    finally:
+
+        conn.close()
 
     return jsonify({
+
         "success": True,
-        "message": "Complaint submitted successfully.",
-        "complaint_id": complaint_id
+
+        "message": "Complaint submitted successfully",
+
+        "complaint_id": complaint_id,
+
+        "status": "Submitted",
+
+        "created_at": created_at
+
     }), 201
 
 
@@ -206,173 +411,405 @@ def submit_complaint():
 # GET ALL COMPLAINTS
 # =========================================================
 
-@app.route("/api/complaints", methods=["GET"])
+@app.route(
+    "/api/complaints",
+    methods=["GET"]
+)
 def get_complaints():
-    connection = get_db_connection()
-    cursor = connection.cursor()
 
-    cursor.execute("""
-        SELECT *
+    conn = get_db_connection()
+
+    complaints = conn.execute("""
+        SELECT
+            id,
+            complaint_id,
+            year,
+            branch,
+            category,
+            message,
+            status,
+            created_at
         FROM complaints
         ORDER BY id DESC
-    """)
+    """).fetchall()
 
-    complaints = cursor.fetchall()
+    conn.close()
 
-    connection.close()
+    complaint_list = [
 
-    complaints_list = []
+        dict(complaint)
 
-    for complaint in complaints:
-        complaints_list.append({
-            "id": complaint["id"],
-            "complaint_id": complaint["complaint_id"],
-            "roll_no": complaint["roll_no"],
-            "year": complaint["year"],
-            "branch": complaint["branch"],
-            "category": complaint["category"],
-            "recipient": complaint["recipient"],
-            "message": complaint["message"],
-            "status": complaint["status"],
-            "created_at": complaint["created_at"]
-        })
+        for complaint in complaints
 
-    return jsonify({
-        "success": True,
-        "complaints": complaints_list
-    })
+    ]
+
+    return jsonify(
+        complaint_list
+    ), 200
 
 
 # =========================================================
-# GET SINGLE COMPLAINT - FOR TRACKING / VIEW BUTTON
+# TRACK COMPLAINT
 # =========================================================
 
-@app.route("/api/complaints/<complaint_id>", methods=["GET"])
-def get_single_complaint(complaint_id):
-    connection = get_db_connection()
-    cursor = connection.cursor()
+@app.route(
+    "/api/complaints/<complaint_id>",
+    methods=["GET"]
+)
+def track_complaint(complaint_id):
 
-    cursor.execute("""
-        SELECT *
+    complaint_id = (
+        complaint_id.strip().upper()
+    )
+
+    conn = get_db_connection()
+
+    complaint = conn.execute("""
+        SELECT
+            complaint_id,
+            category,
+            status,
+            created_at
         FROM complaints
         WHERE complaint_id = ?
+
     """, (
-        complaint_id.strip().upper(),
-    ))
+        complaint_id,
+    )).fetchone()
 
-    complaint = cursor.fetchone()
+    conn.close()
 
-    connection.close()
+    if complaint is None:
 
-    if not complaint:
         return jsonify({
+
             "success": False,
-            "message": "Complaint not found."
+
+            "message": "Complaint ID not found"
+
         }), 404
 
     return jsonify({
+
         "success": True,
-        "complaint": {
-            "id": complaint["id"],
-            "complaint_id": complaint["complaint_id"],
-            "roll_no": complaint["roll_no"],
-            "year": complaint["year"],
-            "branch": complaint["branch"],
-            "category": complaint["category"],
-            "recipient": complaint["recipient"],
-            "message": complaint["message"],
-            "status": complaint["status"],
-            "created_at": complaint["created_at"]
-        }
-    })
+
+        "complaint": dict(
+            complaint
+        )
+
+    }), 200
+
+
+# =========================================================
+# ADMIN VIEW COMPLAINT
+#
+# Submitted -> Under Review
+# =========================================================
+
+@app.route(
+    "/api/admin/complaints/<complaint_id>/view",
+    methods=["POST"]
+)
+def admin_view_complaint(complaint_id):
+
+    complaint_id = (
+        complaint_id.strip().upper()
+    )
+
+    conn = get_db_connection()
+
+    complaint = conn.execute("""
+        SELECT
+            complaint_id,
+            year,
+            branch,
+            category,
+            message,
+            status,
+            created_at
+        FROM complaints
+        WHERE complaint_id = ?
+
+    """, (
+        complaint_id,
+    )).fetchone()
+
+    if complaint is None:
+
+        conn.close()
+
+        return jsonify({
+
+            "success": False,
+
+            "message": "Complaint ID not found"
+
+        }), 404
+
+    # =====================================================
+    # AUTOMATIC STATUS CHANGE
+    # =====================================================
+
+    if complaint["status"] == "Submitted":
+
+        conn.execute("""
+            UPDATE complaints
+
+            SET status = ?
+
+            WHERE complaint_id = ?
+
+        """, (
+
+            "Under Review",
+
+            complaint_id
+
+        ))
+
+        conn.commit()
+
+    # =====================================================
+    # GET UPDATED COMPLAINT
+    # =====================================================
+
+    updated_complaint = conn.execute("""
+        SELECT
+            complaint_id,
+            year,
+            branch,
+            category,
+            message,
+            status,
+            created_at
+        FROM complaints
+        WHERE complaint_id = ?
+
+    """, (
+        complaint_id,
+    )).fetchone()
+
+    conn.close()
+
+    return jsonify({
+
+        "success": True,
+
+        "message": "Complaint opened successfully",
+
+        "complaint": dict(
+            updated_complaint
+        )
+
+    }), 200
 
 
 # =========================================================
 # UPDATE COMPLAINT STATUS
+#
+# Allowed:
+# Submitted
+# Under Review
+# In Progress
+# Resolved
 # =========================================================
 
-@app.route("/api/complaints/<complaint_id>/status", methods=["PUT"])
+@app.route(
+    "/api/admin/complaints/<complaint_id>/status",
+    methods=["PUT"]
+)
 def update_complaint_status(complaint_id):
-    data = request.get_json()
+
+    complaint_id = (
+        complaint_id.strip().upper()
+    )
+
+    data = request.get_json(
+        silent=True
+    )
 
     if not data:
+
         return jsonify({
+
             "success": False,
-            "message": "No status data received."
+
+            "message": "No status received"
+
         }), 400
 
-    status = data.get("status", "").strip()
+    new_status = str(
+        data.get("status", "")
+    ).strip()
 
     allowed_statuses = [
+
         "Submitted",
+
         "Under Review",
+
         "In Progress",
+
         "Resolved"
+
     ]
 
-    if status not in allowed_statuses:
+    if new_status not in allowed_statuses:
+
         return jsonify({
+
             "success": False,
-            "message": "Invalid complaint status."
+
+            "message": "Invalid status"
+
         }), 400
 
-    connection = get_db_connection()
-    cursor = connection.cursor()
+    conn = get_db_connection()
 
-    cursor.execute("""
-        UPDATE complaints
-        SET status = ?
+    complaint = conn.execute("""
+        SELECT complaint_id
+        FROM complaints
         WHERE complaint_id = ?
+
     """, (
-        status,
-        complaint_id.strip().upper()
-    ))
+        complaint_id,
+    )).fetchone()
 
-    connection.commit()
+    if complaint is None:
 
-    updated_rows = cursor.rowcount
+        conn.close()
 
-    connection.close()
-
-    if updated_rows == 0:
         return jsonify({
+
             "success": False,
-            "message": "Complaint not found."
+
+            "message": "Complaint ID not found"
+
         }), 404
 
+    # =====================================================
+    # UPDATE STATUS
+    # =====================================================
+
+    conn.execute("""
+        UPDATE complaints
+
+        SET status = ?
+
+        WHERE complaint_id = ?
+
+    """, (
+
+        new_status,
+
+        complaint_id
+
+    ))
+
+    conn.commit()
+
+    # =====================================================
+    # GET UPDATED COMPLAINT
+    # =====================================================
+
+    updated_complaint = conn.execute("""
+        SELECT
+            complaint_id,
+            year,
+            branch,
+            category,
+            message,
+            status,
+            created_at
+        FROM complaints
+        WHERE complaint_id = ?
+
+    """, (
+        complaint_id,
+    )).fetchone()
+
+    conn.close()
+
     return jsonify({
+
         "success": True,
-        "message": "Complaint status updated successfully."
-    })
+
+        "message": "Complaint status updated successfully",
+
+        "complaint": dict(
+            updated_complaint
+        )
+
+    }), 200
 
 
 # =========================================================
-# ADMIN LOGIN
+# HEALTH CHECK
 # =========================================================
 
-@app.route("/api/admin/login", methods=["POST"])
-def admin_login():
-    data = request.get_json()
-
-    if not data:
-        return jsonify({
-            "success": False,
-            "message": "No login data received."
-        }), 400
-
-    username = data.get("username", "").strip()
-    password = data.get("password", "").strip()
-
-    if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
-        return jsonify({
-            "success": True,
-            "message": "Login successful."
-        })
+@app.route(
+    "/api/health",
+    methods=["GET"]
+)
+def health_check():
 
     return jsonify({
+
+        "success": True,
+
+        "message": "Student Complaint Platform Backend Running",
+
+        "database": "connected"
+
+    }), 200
+
+
+# =========================================================
+# ERROR HANDLER
+# =========================================================
+
+@app.errorhandler(404)
+def page_not_found(error):
+
+    # API 404
+    if request.path.startswith("/api/"):
+
+        return jsonify({
+
+            "success": False,
+
+            "message": "API endpoint not found"
+
+        }), 404
+
+    # Any unknown frontend route
+    return send_from_directory(
+        PROJECT_DIR,
+        "index.html"
+    )
+
+
+# =========================================================
+# INTERNAL SERVER ERROR
+# =========================================================
+
+@app.errorhandler(500)
+def internal_server_error(error):
+
+    return jsonify({
+
         "success": False,
-        "message": "Invalid username or password."
-    }), 401
+
+        "message": "Internal server error"
+
+    }), 500
+
+
+# =========================================================
+# INITIALIZE DATABASE
+# =========================================================
+
+create_database()
 
 
 # =========================================================
@@ -381,10 +818,19 @@ def admin_login():
 
 if __name__ == "__main__":
 
-    port = int(os.environ.get("PORT", 5000))
+    port = int(
+        os.environ.get(
+            "PORT",
+            5000
+        )
+    )
 
     app.run(
+
+        debug=False,
+
         host="0.0.0.0",
-        port=port,
-        debug=False
+
+        port=port
+
     )
