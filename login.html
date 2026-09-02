@@ -1,64 +1,94 @@
+html
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<title>Student Login | VEMU Voice</title>
+    <title>Student Login | VEMU Voice</title>
 
-<link rel="stylesheet" href="style.css">
-
+    <link rel="stylesheet"
+          href="style.css">
 
 </head>
 
-<body class="login-page">
 
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
 
 <nav class="navbar">
 
-    <a href="login.html" class="logo">
+    <a href="login.html"
+       class="logo">
         VEMU<span>VOICE</span>
     </a>
+
+    <div class="nav-links">
+
+        <a href="login.html"
+           class="active">
+            Student Login
+        </a>
+
+        <a href="admin-login.html">
+            Admin
+        </a>
+
+    </div>
 
 </nav>
 
 
-<main class="student-login-container">
 
-    <section class="student-login-card">
+<!-- =========================================================
+     STUDENT LOGIN
+========================================================= -->
 
-        <div class="login-icon">
+<main class="student-login-page">
+
+    <div class="student-login-card">
+
+        <div class="student-login-icon">
             🎓
         </div>
 
-        <p class="login-badge">
+        <span class="badge">
             STUDENT ACCESS
-        </p>
+        </span>
 
         <h1>
-            Welcome to <span>VEMU Voice</span>
+            Welcome to VEMU Voice
         </h1>
 
-        <p class="login-description">
-            Enter your Roll Number to continue.
+        <p class="student-login-description">
+            Enter your college roll number to continue
+            to the Student Support Platform.
         </p>
 
+
+        <!-- LOGIN FORM -->
 
         <form id="studentLoginForm">
 
-            <div class="form-group">
+            <div class="input-group">
 
-                <label for="studentRollNumber">
+                <label for="rollNumber">
                     Roll Number
                 </label>
 
                 <input
                     type="text"
-                    id="studentRollNumber"
-                    placeholder="Enter your Roll Number"
+                    id="rollNumber"
+                    name="rollNumber"
+                    placeholder="Enter your roll number"
                     autocomplete="off"
                     required
                 >
@@ -66,34 +96,58 @@
             </div>
 
 
-            <p
-                id="studentLoginError"
-                class="login-error hidden"
-            ></p>
-
-
             <button
                 type="submit"
                 class="submit-btn"
-            >
+                id="studentLoginBtn">
+
                 Continue →
+
             </button>
 
         </form>
 
 
-        <p class="login-note">
-            Your roll number is used only to identify your submissions.
+        <!-- LOGIN ERROR -->
+
+        <div
+            class="login-error"
+            id="studentLoginError"
+            style="display: none;">
+
+            Please enter a valid roll number.
+
+        </div>
+
+
+        <p class="student-login-note">
+            Your roll number is used only to provide
+            access to the student platform.
         </p>
 
-    </section>
+    </div>
 
 </main>
 
 
-<script src="script.js"></script>
 
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+    <p>
+        © 2026 VEMU Voice · Student Support Platform
+    </p>
+
+</footer>
+
+
+
+<script src="script.js"></script>
 
 </body>
 
 </html>
+
