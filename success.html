@@ -3,6 +3,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta name="viewport"
@@ -12,155 +13,124 @@
 
     <link rel="stylesheet"
           href="style.css">
-</head>
 
+</head>
 
 <body>
 
+    <nav class="navbar">
 
-<!-- ================= NAVBAR ================= -->
+        <a href="index.html"
+           class="logo">
 
-<nav class="navbar">
+            VEMU<span>VOICE</span>
 
-    <a href="index.html"
-       class="logo">
-        VEMU<span>VOICE</span>
-    </a>
-
-    <div class="nav-links">
-
-        <a href="index.html">
-            Home
         </a>
 
-        <a href="about.html">
-            About
-        </a>
 
-        <a href="contact.html">
-            Submit Complaint
-        </a>
+        <div class="nav-links">
 
-        <a href="track.html">
-            Track Complaint
-        </a>
+            <a href="index.html">
+                Home
+            </a>
 
-        <a href="admin-login.html">
-            Admin
-        </a>
+            <a href="about.html">
+                About
+            </a>
 
-    </div>
+            <a href="contact.html">
+                Submit Complaint
+            </a>
 
-</nav>
+            <a href="track.html">
+                Track Complaint
+            </a>
 
+            <a href="admin-login.html">
+                Admin
+            </a>
 
-<!-- ================= SUCCESS SECTION ================= -->
-
-<main class="success-page">
-
-    <div class="success-box">
-
-        <div class="success-icon">
-            ✓
         </div>
 
-        <span class="badge">
-            COMPLAINT SUBMITTED
-        </span>
-
-        <h1>
-            Complaint Submitted Successfully!
-        </h1>
-
-        <p>
-            Your complaint has been submitted to the
-            selected college authority.
-        </p>
+    </nav>
 
 
-        <!-- Complaint ID -->
+    <main class="success-page">
 
-        <div class="complaint-id">
+        <div class="success-box">
 
-            <span>
-                Your Complaint ID
+            <div class="success-icon">
+                ✓
+            </div>
+
+            <span class="badge">
+                COMPLAINT SUBMITTED
             </span>
 
-            <strong id="successComplaintId">
-                Loading...
-            </strong>
+            <h1>
+                Complaint Submitted Successfully!
+            </h1>
+
+            <p>
+                Your complaint has been submitted to the
+                selected college authority.
+            </p>
+
+
+            <div class="complaint-id">
+
+                <span>
+                    Your Complaint ID
+                </span>
+
+                <strong id="successComplaintId">
+                    Loading...
+                </strong>
+
+            </div>
+
+
+            <p class="save-note">
+                Please save this Complaint ID.
+                You can use it later to track the status
+                of your complaint.
+            </p>
+
+
+            <div class="success-actions">
+
+                <a href="track.html"
+                   class="submit-btn">
+
+                    Track Complaint →
+
+                </a>
+
+
+                <a href="index.html"
+                   class="secondary-btn">
+
+                    Back to Home
+
+                </a>
+
+            </div>
 
         </div>
 
+    </main>
 
-        <p class="save-note">
-            Please save this Complaint ID.
-            You can use it later to track the status
-            of your complaint.
+
+    <footer>
+
+        <p>
+            © 2026 VEMU Voice · Student Support Platform
         </p>
 
-
-        <!-- Buttons -->
-
-        <div class="success-actions">
-
-            <a href="track.html"
-               class="submit-btn">
-                Track Complaint →
-            </a>
-
-            <a href="index.html"
-               class="secondary-btn">
-                Back to Home
-            </a>
-
-        </div>
-
-    </div>
-
-</main>
+    </footer>
 
 
-<!-- ================= FOOTER ================= -->
-
-<footer>
-
-    <p>
-        © 2026 VEMU Voice · Student Support Platform
-    </p>
-
-</footer>
-
-
-<!-- ================= SCRIPT ================= -->
-
-<script>
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const complaintId =
-        sessionStorage.getItem("complaintId");
-
-    const complaintIdElement =
-        document.getElementById("successComplaintId");
-
-
-    if (complaintId) {
-
-        complaintIdElement.textContent =
-            complaintId;
-
-    } else {
-
-        complaintIdElement.textContent =
-            "Not available";
-
-    }
-
-});
-
-</script>
-
+    <script src="script.js"></script>
 
 </body>
 
