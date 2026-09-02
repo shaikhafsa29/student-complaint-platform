@@ -1,609 +1,705 @@
-
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
+from pathlib import Path
+from datetime import datetime
 import sqlite3
 import uuid
 import os
-from datetime import datetime
-from pathlib import Path
-
 
 # =========================================================
-# APP CONFIGURATION
+
+# FLASK APP
+
 # =========================================================
 
 app = Flask(__name__)
+
 CORS(app)
 
-
 # =========================================================
-# PROJECT PATH
+
+# PROJECT DIRECTORY
+
 # =========================================================
 
 PROJECT_DIR = Path(__file__).resolve().parent
 
-
-# =========================================================
-# DATABASE CONFIGURATION
 # =========================================================
 
-RAILWAY_VOLUME = os.environ.get(
-    "RAILWAY_VOLUME_MOUNT_PATH"
-)
+# DATABASE LOCATION
+
+# =========================================================
+
+RAILWAY_VOLUME =
+os.environ.get("RAILWAY_VOLUME_MOUNT_PATH")
 
 if RAILWAY_VOLUME:
-
-    DATABASE = os.path.join(
-        RAILWAY_VOLUME,
-        "complaints.db"
-    )
-
+DATABASE_PATH = (
+Path(RAILWAY_VOLUME) /
+"complaints.db"
+)
 else:
+DATABASE_PATH = (
+PROJECT_DIR /
+"complaints.db"
+)
 
-    DATABASE = os.path.join(
-        PROJECT_DIR,
-        "complaints.db"
-    )
-
+DATABASE_PATH.parent.mkdir(
+parents=True,
+exist_ok=True
+)
 
 # =========================================================
+
 # ADMIN CREDENTIALS
+
 # =========================================================
 
 ADMIN_USERNAME = os.environ.get(
-    "ADMIN_USERNAME",
-    "admin"
+"ADMIN_USERNAME",
+"admin"
 )
 
 ADMIN_PASSWORD = os.environ.get(
-    "ADMIN_PASSWORD",
-    "vemu123"
+"ADMIN_PASSWORD",
+"vemu123"
 )
 
-
 # =========================================================
+
 # DATABASE CONNECTION
-# =========================================================
-
-def get_db_connection():
-
-    conn = sqlite3.connect(
-        DATABASE,
-        timeout=10
-    )
-
-    conn.row_factory = sqlite3.Row
-
-    return conn
-
 
 # =========================================================
-# CREATE / UPDATE DATABASE
+
+def get_db():
+
+
+connection = sqlite3.connect(
+    str(DATABASE_PATH)
+)
+
+connection.row_factory = sqlite3.Row
+
+return connection
+
+
+# =========================================================
+
+# CREATE / MIGRATE DATABASE
+
 # =========================================================
 
 def create_database():
 
-    database_directory = os.path.dirname(
-        DATABASE
+
+connection = get_db()
+
+cursor = connection.cursor()
+
+
+# -----------------------------------------------------
+# Create table if it does not exist
+# -----------------------------------------------------
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS complaints (
+
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+        complaint_id TEXT UNIQUE NOT NULL,
+
+        roll_no TEXT NOT NULL DEFAULT '',
+
+        year TEXT NOT NULL DEFAULT '',
+
+        branch TEXT NOT NULL DEFAULT '',
+
+        category TEXT NOT NULL DEFAULT '',
+
+        recipient TEXT NOT NULL DEFAULT '',
+
+        message TEXT NOT NULL DEFAULT '',
+
+        status TEXT NOT NULL DEFAULT 'Submitted',
+
+        created_at TEXT NOT NULL DEFAULT ''
+
     )
-
-    if database_directory:
-
-        os.makedirs(
-            database_directory,
-            exist_ok=True
-        )
+""")
 
 
-    conn = get_db_connection()
+connection.commit()
 
 
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS complaints (
+# -----------------------------------------------------
+# Check existing columns
+# -----------------------------------------------------
 
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+cursor.execute(
+    "PRAGMA table_info(complaints)"
+)
 
-            complaint_id TEXT UNIQUE NOT NULL,
 
-            roll_no TEXT NOT NULL,
+columns = [
+    row["name"]
+    for row in cursor.fetchall()
+]
 
-            year TEXT NOT NULL,
 
-            branch TEXT NOT NULL,
+# -----------------------------------------------------
+# Add missing columns
+# -----------------------------------------------------
 
-            category TEXT NOT NULL,
+if "roll_no" not in columns:
 
-            recipient TEXT,
-
-            message TEXT NOT NULL,
-
-            status TEXT DEFAULT 'Submitted',
-
-            created_at TEXT NOT NULL
-
-        )
+    cursor.execute("""
+        ALTER TABLE complaints
+        ADD COLUMN roll_no TEXT
+        NOT NULL DEFAULT ''
     """)
 
 
-    conn.commit()
-    conn.close()
+if "recipient" not in columns:
+
+    cursor.execute("""
+        ALTER TABLE complaints
+        ADD COLUMN recipient TEXT
+        NOT NULL DEFAULT ''
+    """)
+
+
+if "year" not in columns:
+
+    cursor.execute("""
+        ALTER TABLE complaints
+        ADD COLUMN year TEXT
+        NOT NULL DEFAULT ''
+    """)
+
+
+if "branch" not in columns:
+
+    cursor.execute("""
+        ALTER TABLE complaints
+        ADD COLUMN branch TEXT
+        NOT NULL DEFAULT ''
+    """)
+
+
+if "category" not in columns:
+
+    cursor.execute("""
+        ALTER TABLE complaints
+        ADD COLUMN category TEXT
+        NOT NULL DEFAULT ''
+    """)
+
+
+if "message" not in columns:
+
+    cursor.execute("""
+        ALTER TABLE complaints
+        ADD COLUMN message TEXT
+        NOT NULL DEFAULT ''
+    """)
+
+
+if "status" not in columns:
+
+    cursor.execute("""
+        ALTER TABLE complaints
+        ADD COLUMN status TEXT
+        NOT NULL DEFAULT 'Submitted'
+    """)
+
+
+if "created_at" not in columns:
+
+    cursor.execute("""
+        ALTER TABLE complaints
+        ADD COLUMN created_at TEXT
+        NOT NULL DEFAULT ''
+    """)
+
+
+connection.commit()
+
+connection.close()
 
 
 # =========================================================
-# FRONTEND PAGES
+
+# INITIALIZE DATABASE
+
+# =========================================================
+
+create_database()
+
+# =========================================================
+
+# FRONTEND FILE ROUTES
+
 # =========================================================
 
 @app.route("/")
 def home():
 
-    return send_from_directory(
-        PROJECT_DIR,
-        "index.html"
-    )
+
+return send_from_directory(
+    PROJECT_DIR,
+    "login.html"
+)
 
 
 @app.route("/index.html")
 def index_page():
 
-    return send_from_directory(
-        PROJECT_DIR,
-        "index.html"
-    )
+
+return send_from_directory(
+    PROJECT_DIR,
+    "index.html"
+)
 
 
 @app.route("/login.html")
 def login_page():
 
-    return send_from_directory(
-        PROJECT_DIR,
-        "login.html"
-    )
+
+return send_from_directory(
+    PROJECT_DIR,
+    "login.html"
+)
 
 
 @app.route("/about.html")
 def about_page():
 
-    return send_from_directory(
-        PROJECT_DIR,
-        "about.html"
-    )
+
+return send_from_directory(
+    PROJECT_DIR,
+    "about.html"
+)
 
 
 @app.route("/contact.html")
 def contact_page():
 
-    return send_from_directory(
-        PROJECT_DIR,
-        "contact.html"
-    )
+
+return send_from_directory(
+    PROJECT_DIR,
+    "contact.html"
+)
 
 
 @app.route("/track.html")
 def track_page():
 
-    return send_from_directory(
-        PROJECT_DIR,
-        "track.html"
-    )
+
+return send_from_directory(
+    PROJECT_DIR,
+    "track.html"
+)
 
 
 @app.route("/success.html")
 def success_page():
 
-    return send_from_directory(
-        PROJECT_DIR,
-        "success.html"
-    )
+
+return send_from_directory(
+    PROJECT_DIR,
+    "success.html"
+)
 
 
 @app.route("/admin-login.html")
 def admin_login_page():
 
-    return send_from_directory(
-        PROJECT_DIR,
-        "admin-login.html"
-    )
+
+return send_from_directory(
+    PROJECT_DIR,
+    "admin-login.html"
+)
 
 
 @app.route("/admin-dashboard.html")
 def admin_dashboard_page():
 
-    return send_from_directory(
-        PROJECT_DIR,
-        "admin-dashboard.html"
-    )
+
+return send_from_directory(
+    PROJECT_DIR,
+    "admin-dashboard.html"
+)
 
 
 # =========================================================
-# CSS / JAVASCRIPT
+
+# STATIC FILES
+
 # =========================================================
 
 @app.route("/style.css")
 def style_css():
 
-    return send_from_directory(
-        PROJECT_DIR,
-        "style.css"
-    )
+
+return send_from_directory(
+    PROJECT_DIR,
+    "style.css"
+)
 
 
 @app.route("/script.js")
 def script_js():
 
-    return send_from_directory(
-        PROJECT_DIR,
-        "script.js"
-    )
+
+return send_from_directory(
+    PROJECT_DIR,
+    "script.js"
+)
 
 
 @app.route("/admin-dashboard.css")
 def admin_dashboard_css():
 
-    return send_from_directory(
-        PROJECT_DIR,
-        "admin-dashboard.css"
-    )
+
+return send_from_directory(
+    PROJECT_DIR,
+    "admin-dashboard.css"
+)
 
 
 # =========================================================
+
 # STUDENT LOGIN
+
 # =========================================================
 
 @app.route(
-    "/api/student/login",
-    methods=["POST"]
+"/api/student/login",
+methods=["POST"]
 )
 def student_login():
 
-    data = request.get_json(
-        silent=True
-    )
+
+data = request.get_json(
+    silent=True
+) or {}
 
 
-    if not data:
-
-        return jsonify({
-
-            "success": False,
-
-            "message":
-                "No login data received"
-
-        }), 400
+roll_no = str(
+    data.get("roll_no", "")
+).strip()
 
 
-    roll_no = str(
-        data.get("roll_no", "")
-    ).strip().upper()
-
-
-    if not roll_no:
-
-        return jsonify({
-
-            "success": False,
-
-            "message":
-                "Please enter your Roll Number."
-
-        }), 400
-
-
-    # -----------------------------------------------------
-    # For the current system, a non-empty roll number
-    # is enough to provide student access.
-    # -----------------------------------------------------
+if not roll_no:
 
     return jsonify({
-
-        "success": True,
-
+        "success": False,
         "message":
-            "Student login successful",
+            "Please enter your Roll Number."
+    }), 400
 
-        "roll_no":
-            roll_no
 
-    }), 200
+return jsonify({
+    "success": True,
+    "message":
+        "Student login successful.",
+    "roll_no":
+        roll_no
+})
 
 
 # =========================================================
+
 # ADMIN LOGIN
+
 # =========================================================
 
 @app.route(
-    "/api/admin/login",
-    methods=["POST"]
+"/api/admin/login",
+methods=["POST"]
 )
 def admin_login():
 
-    data = request.get_json(
-        silent=True
-    )
+
+data = request.get_json(
+    silent=True
+) or {}
 
 
-    if not data:
-
-        return jsonify({
-
-            "success": False,
-
-            "message":
-                "No login data received"
-
-        }), 400
+username = str(
+    data.get("username", "")
+).strip()
 
 
-    username = str(
-        data.get("username", "")
-    ).strip()
+password = str(
+    data.get("password", "")
+)
 
 
-    password = str(
-        data.get("password", "")
-    )
-
-
-    if (
-        username == ADMIN_USERNAME
-        and
-        password == ADMIN_PASSWORD
-    ):
-
-        return jsonify({
-
-            "success": True,
-
-            "message":
-                "Login successful"
-
-        }), 200
-
+if (
+    username == ADMIN_USERNAME
+    and
+    password == ADMIN_PASSWORD
+):
 
     return jsonify({
-
-        "success": False,
-
+        "success": True,
         "message":
-            "Invalid username or password"
+            "Admin login successful."
+    })
 
-    }), 401
+
+return jsonify({
+    "success": False,
+    "message":
+        "Invalid username or password."
+}), 401
 
 
 # =========================================================
+
 # SUBMIT COMPLAINT
+
 # =========================================================
 
 @app.route(
-    "/api/complaints",
-    methods=["POST"]
+"/api/complaints",
+methods=["POST"]
 )
 def submit_complaint():
 
-    data = request.get_json(
-        silent=True
-    )
+
+data = request.get_json(
+    silent=True
+) or {}
 
 
-    if not data:
-
-        return jsonify({
-
-            "success": False,
-
-            "message":
-                "No data received"
-
-        }), 400
+roll_no = str(
+    data.get("roll_no", "")
+).strip()
 
 
-    roll_no = str(
-        data.get("roll_no", "")
-    ).strip().upper()
+year = str(
+    data.get("year", "")
+).strip()
 
 
-    year = str(
-        data.get("year", "")
-    ).strip()
+branch = str(
+    data.get("branch", "")
+).strip()
 
 
-    branch = str(
-        data.get("branch", "")
-    ).strip()
+category = str(
+    data.get("category", "")
+).strip()
 
 
-    category = str(
-        data.get("category", "")
-    ).strip()
+recipient = str(
+    data.get("recipient", "")
+).strip()
 
 
-    recipient = str(
-        data.get("recipient", "")
-    ).strip()
+message = str(
+    data.get("message", "")
+).strip()
 
 
-    message = str(
-        data.get("message", "")
-    ).strip()
+# -----------------------------------------------------
+# Validation
+# -----------------------------------------------------
+
+if not roll_no:
+
+    return jsonify({
+        "success": False,
+        "message":
+            "Roll Number is required."
+    }), 400
 
 
-    # =====================================================
-    # VALIDATION
-    # =====================================================
+if not year:
 
-    if (
-        not roll_no
-        or not year
-        or not branch
-        or not category
-        or not message
-    ):
-
-        return jsonify({
-
-            "success": False,
-
-            "message":
-                "Please fill in all required fields"
-
-        }), 400
+    return jsonify({
+        "success": False,
+        "message":
+            "Year is required."
+    }), 400
 
 
-    if len(message) > 1000:
+if not branch:
 
-        return jsonify({
-
-            "success": False,
-
-            "message":
-                "Complaint message cannot exceed 1000 characters"
-
-        }), 400
+    return jsonify({
+        "success": False,
+        "message":
+            "Branch is required."
+    }), 400
 
 
-    # =====================================================
-    # GENERATE COMPLAINT ID
-    # =====================================================
+if not category:
 
-    complaint_id = (
-        f"CMP-{uuid.uuid4().hex[:8].upper()}"
-    )
+    return jsonify({
+        "success": False,
+        "message":
+            "Complaint category is required."
+    }), 400
 
 
-    # =====================================================
-    # DATE / TIME
-    # =====================================================
+if not recipient:
 
-    created_at = datetime.now().strftime(
+    return jsonify({
+        "success": False,
+        "message":
+            "Please select who the complaint should be sent to."
+    }), 400
+
+
+allowed_recipients = [
+    "Class Teacher",
+    "HOD",
+    "Principal"
+]
+
+
+if recipient not in allowed_recipients:
+
+    return jsonify({
+        "success": False,
+        "message":
+            "Invalid complaint recipient."
+    }), 400
+
+
+if not message:
+
+    return jsonify({
+        "success": False,
+        "message":
+            "Complaint description is required."
+    }), 400
+
+
+if len(message) > 1000:
+
+    return jsonify({
+        "success": False,
+        "message":
+            "Complaint description cannot exceed 1000 characters."
+    }), 400
+
+
+# -----------------------------------------------------
+# Generate complaint ID
+# -----------------------------------------------------
+
+complaint_id = (
+    "CMP-" +
+    uuid.uuid4()
+        .hex[:8]
+        .upper()
+)
+
+
+created_at =
+    datetime.now().strftime(
         "%Y-%m-%d %H:%M:%S"
     )
 
 
-    # =====================================================
-    # SAVE TO DATABASE
-    # =====================================================
+# -----------------------------------------------------
+# Save complaint
+# -----------------------------------------------------
 
-    conn = get_db_connection()
+connection = get_db()
 
 
-    try:
+try:
 
-        conn.execute("""
-            INSERT INTO complaints
-            (
-                complaint_id,
-                roll_no,
-                year,
-                branch,
-                category,
-                recipient,
-                message,
-                status,
-                created_at
-            )
-
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-
-        """, (
-
+    connection.execute(
+        """
+        INSERT INTO complaints
+        (
             complaint_id,
-
             roll_no,
-
             year,
-
             branch,
-
             category,
-
             recipient,
-
             message,
-
-            "Submitted",
-
+            status,
             created_at
-
-        ))
-
-
-        conn.commit()
-
-
-    except sqlite3.IntegrityError:
-
-        conn.close()
-
-        return jsonify({
-
-            "success": False,
-
-            "message":
-                "Could not generate complaint ID. Please try again."
-
-        }), 500
-
-
-    except Exception as error:
-
-        conn.close()
-
-        print(
-            "DATABASE ERROR:",
-            error
         )
 
-        return jsonify({
+        VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
 
-            "success": False,
+        (
+            complaint_id,
+            roll_no,
+            year,
+            branch,
+            category,
+            recipient,
+            message,
+            "Submitted",
+            created_at
+        )
+    )
 
-            "message":
-                "Unable to save complaint."
 
-        }), 500
+    connection.commit()
 
 
-    finally:
+except sqlite3.IntegrityError:
 
-        try:
-            conn.close()
-        except:
-            pass
+    connection.close()
 
 
     return jsonify({
-
-        "success": True,
-
+        "success": False,
         "message":
-            "Complaint submitted successfully",
+            "Unable to create complaint ID. Please try again."
+    }), 500
 
-        "complaint_id":
-            complaint_id,
 
-        "status":
-            "Submitted",
+finally:
 
-        "created_at":
-            created_at
+    connection.close()
 
-    }), 201
+
+return jsonify({
+
+    "success": True,
+
+    "message":
+        "Complaint submitted successfully.",
+
+    "complaint_id":
+        complaint_id
+
+}), 201
 
 
 # =========================================================
+
 # GET ALL COMPLAINTS
+
 # =========================================================
 
 @app.route(
-    "/api/complaints",
-    methods=["GET"]
+"/api/complaints",
+methods=["GET"]
 )
-def get_complaints():
-
-    conn = get_db_connection()
+def get_all_complaints():
 
 
-    complaints = conn.execute("""
+connection = get_db()
+
+
+try:
+
+    cursor = connection.execute(
+        """
         SELECT
             id,
             complaint_id,
@@ -619,52 +715,60 @@ def get_complaints():
         FROM complaints
 
         ORDER BY id DESC
-
-    """).fetchall()
-
-
-    conn.close()
-
-
-    complaint_list = [
-
-        dict(complaint)
-
-        for complaint in complaints
-
-    ]
-
-
-    return jsonify({
-
-        "success": True,
-
-        "complaints":
-            complaint_list
-
-    }), 200
-
-
-# =========================================================
-# TRACK COMPLAINT
-# =========================================================
-
-@app.route(
-    "/api/complaints/<complaint_id>",
-    methods=["GET"]
-)
-def track_complaint(complaint_id):
-
-    complaint_id = (
-        complaint_id.strip().upper()
+        """
     )
 
 
-    conn = get_db_connection()
+    rows = cursor.fetchall()
 
 
-    complaint = conn.execute("""
+    complaints = [
+        dict(row)
+        for row in rows
+    ]
+
+
+finally:
+
+    connection.close()
+
+
+return jsonify({
+
+    "success": True,
+
+    "complaints":
+        complaints
+
+})
+
+
+# =========================================================
+
+# GET SINGLE COMPLAINT
+
+# =========================================================
+
+@app.route(
+"/api/complaints/<complaint_id>",
+methods=["GET"]
+)
+def get_complaint(complaint_id):
+
+
+complaint_id =
+    complaint_id.strip()
+
+
+connection = get_db()
+
+
+try:
+
+    cursor = connection.execute(
+        """
         SELECT
+            id,
             complaint_id,
             roll_no,
             year,
@@ -679,299 +783,228 @@ def track_complaint(complaint_id):
 
         WHERE complaint_id = ?
 
-    """, (
-        complaint_id,
-    )).fetchone()
+        LIMIT 1
+        """,
 
-
-    conn.close()
-
-
-    if complaint is None:
-
-        return jsonify({
-
-            "success": False,
-
-            "message":
-                "Complaint ID not found"
-
-        }), 404
-
-
-    return jsonify({
-
-        "success": True,
-
-        "complaint":
-            dict(complaint)
-
-    }), 200
-
-
-# =========================================================
-# ADMIN VIEW COMPLAINT
-# =========================================================
-
-@app.route(
-    "/api/complaints/<complaint_id>",
-    methods=["GET"]
-)
-def admin_get_complaint(complaint_id):
-
-    return track_complaint(
-        complaint_id
+        (complaint_id,)
     )
 
 
-# =========================================================
-# UPDATE COMPLAINT STATUS
-# =========================================================
+    row = cursor.fetchone()
 
-@app.route(
-    "/api/complaints/<complaint_id>/status",
-    methods=["PUT"]
-)
-def update_complaint_status(
-    complaint_id
-):
 
-    complaint_id = (
-        complaint_id.strip().upper()
-    )
+finally:
 
+    connection.close()
 
-    data = request.get_json(
-        silent=True
-    )
 
-
-    if not data:
-
-        return jsonify({
-
-            "success": False,
-
-            "message":
-                "No status received"
-
-        }), 400
-
-
-    new_status = str(
-        data.get("status", "")
-    ).strip()
-
-
-    allowed_statuses = [
-
-        "Submitted",
-
-        "Under Review",
-
-        "In Progress",
-
-        "Resolved"
-
-    ]
-
-
-    if new_status not in allowed_statuses:
-
-        return jsonify({
-
-            "success": False,
-
-            "message":
-                "Invalid status"
-
-        }), 400
-
-
-    conn = get_db_connection()
-
-
-    complaint = conn.execute("""
-        SELECT complaint_id
-
-        FROM complaints
-
-        WHERE complaint_id = ?
-
-    """, (
-        complaint_id,
-    )).fetchone()
-
-
-    if complaint is None:
-
-        conn.close()
-
-        return jsonify({
-
-            "success": False,
-
-            "message":
-                "Complaint ID not found"
-
-        }), 404
-
-
-    conn.execute("""
-        UPDATE complaints
-
-        SET status = ?
-
-        WHERE complaint_id = ?
-
-    """, (
-
-        new_status,
-
-        complaint_id
-
-    ))
-
-
-    conn.commit()
-
-
-    updated_complaint = conn.execute("""
-        SELECT
-            complaint_id,
-            roll_no,
-            year,
-            branch,
-            category,
-            recipient,
-            message,
-            status,
-            created_at
-
-        FROM complaints
-
-        WHERE complaint_id = ?
-
-    """, (
-        complaint_id,
-    )).fetchone()
-
-
-    conn.close()
-
-
-    return jsonify({
-
-        "success": True,
-
-        "message":
-            "Complaint status updated successfully",
-
-        "complaint":
-            dict(updated_complaint)
-
-    }), 200
-
-
-# =========================================================
-# HEALTH CHECK
-# =========================================================
-
-@app.route(
-    "/api/health",
-    methods=["GET"]
-)
-def health_check():
-
-    # Make sure database exists
-    create_database()
-
-
-    return jsonify({
-
-        "success": True,
-
-        "message":
-            "Student Complaint Platform Backend Running",
-
-        "database":
-            "connected"
-
-    }), 200
-
-
-# =========================================================
-# 404 HANDLER
-# =========================================================
-
-@app.errorhandler(404)
-def page_not_found(error):
-
-    if request.path.startswith(
-        "/api/"
-    ):
-
-        return jsonify({
-
-            "success": False,
-
-            "message":
-                "API endpoint not found"
-
-        }), 404
-
-
-    return send_from_directory(
-        PROJECT_DIR,
-        "index.html"
-    )
-
-
-# =========================================================
-# 500 HANDLER
-# =========================================================
-
-@app.errorhandler(500)
-def internal_server_error(error):
+if row is None:
 
     return jsonify({
 
         "success": False,
 
         "message":
-            "Internal server error"
+            "Complaint not found."
 
-    }), 500
+    }), 404
+
+
+return jsonify({
+
+    "success": True,
+
+    "complaint":
+        dict(row)
+
+})
 
 
 # =========================================================
-# INITIALIZE DATABASE
-# =========================================================
 
-create_database()
-
+# UPDATE COMPLAINT STATUS
 
 # =========================================================
-# RUN APPLICATION
-# =========================================================
 
-if __name__ == "__main__":
+@app.route(
+"/api/complaints/<complaint_id>/status",
+methods=["PUT"]
+)
+def update_complaint_status(
+complaint_id
+):
 
-    port = int(
-        os.environ.get(
-            "PORT",
-            5000
+
+data = request.get_json(
+    silent=True
+) or {}
+
+
+status = str(
+    data.get("status", "")
+).strip()
+
+
+allowed_statuses = [
+    "Submitted",
+    "Under Review",
+    "In Progress",
+    "Resolved"
+]
+
+
+if status not in allowed_statuses:
+
+    return jsonify({
+
+        "success": False,
+
+        "message":
+            "Invalid complaint status."
+
+    }), 400
+
+
+connection = get_db()
+
+
+try:
+
+    cursor = connection.execute(
+        """
+        UPDATE complaints
+
+        SET status = ?
+
+        WHERE complaint_id = ?
+        """,
+
+        (
+            status,
+            complaint_id
         )
     )
 
 
-    app.run(
+    connection.commit()
 
-        debug=False,
 
-        host="0.0.0.0",
+    if cursor.rowcount == 0:
 
-        port=port
+        return jsonify({
 
+            "success": False,
+
+            "message":
+                "Complaint not found."
+
+        }), 404
+
+
+finally:
+
+    connection.close()
+
+
+return jsonify({
+
+    "success": True,
+
+    "message":
+        "Complaint status updated successfully.",
+
+    "status":
+        status
+
+})
+
+
+# =========================================================
+
+# HEALTH CHECK
+
+# =========================================================
+
+@app.route(
+"/api/health",
+methods=["GET"]
+)
+def health():
+
+
+return jsonify({
+
+    "success": True,
+
+    "message":
+        "VEMU Voice API is running.",
+
+    "database":
+        str(DATABASE_PATH)
+
+})
+
+
+# =========================================================
+
+# 404 HANDLER
+
+# =========================================================
+
+@app.errorhandler(404)
+def not_found(error):
+
+
+return jsonify({
+
+    "success": False,
+
+    "message":
+        "Resource not found."
+
+}), 404
+
+
+# =========================================================
+
+# 500 HANDLER
+
+# =========================================================
+
+@app.errorhandler(500)
+def server_error(error):
+
+
+return jsonify({
+
+    "success": False,
+
+    "message":
+        "Internal server error."
+
+}), 500
+
+
+# =========================================================
+
+# RUN APPLICATION
+
+# =========================================================
+
+if name == "main":
+
+
+port = int(
+    os.environ.get(
+        "PORT",
+        5000
     )
+)
+
+
+app.run(
+    host="0.0.0.0",
+    port=port,
+    debug=False
+)
 
