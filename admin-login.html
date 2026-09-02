@@ -1,155 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Admin Login | VEMU Voice</title>
 
-    <link rel="stylesheet"
-          href="style.css">
-
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <nav class="navbar">
+<nav class="navbar">
+    <div class="nav-container">
 
-        <a href="index.html"
-           class="logo">
-
-            VEMU<span>VOICE</span>
-
+        <a href="index.html" class="logo">
+            VEMU <span>VOICE</span>
         </a>
 
-
         <div class="nav-links">
-
-            <a href="index.html">
-                Home
-            </a>
-
-            <a href="about.html">
-                About
-            </a>
-
-            <a href="contact.html">
-                Submit Complaint
-            </a>
-
-            <a href="track.html">
-                Track Complaint
-            </a>
-
-            <a href="admin-login.html"
-               class="active">
-
-                Admin
-
-            </a>
-
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="login.html">Submit Complaint</a>
+            <a href="track.html">Track Complaint</a>
+            <a href="admin-login.html" class="active">Admin</a>
         </div>
 
-    </nav>
+    </div>
+</nav>
 
 
-    <main class="admin-login-page">
+<main class="center-page">
 
-        <section class="admin-login-card">
+    <section class="login-card">
 
-            <div class="admin-icon">
-                🔐
-            </div>
+        <div class="card-icon">
+            🔐
+        </div>
 
-            <p class="badge">
-                AUTHORIZED ACCESS ONLY
-            </p>
+        <p class="section-label">
+            ADMIN ACCESS
+        </p>
 
-            <h1>
-                Admin Login
-            </h1>
+        <h1>
+            Admin Login
+        </h1>
 
-            <p class="admin-description">
-                Sign in to access the complaint management dashboard.
-            </p>
-
-
-            <form id="adminLoginForm">
-
-                <div class="input-group">
-
-                    <label for="adminUsername">
-                        Username
-                    </label>
-
-                    <input
-                        type="text"
-                        id="adminUsername"
-                        placeholder="Enter username"
-                        autocomplete="username"
-                        required
-                    >
-
-                </div>
+        <p class="card-description">
+            Authorized administrators can access and manage
+            student complaints.
+        </p>
 
 
-                <div class="input-group">
+        <form id="adminLoginForm">
 
-                    <label for="adminPassword">
-                        Password
-                    </label>
+            <label for="adminUsername">
+                Username
+            </label>
 
-                    <input
-                        type="password"
-                        id="adminPassword"
-                        placeholder="Enter password"
-                        autocomplete="current-password"
-                        required
-                    >
-
-                </div>
+            <input
+                type="text"
+                id="adminUsername"
+                placeholder="Enter username"
+                autocomplete="username"
+                required
+            >
 
 
-                <button
-                    type="submit"
-                    class="submit-btn">
+            <label for="adminPassword">
+                Password
+            </label>
 
-                    Login to Dashboard →
-
-                </button>
-
-            </form>
+            <input
+                type="password"
+                id="adminPassword"
+                placeholder="Enter password"
+                autocomplete="current-password"
+                required
+            >
 
 
             <div
                 id="loginError"
-                class="login-error hidden">
-
-                Invalid username or password.
-
-            </div>
-
-        </section>
-
-    </main>
+                class="form-error"
+            ></div>
 
 
-    <footer>
+            <button
+                type="submit"
+                class="btn btn-primary full-width"
+            >
+                Login
+            </button>
 
-        <p>
-            © 2026 VEMU Voice · Student Support Platform
-        </p>
+        </form>
 
-    </footer>
+    </section>
+
+</main>
 
 
-    <script src="script.js"></script>
+<script src="script.js"></script>
 
 </body>
-
 </html>
-
