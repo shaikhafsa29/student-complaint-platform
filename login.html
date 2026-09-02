@@ -21,7 +21,7 @@
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
-            <a href="login.html" class="active">Submit Complaint</a>
+            <a href="contact.html" class="active">Submit Complaint</a>
             <a href="track.html">Track Complaint</a>
             <a href="admin-login.html">Admin</a>
         </div>
@@ -79,6 +79,24 @@
 
 </main>
 
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    /*
+     * If the student is already logged in,
+     * do not show the login card again.
+     */
+    const savedRollNumber =
+        sessionStorage.getItem("studentRollNumber");
+
+    if (savedRollNumber) {
+        window.location.replace("contact.html");
+        return;
+    }
+
+});
+</script>
 
 <script src="script.js"></script>
 
