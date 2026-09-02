@@ -1180,3 +1180,85 @@ footer {
     }
 
 }
+css
+/* =========================================================
+   STUDENT LOGIN
+========================================================= */
+
+.student-login-page {
+    width: min(500px, 92%);
+    margin: 80px auto;
+}
+
+.student-login-card {
+    padding: 45px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 25px;
+    box-shadow: 0 20px 60px rgba(40, 40, 100, 0.08);
+    text-align: center;
+}
+
+.student-login-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 20px;
+    display: grid;
+    place-items: center;
+    background: var(--soft);
+    border-radius: 20px;
+    font-size: 2rem;
+}
+
+.student-login-card .badge {
+    margin-bottom: 15px;
+}
+
+.student-login-card h1 {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 2.3rem;
+    line-height: 1.1;
+}
+
+.student-login-description {
+    margin: 12px auto 30px;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.student-login-card form {
+    text-align: left;
+}
+
+.student-login-card .submit-btn {
+    margin-top: 5px;
+}
+
+.student-login-note {
+    margin-top: 22px;
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   STUDENT LOGIN RESPONSIVE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .student-login-page {
+        margin: 50px auto;
+    }
+
+    .student-login-card {
+        padding: 30px 25px;
+    }
+
+    .student-login-card h1 {
+        font-size: 2rem;
+    }
+
+}
+
