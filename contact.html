@@ -1,71 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <title>Submit Complaint | VEMU Voice</title>
 
-    <title>Submit Complaint | VemuVoice</title>
-
-    <link rel="stylesheet"
-          href="style.css">
-
+    <link rel="stylesheet" href="style.css">
 </head>
-
 
 <body>
 
-
-<!-- =========================================================
-     NAVBAR
-========================================================= -->
-
 <nav class="navbar">
 
-    <a href="index.html"
-       class="logo">
-        Vv Vemu<span>Voice</span>
-    </a>
+    <div class="nav-container">
 
-    <div class="nav-links">
-
-        <a href="index.html">
-            Home
+        <a href="index.html" class="logo">
+            VEMU <span>VOICE</span>
         </a>
 
-        <a href="about.html">
-            About
-        </a>
+        <div class="nav-links">
 
-        <a href="contact.html"
-           class="active">
-            Submit Complaint
-        </a>
+            <a href="index.html">
+                Home
+            </a>
 
-        <a href="track.html">
-            Track Complaint
-        </a>
+            <a href="about.html">
+                About
+            </a>
 
-        <a href="admin-login.html">
-            Admin
-        </a>
+            <a href="contact.html" class="active">
+                Submit Complaint
+            </a>
+
+            <a href="track.html">
+                Track Complaint
+            </a>
+
+            <a href="admin-login.html">
+                Admin
+            </a>
+
+        </div>
 
     </div>
 
 </nav>
 
 
-<!-- =========================================================
-     COMPLAINT PAGE
-========================================================= -->
-
 <main class="complaint-page">
-
-
-    <!-- PAGE INTRO -->
 
     <section class="form-intro">
 
@@ -85,17 +68,14 @@
     </section>
 
 
-    <!-- FORM CARD -->
-
     <section class="form-card">
 
         <form id="complaintForm">
 
 
-            <!-- YEAR + CLASSROOM -->
+            <!-- YEAR + CLASSROOM / BRANCH -->
 
             <div class="form-row">
-
 
                 <div class="input-group">
 
@@ -103,9 +83,10 @@
                         Year
                     </label>
 
-                    <select id="year"
-                            name="year"
-                            required>
+                    <select
+                        id="year"
+                        name="year"
+                        required>
 
                         <option value="">
                             Select your year
@@ -144,19 +125,17 @@
                         name="branch"
                         placeholder="Enter your classroom / branch"
                         autocomplete="off"
-                        required
-                    >
+                        required>
 
                 </div>
 
-
             </div>
+
 
 
             <!-- CATEGORY + RECIPIENT -->
 
             <div class="form-row">
-
 
                 <div class="input-group">
 
@@ -164,9 +143,10 @@
                         Complaint Category
                     </label>
 
-                    <select id="category"
-                            name="category"
-                            required>
+                    <select
+                        id="category"
+                        name="category"
+                        required>
 
                         <option value="">
                             Select category
@@ -219,9 +199,10 @@
                         Send Complaint To
                     </label>
 
-                    <select id="recipient"
-                            name="recipient"
-                            required>
+                    <select
+                        id="recipient"
+                        name="recipient"
+                        required>
 
                         <option value="">
                             Select recipient
@@ -243,11 +224,11 @@
 
                 </div>
 
-
             </div>
 
 
-            <!-- DESCRIPTION -->
+
+            <!-- COMPLAINT DESCRIPTION -->
 
             <div class="input-group">
 
@@ -260,8 +241,7 @@
                     name="message"
                     maxlength="1000"
                     placeholder="Describe your complaint clearly..."
-                    required
-                ></textarea>
+                    required></textarea>
 
 
                 <div class="text-info">
@@ -279,6 +259,7 @@
             </div>
 
 
+
             <!-- PRIVACY NOTE -->
 
             <div class="privacy-note">
@@ -290,11 +271,14 @@
             </div>
 
 
+
             <!-- ERROR -->
 
-            <p id="complaintError"
-               class="tracking-error hidden">
+            <p
+                id="complaintError"
+                class="tracking-error hidden">
             </p>
+
 
 
             <!-- SUBMIT -->
@@ -313,23 +297,15 @@
 
     </section>
 
-
 </main>
 
 
-<!-- =========================================================
-     FOOTER
-========================================================= -->
-
 <footer>
-
-    VemuVoice | Student Support Platform
-
+    VEMU Voice | Student Support Platform
 </footer>
 
 
 <script src="script.js"></script>
 
 </body>
-
 </html>
