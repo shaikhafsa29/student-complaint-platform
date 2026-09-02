@@ -1,237 +1,109 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Admin Login | VEMU Voice</title>
 
-    <!-- MAIN CSS -->
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
-
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+    <nav class="navbar">
 
-<!-- =========================================================
-     ADMIN LOGIN PAGE
-========================================================= -->
+        <a href="index.html" class="logo">
+            VEMU<span>VOICE</span>
+        </a>
 
-<main class="admin-login-page">
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Submit Complaint</a>
+        <a href="track.html">Track Complaint</a>
+        <a href="admin-login.html" class="active">Admin</a>
+    </div>
 
-
-    <div class="admin-login-card">
-
-
-        <!-- =================================================
-             LOGO
-        ================================================== -->
-
-        <div class="admin-logo">
-
-
-            <div class="admin-logo-icon">
-                Vv
-            </div>
+    </nav>
 
 
-            <div class="admin-logo-text">
+    <main class="admin-login-page">
 
-                <h2>
-                    Vemu<span>Voice</span>
-                </h2>
+        <section class="admin-login-card">
 
-                <p>
-                    Student Support Platform
-                </p>
+            <div class="admin-icon">🔐</div>
 
-            </div>
+            <p class="badge">AUTHORIZED ACCESS ONLY</p>
 
+            <h1>Admin Login</h1>
 
-        </div>
-
-
-
-        <!-- =================================================
-             LOGIN HEADING
-        ================================================== -->
-
-        <div class="login-heading">
-
-
-            <div class="login-badge">
-                ADMIN ACCESS
-            </div>
-
-
-            <h1>
-                Welcome Back
-            </h1>
-
-
-            <p>
-                Sign in to manage and review student complaints.
+            <p class="admin-description">
+                Sign in to access the complaint management dashboard.
             </p>
 
 
-        </div>
+            <form id="adminLoginForm">
+
+                <div class="input-group">
+
+                    <label for="adminUsername">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="adminUsername"
+                        placeholder="Enter username"
+                        required
+                    >
+
+                </div>
 
 
+                <div class="input-group">
 
-        <!-- =================================================
-             LOGIN FORM
-        ================================================== -->
+                    <label for="adminPassword">
+                        Password
+                    </label>
 
-        <form id="adminLoginForm">
+                    <input
+                        type="password"
+                        id="adminPassword"
+                        placeholder="Enter password"
+                        required
+                    >
 
-
-            <!-- USERNAME -->
-
-            <div class="input-group">
-
-
-                <label for="adminUsername">
-                    Username
-                </label>
+                </div>
 
 
-                <input
-                    type="text"
-                    id="adminUsername"
-                    placeholder="Enter admin username"
-                    autocomplete="username"
-                    required
-                >
+                <button type="submit" class="submit-btn">
+                    Login to Dashboard →
+                </button>
+
+            </form>
 
 
-            </div>
-
-
-
-            <!-- PASSWORD -->
-
-            <div class="input-group">
-
-
-                <label for="adminPassword">
-                    Password
-                </label>
-
-
-                <input
-                    type="password"
-                    id="adminPassword"
-                    placeholder="Enter admin password"
-                    autocomplete="current-password"
-                    required
-                >
-
-
-            </div>
-
-
-
-            <!-- ERROR MESSAGE -->
-
-            <p
+            <div
                 id="loginError"
                 class="login-error hidden"
-            ></p>
-
-
-
-            <!-- LOGIN BUTTON -->
-
-            <button
-                type="submit"
-                class="admin-login-btn"
             >
-
-                Login to Dashboard
-
-                <span>
-                    →
-                </span>
-
-            </button>
-
-
-        </form>
-
-
-
-        <!-- =================================================
-             SECURITY NOTE
-        ================================================== -->
-
-        <div class="security-note">
-
-
-            <span class="security-icon">
-                🔒
-            </span>
-
-
-            <div>
-
-
-                <strong>
-                    Secure Admin Area
-                </strong>
-
-
-                <p>
-                    Authorized administrators only.
-                </p>
-
-
+                Invalid username or password.
             </div>
 
+        </section>
 
-        </div>
-
-
-
-        <!-- =================================================
-             BACK TO HOME
-        ================================================== -->
-
-        <a
-            href="index.html"
-            class="back-home"
-        >
-
-            ← Back to VEMU Voice
-
-        </a>
+    </main>
 
 
-    </div>
+    <footer>
+        <p>© 2026 VEMU Voice • Student Support Platform</p>
+    </footer>
 
 
-</main>
-
-
-
-<!-- =========================================================
-     JAVASCRIPT
-========================================================= -->
-
-<script src="script.js"></script>
-
+    <script src="script.js"></script>
 
 </body>
 
 </html>
-
