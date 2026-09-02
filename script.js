@@ -1,6 +1,230 @@
+javascript
 document.addEventListener("DOMContentLoaded", () => {
 
     const API_BASE = "";
+
+
+    /* =========================================================
+       VEMU VOICE THEME SYSTEM
+       GLOBAL THEME PERSISTENCE
+    ========================================================= */
+
+    const savedTheme =
+        localStorage.getItem("vemuVoiceTheme") || "campus";
+
+
+    /* =========================================================
+       APPLY SAVED THEME
+    ========================================================= */
+
+    function applyTheme(theme) {
+
+        if (
+            theme === "midnight" ||
+            theme === "aurora"
+        ) {
+
+            document.body.setAttribute(
+                "data-theme",
+                theme
+            );
+
+        } else {
+
+            document.body.removeAttribute(
+                "data-theme"
+            );
+
+        }
+
+    }
+
+
+    applyTheme(savedTheme);
+
+
+    /* =========================================================
+       THEME MENU ELEMENTS
+    ========================================================= */
+
+    const appearanceButton =
+        document.getElementById(
+            "appearanceButton"
+        );
+
+
+    const themeMenu =
+        document.getElementById(
+            "themeMenu"
+        );
+
+
+    const themeClose =
+        document.getElementById(
+            "themeClose"
+        );
+
+
+    const themeOptions =
+        document.querySelectorAll(
+            ".theme-option"
+        );
+
+
+    /* =========================================================
+       UPDATE SELECTED THEME
+    ========================================================= */
+
+    function updateSelectedTheme() {
+
+        const currentTheme =
+            localStorage.getItem(
+                "vemuVoiceTheme"
+            ) || "campus";
+
+
+        themeOptions.forEach(
+            (option) => {
+
+                option.classList.toggle(
+                    "selected",
+                    option.dataset.theme ===
+                        currentTheme
+                );
+
+            }
+        );
+
+    }
+
+
+    updateSelectedTheme();
+
+
+    /* =========================================================
+       OPEN THEME MENU
+    ========================================================= */
+
+    if (
+        appearanceButton &&
+        themeMenu
+    ) {
+
+        appearanceButton.addEventListener(
+            "click",
+            (event) => {
+
+                event.stopPropagation();
+
+                themeMenu.classList.toggle(
+                    "show"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       CLOSE THEME MENU
+    ========================================================= */
+
+    if (
+        themeClose &&
+        themeMenu
+    ) {
+
+        themeClose.addEventListener(
+            "click",
+            (event) => {
+
+                event.stopPropagation();
+
+                themeMenu.classList.remove(
+                    "show"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       CHANGE THEME
+    ========================================================= */
+
+    themeOptions.forEach(
+        (option) => {
+
+            option.addEventListener(
+                "click",
+                (event) => {
+
+                    event.stopPropagation();
+
+
+                    const selectedTheme =
+                        option.dataset.theme;
+
+
+                    applyTheme(
+                        selectedTheme
+                    );
+
+
+                    localStorage.setItem(
+                        "vemuVoiceTheme",
+                        selectedTheme
+                    );
+
+
+                    updateSelectedTheme();
+
+
+                    if (themeMenu) {
+
+                        themeMenu.classList.remove(
+                            "show"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+    /* =========================================================
+       CLOSE THEME MENU WHEN CLICKING OUTSIDE
+    ========================================================= */
+
+    document.addEventListener(
+        "click",
+        (event) => {
+
+            if (
+                themeMenu &&
+                appearanceButton &&
+                !themeMenu.contains(
+                    event.target
+                ) &&
+                !appearanceButton.contains(
+                    event.target
+                )
+            ) {
+
+                themeMenu.classList.remove(
+                    "show"
+                );
+
+            }
+
+        }
+    );
 
 
     /* =========================================================
@@ -1357,3 +1581,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
