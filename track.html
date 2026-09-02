@@ -1,209 +1,112 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Track Complaint | VEMU Voice</title>
 
-    <link rel="stylesheet"
-          href="style.css">
-
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <nav class="navbar">
+<nav class="navbar">
+    <div class="nav-container">
 
-        <a href="index.html"
-           class="logo">
-
-            VEMU<span>VOICE</span>
-
+        <a href="index.html" class="logo">
+            VEMU <span>VOICE</span>
         </a>
 
-
         <div class="nav-links">
-
-            <a href="index.html">
-                Home
-            </a>
-
-            <a href="about.html">
-                About
-            </a>
-
-            <a href="contact.html">
-                Submit Complaint
-            </a>
-
-            <a href="track.html"
-               class="active">
-
-                Track Complaint
-
-            </a>
-
-            <a href="admin-login.html">
-                Admin
-            </a>
-
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="login.html">Submit Complaint</a>
+            <a href="track.html" class="active">Track Complaint</a>
+            <a href="admin-login.html">Admin</a>
         </div>
 
-    </nav>
+    </div>
+</nav>
 
 
-    <main class="track-page">
+<main class="center-page">
 
-        <section class="track-intro">
+    <section class="tracking-card">
 
-            <p class="badge">
-                COMPLAINT TRACKING
-            </p>
+        <div class="card-icon">🎫</div>
 
-            <h1>
-                Track Your Complaint
-            </h1>
+        <p class="section-label">COMPLAINT TRACKING</p>
 
-            <p>
-                Enter the complaint ID you received after submitting
-                your concern to check its current status.
-            </p>
+        <h1>Track your complaint</h1>
 
-        </section>
+        <p class="card-description">
+            Enter the Complaint ID you received after submission.
+        </p>
 
 
-        <section class="track-card">
+        <form id="trackForm">
 
-            <form id="trackForm">
+            <label for="trackComplaintId">
+                Complaint ID
+            </label>
 
-                <div class="input-group">
-
-                    <label for="trackComplaintId">
-                        Complaint ID
-                    </label>
-
-                    <input
-                        type="text"
-                        id="trackComplaintId"
-                        placeholder="Example: CMP-B84893F6"
-                        autocomplete="off"
-                        required
-                    >
-
-                </div>
-
-
-                <button
-                    type="submit"
-                    class="submit-btn">
-
-                    Track Status 🔍
-
-                </button>
-
-            </form>
-
-
-            <div
-                id="trackingResult"
-                class="tracking-result hidden">
-
-                <div class="result-icon">
-                    🔍
-                </div>
-
-                <h2>
-                    Complaint Found
-                </h2>
-
-
-                <div class="result-details">
-
-                    <div class="result-row">
-
-                        <span>
-                            Complaint ID
-                        </span>
-
-                        <strong id="resultComplaintId"></strong>
-
-                    </div>
-
-
-                    <div class="result-row">
-
-                        <span>
-                            Category
-                        </span>
-
-                        <strong id="resultCategory"></strong>
-
-                    </div>
-
-
-                    <div class="result-row">
-
-                        <span>
-                            Status
-                        </span>
-
-                        <strong id="resultStatus"></strong>
-
-                    </div>
-
-
-                    <div class="result-row">
-
-                        <span>
-                            Submitted On
-                        </span>
-
-                        <strong id="resultDate"></strong>
-
-                    </div>
-
-                </div>
-
-            </div>
-
+            <input
+                type="text"
+                id="trackComplaintId"
+                placeholder="Example: CMP-1234ABCD"
+                autocomplete="off"
+                required
+            >
 
             <div
                 id="trackingError"
-                class="tracking-error hidden">
+                class="form-error"
+            ></div>
 
-                <h3>
-                    Complaint Not Found
-                </h3>
+            <button
+                type="submit"
+                class="btn btn-primary full-width"
+            >
+                Track Complaint
+            </button>
 
-                <p>
-                    Please check your Complaint ID and try again.
-                </p>
+        </form>
 
+
+        <div
+            id="trackingResult"
+            class="tracking-result hidden"
+        >
+
+            <div class="result-row">
+                <span>Complaint ID</span>
+                <strong id="resultComplaintId">-</strong>
             </div>
 
-        </section>
+            <div class="result-row">
+                <span>Category</span>
+                <strong id="resultCategory">-</strong>
+            </div>
 
-    </main>
+            <div class="result-row">
+                <span>Status</span>
+                <strong id="resultStatus">-</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Submitted</span>
+                <strong id="resultDate">-</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
 
 
-    <footer>
-
-        <p>
-            © 2026 VEMU Voice • Student Support Platform
-        </p>
-
-    </footer>
-
-
-    <script src="script.js"></script>
+<script src="script.js"></script>
 
 </body>
-
 </html>
-
