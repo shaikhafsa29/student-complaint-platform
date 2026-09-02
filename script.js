@@ -18,24 +18,51 @@ document.addEventListener("DOMContentLoaded", () => {
     ========================================================= */
 
     function getPageName() {
-        return window.location.pathname.split("/").pop().toLowerCase();
+        return window.location.pathname
+            .split("/")
+            .pop()
+            .toLowerCase();
     }
 
+
+    /* =========================================================
+       STUDENT LOGIN STORAGE
+    ========================================================= */
+
     function getStudentRollNumber() {
-        return sessionStorage.getItem("studentRollNumber");
+        return localStorage.getItem("studentRollNumber");
     }
+
 
     function isStudentLoggedIn() {
         const rollNo = getStudentRollNumber();
-        return rollNo && rollNo.trim() !== "";
+
+        return (
+            rollNo &&
+            rollNo.trim() !== ""
+        );
     }
+
+
+    /* =========================================================
+       ADMIN LOGIN
+    ========================================================= */
 
     function isAdminLoggedIn() {
         return sessionStorage.getItem("adminLoggedIn") === "true";
     }
 
+
+    /* =========================================================
+       GENERAL HELPERS
+    ========================================================= */
+
     function escapeHtml(value) {
-        if (value === null || value === undefined) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
             return "";
         }
 
@@ -47,16 +74,99 @@ document.addEventListener("DOMContentLoaded", () => {
             .replace(/'/g, "&#039;");
     }
 
-    function showElement(element, displayValue = "") {
-        if (element) {
-            element.style.display = displayValue;
+
+    function formatDate(dateValue) {
+
+        if (!dateValue) {
+            return "—";
         }
+
+        const date =
+            new Date(dateValue);
+
+        if (Number.isNaN(date.getTime())) {
+            return String(dateValue);
+        }
+
+        return date.toLocaleString(
+            "en-IN",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
     }
 
-    function hideElement(element) {
-        if (element) {
-            element.style.display = "none";
+
+    function normalizeStatus(status) {
+
+        const value =
+            String(status || "")
+                .trim()
+                .toLowerCase();
+
+
+        if (
+            value === "under review" ||
+            value === "under_review" ||
+            value === "review"
+        ) {
+            return "Under Review";
         }
+
+
+        if (
+            value === "in progress" ||
+            value === "in_progress" ||
+            value === "progress"
+        ) {
+            return "In Progress";
+        }
+
+
+        if (
+            value === "resolved" ||
+            value === "resolve"
+        ) {
+            return "Resolved";
+        }
+
+
+        return "Submitted";
+    }
+
+
+    function getStatusClass(status) {
+
+        const normalized =
+            normalizeStatus(status);
+
+
+        if (
+            normalized === "Under Review"
+        ) {
+            return "status-under-review";
+        }
+
+
+        if (
+            normalized === "In Progress"
+        ) {
+            return "status-in-progress";
+        }
+
+
+        if (
+            normalized === "Resolved"
+        ) {
+            return "status-resolved";
+        }
+
+
+        return "status-submitted";
     }
 
 
@@ -64,120 +174,119 @@ document.addEventListener("DOMContentLoaded", () => {
        STUDENT LOGIN PAGE
     ========================================================= */
 
-    const studentLoginForm = document.getElementById("studentLoginForm");
+    const studentLoginForm =
+        document.getElementById(
+            "studentLoginForm"
+        );
+
 
     if (studentLoginForm) {
 
-        /* If already logged in, DO NOT show login card again */
+        /*
+         * If a Roll Number is already saved,
+         * never show the login page again.
+         */
+
         if (isStudentLoggedIn()) {
-            window.location.replace("contact.html");
+
+            window.location.replace(
+                "contact.html"
+            );
+
             return;
         }
 
-        studentLoginForm.addEventListener("submit", async (event) => {
 
-            event.preventDefault();
+        studentLoginForm.addEventListener(
+            "submit",
+            (event) => {
 
-            const rollInput =
-                document.getElementById("studentRollNumber");
+                event.preventDefault();
 
-            const errorBox =
-                document.getElementById("studentLoginError");
 
-            const loginButton =
-                document.getElementById("studentLoginBtn");
+                const rollInput =
+                    document.getElementById(
+                        "studentRollNumber"
+                    );
 
-            const rollNo =
-                rollInput ? rollInput.value.trim() : "";
 
-            if (errorBox) {
-                errorBox.textContent = "";
-            }
+                const errorBox =
+                    document.getElementById(
+                        "studentLoginError"
+                    );
 
-            if (!rollNo) {
+
+                const loginButton =
+                    document.getElementById(
+                        "studentLoginBtn"
+                    );
+
+
+                const rollNo =
+                    rollInput
+                        ? rollInput.value.trim()
+                        : "";
+
 
                 if (errorBox) {
-                    errorBox.textContent =
-                        "Please enter your Roll Number.";
+                    errorBox.textContent = "";
                 }
 
-                return;
-            }
 
-            if (loginButton) {
-                loginButton.disabled = true;
-                loginButton.textContent = "Checking...";
-            }
+                if (!rollNo) {
 
-            try {
+                    if (errorBox) {
 
-                const response = await fetch(
-                    `${API_BASE}/api/student/login`,
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            roll_no: rollNo
-                        })
+                        errorBox.textContent =
+                            "Please enter your Roll Number.";
                     }
-                );
 
-                let data = {};
-
-                try {
-                    data = await response.json();
-                } catch (jsonError) {
-                    data = {};
+                    return;
                 }
 
-                if (!response.ok) {
 
-                    throw new Error(
-                        data.message ||
-                        data.error ||
-                        "Unable to continue. Please check your Roll Number."
-                    );
-                }
+                /*
+                 * IMPORTANT:
+                 * Student login does NOT call the backend.
+                 *
+                 * We simply save the Roll Number locally.
+                 */
 
-                /* SAVE LOGIN */
-                sessionStorage.setItem(
+                localStorage.setItem(
                     "studentRollNumber",
                     rollNo
                 );
 
-                /*
-                   IMPORTANT:
-                   After successful login go directly to
-                   Submit Complaint page.
-                */
-                window.location.replace("contact.html");
-
-            } catch (error) {
-
-                console.error("Student login error:", error);
-
-                if (errorBox) {
-                    errorBox.textContent =
-                        error.message ||
-                        "Something went wrong. Please try again.";
-                }
 
                 if (loginButton) {
-                    loginButton.disabled = false;
-                    loginButton.textContent = "Continue";
+
+                    loginButton.disabled = true;
+
+                    loginButton.textContent =
+                        "Continuing...";
                 }
+
+
+                /*
+                 * Go directly to complaint form.
+                 */
+
+                window.location.replace(
+                    "contact.html"
+                );
+
             }
-        });
+        );
     }
 
 
     /* =========================================================
-       PROTECT STUDENT PAGES
+       PAGE PROTECTION
     ========================================================= */
 
-    const currentPage = getPageName();
+    const currentPage =
+        getPageName();
+
 
     const protectedStudentPages = [
         "index.html",
@@ -187,67 +296,102 @@ document.addEventListener("DOMContentLoaded", () => {
         "about.html"
     ];
 
+
     if (
-        protectedStudentPages.includes(currentPage) &&
+        protectedStudentPages.includes(
+            currentPage
+        ) &&
         !isStudentLoggedIn()
     ) {
 
-        window.location.replace("login.html");
+        window.location.replace(
+            "login.html"
+        );
+
         return;
     }
 
 
     /* =========================================================
-       SUBMIT COMPLAINT PAGE
+       SUBMIT COMPLAINT
     ========================================================= */
 
     const complaintForm =
-        document.getElementById("complaintForm");
+        document.getElementById(
+            "complaintForm"
+        );
+
 
     if (complaintForm) {
 
         const messageInput =
-            document.getElementById("message");
+            document.getElementById(
+                "message"
+            );
+
 
         const charCount =
-            document.getElementById("charCount");
+            document.getElementById(
+                "charCount"
+            );
+
 
         const errorBox =
-            document.getElementById("complaintError");
+            document.getElementById(
+                "complaintError"
+            );
+
 
         const submitButton =
-            document.getElementById("complaintSubmitBtn");
+            document.getElementById(
+                "complaintSubmitBtn"
+            );
 
 
-        /* Character counter */
+        /* CHARACTER COUNTER */
 
-        if (messageInput && charCount) {
+        if (
+            messageInput &&
+            charCount
+        ) {
 
-            const updateCharacterCount = () => {
+            const updateCharacterCount =
+                () => {
 
-                const length =
-                    messageInput.value.length;
+                    const length =
+                        messageInput.value.length;
 
-                charCount.textContent =
-                    `${length}/1000`;
 
-                if (length >= 1000) {
-                    charCount.classList.add("limit");
-                } else {
-                    charCount.classList.remove("limit");
-                }
-            };
+                    charCount.textContent =
+                        `${length} / 1000`;
+
+
+                    if (length >= 1000) {
+
+                        charCount.classList.add(
+                            "limit"
+                        );
+
+                    } else {
+
+                        charCount.classList.remove(
+                            "limit"
+                        );
+                    }
+                };
+
 
             messageInput.addEventListener(
                 "input",
                 updateCharacterCount
             );
 
+
             updateCharacterCount();
         }
 
 
-        /* Complaint submission */
+        /* COMPLAINT SUBMISSION */
 
         complaintForm.addEventListener(
             "submit",
@@ -255,12 +399,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 event.preventDefault();
 
+
                 if (errorBox) {
                     errorBox.textContent = "";
                 }
 
+
                 const rollNo =
                     getStudentRollNumber();
+
 
                 if (!rollNo) {
 
@@ -271,27 +418,48 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
+
                 const year =
-                    document.getElementById("year")?.value.trim();
+                    document
+                        .getElementById("year")
+                        ?.value
+                        .trim();
+
 
                 const branch =
-                    document.getElementById("branch")?.value.trim();
+                    document
+                        .getElementById("branch")
+                        ?.value
+                        .trim();
+
 
                 const category =
-                    document.getElementById("category")?.value.trim();
+                    document
+                        .getElementById("category")
+                        ?.value
+                        .trim();
+
 
                 const recipient =
-                    document.getElementById("recipient")?.value.trim();
+                    document
+                        .getElementById("recipient")
+                        ?.value
+                        .trim();
+
 
                 const message =
-                    document.getElementById("message")?.value.trim();
+                    document
+                        .getElementById("message")
+                        ?.value
+                        .trim();
 
 
-                /* Validation */
+                /* VALIDATION */
 
                 if (!year) {
 
                     if (errorBox) {
+
                         errorBox.textContent =
                             "Please select your year.";
                     }
@@ -299,9 +467,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
+
                 if (!branch) {
 
                     if (errorBox) {
+
                         errorBox.textContent =
                             "Please enter your classroom / branch.";
                     }
@@ -309,9 +479,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
+
                 if (!category) {
 
                     if (errorBox) {
+
                         errorBox.textContent =
                             "Please select a complaint category.";
                     }
@@ -319,9 +491,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
+
                 if (!recipient) {
 
                     if (errorBox) {
+
                         errorBox.textContent =
                             "Please select who you want to send the complaint to.";
                     }
@@ -329,9 +503,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
+
                 if (!message) {
 
                     if (errorBox) {
+
                         errorBox.textContent =
                             "Please enter your complaint.";
                     }
@@ -339,9 +515,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
+
                 if (message.length > 1000) {
 
                     if (errorBox) {
+
                         errorBox.textContent =
                             "Complaint cannot exceed 1000 characters.";
                     }
@@ -350,10 +528,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                /* Disable button */
+                /* DISABLE BUTTON */
 
                 if (submitButton) {
+
                     submitButton.disabled = true;
+
                     submitButton.textContent =
                         "Submitting...";
                 }
@@ -361,37 +541,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 try {
 
-                    const response = await fetch(
-                        `${API_BASE}/api/complaints`,
-                        {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
+                    const response =
+                        await fetch(
+                            `${API_BASE}/api/complaints`,
+                            {
+                                method: "POST",
 
-                                roll_no: rollNo,
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
 
-                                year: year,
+                                body: JSON.stringify({
 
-                                branch: branch,
+                                    roll_no:
+                                        rollNo,
 
-                                category: category,
+                                    year:
+                                        year,
 
-                                recipient: recipient,
+                                    branch:
+                                        branch,
 
-                                message: message
+                                    category:
+                                        category,
 
-                            })
-                        }
-                    );
+                                    recipient:
+                                        recipient,
+
+                                    message:
+                                        message
+                                })
+                            }
+                        );
 
 
                     let data = {};
 
+
                     try {
-                        data = await response.json();
+
+                        data =
+                            await response.json();
+
                     } catch (jsonError) {
+
                         data = {};
                     }
 
@@ -405,8 +599,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         );
                     }
 
-
-                    /* Get Complaint ID */
 
                     const complaintId =
                         data.complaint_id ||
@@ -422,12 +614,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
 
-                    /* Save Complaint ID */
+                    /*
+                     * SAVE COMPLAINT ID
+                     */
 
                     sessionStorage.setItem(
                         "complaintId",
                         complaintId
                     );
+
 
                     sessionStorage.setItem(
                         "lastComplaintId",
@@ -435,7 +630,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
 
-                    /* Redirect */
+                    /*
+                     * SUCCESS PAGE
+                     */
 
                     window.location.replace(
                         "success.html"
@@ -448,16 +645,22 @@ document.addEventListener("DOMContentLoaded", () => {
                         error
                     );
 
+
                     if (errorBox) {
+
                         errorBox.textContent =
                             error.message ||
                             "Unable to submit complaint. Please try again.";
                     }
 
+
                     if (submitButton) {
-                        submitButton.disabled = false;
+
+                        submitButton.disabled =
+                            false;
+
                         submitButton.textContent =
-                            "Submit Complaint";
+                            "Submit Complaint →";
                     }
                 }
             }
@@ -474,6 +677,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "successComplaintId"
         );
 
+
     if (successComplaintId) {
 
         const complaintId =
@@ -484,6 +688,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 "complaintId"
             );
 
+
         if (complaintId) {
 
             successComplaintId.textContent =
@@ -493,11 +698,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       TRACK COMPLAINT PAGE
+       TRACK COMPLAINT
     ========================================================= */
 
     const trackForm =
-        document.getElementById("trackForm");
+        document.getElementById(
+            "trackForm"
+        );
+
 
     if (trackForm) {
 
@@ -506,10 +714,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 "trackComplaintId"
             );
 
+
         const trackingError =
             document.getElementById(
                 "trackingError"
             );
+
 
         const trackingResult =
             document.getElementById(
@@ -523,11 +733,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 event.preventDefault();
 
+
                 if (trackingError) {
-                    trackingError.textContent = "";
+
+                    trackingError.textContent =
+                        "";
                 }
 
+
                 if (trackingResult) {
+
                     trackingResult.style.display =
                         "none";
                 }
@@ -542,6 +757,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (!complaintId) {
 
                     if (trackingError) {
+
                         trackingError.textContent =
                             "Please enter your Complaint ID.";
                     }
@@ -552,18 +768,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 try {
 
-                    const response = await fetch(
-                        `${API_BASE}/api/complaints/${encodeURIComponent(
-                            complaintId
-                        )}`
-                    );
+                    const response =
+                        await fetch(
+                            `${API_BASE}/api/complaints/${encodeURIComponent(
+                                complaintId
+                            )}`
+                        );
 
 
                     let data = {};
 
+
                     try {
-                        data = await response.json();
+
+                        data =
+                            await response.json();
+
                     } catch (jsonError) {
+
                         data = {};
                     }
 
@@ -578,8 +800,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
 
-                    /* Support both direct object and data object */
-
                     const complaint =
                         data.complaint ||
                         data.data ||
@@ -591,15 +811,18 @@ document.addEventListener("DOMContentLoaded", () => {
                             "resultComplaintId"
                         );
 
+
                     const resultCategory =
                         document.getElementById(
                             "resultCategory"
                         );
 
+
                     const resultStatus =
                         document.getElementById(
                             "resultStatus"
                         );
+
 
                     const resultDate =
                         document.getElementById(
@@ -626,13 +849,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     if (resultStatus) {
 
+                        const status =
+                            normalizeStatus(
+                                complaint.status
+                            );
+
+
                         resultStatus.textContent =
-                            complaint.status ||
-                            "Submitted";
+                            status;
+
 
                         resultStatus.className =
                             `status-badge ${getStatusClass(
-                                complaint.status
+                                status
                             )}`;
                     }
 
@@ -647,6 +876,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                     if (trackingResult) {
+
                         trackingResult.style.display =
                             "block";
                     }
@@ -658,7 +888,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         error
                     );
 
+
                     if (trackingError) {
+
                         trackingError.textContent =
                             error.message ||
                             "Complaint not found.";
@@ -678,14 +910,10 @@ document.addEventListener("DOMContentLoaded", () => {
             "adminLoginForm"
         );
 
+
     if (adminLoginForm) {
 
         if (isAdminLoggedIn()) {
-
-            /*
-               If admin is already logged in and opens
-               admin-login.html, send them to dashboard.
-            */
 
             window.location.replace(
                 "admin-dashboard.html"
@@ -707,15 +935,18 @@ document.addEventListener("DOMContentLoaded", () => {
                         "adminUsername"
                     );
 
+
                 const passwordInput =
                     document.getElementById(
                         "adminPassword"
                     );
 
+
                 const errorBox =
                     document.getElementById(
                         "loginError"
                     );
+
 
                 const loginButton =
                     document.getElementById(
@@ -728,6 +959,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         ? usernameInput.value.trim()
                         : "";
 
+
                 const password =
                     passwordInput
                         ? passwordInput.value
@@ -735,13 +967,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 if (errorBox) {
-                    errorBox.textContent = "";
+
+                    errorBox.textContent =
+                        "";
                 }
 
 
-                if (!username || !password) {
+                if (
+                    !username ||
+                    !password
+                ) {
 
                     if (errorBox) {
+
                         errorBox.textContent =
                             "Please enter username and password.";
                     }
@@ -751,7 +989,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 if (loginButton) {
-                    loginButton.disabled = true;
+
+                    loginButton.disabled =
+                        true;
+
                     loginButton.textContent =
                         "Signing in...";
                 }
@@ -759,29 +1000,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 try {
 
-                    const response = await fetch(
-                        `${API_BASE}/api/admin/login`,
-                        {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
+                    const response =
+                        await fetch(
+                            `${API_BASE}/api/admin/login`,
+                            {
+                                method: "POST",
 
-                                username: username,
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
 
-                                password: password
+                                body: JSON.stringify({
 
-                            })
-                        }
-                    );
+                                    username:
+                                        username,
+
+                                    password:
+                                        password
+                                })
+                            }
+                        );
 
 
                     let data = {};
 
+
                     try {
-                        data = await response.json();
+
+                        data =
+                            await response.json();
+
                     } catch (jsonError) {
+
                         data = {};
                     }
 
@@ -813,14 +1064,20 @@ document.addEventListener("DOMContentLoaded", () => {
                         error
                     );
 
+
                     if (errorBox) {
+
                         errorBox.textContent =
                             error.message ||
                             "Login failed. Please try again.";
                     }
 
+
                     if (loginButton) {
-                        loginButton.disabled = false;
+
+                        loginButton.disabled =
+                            false;
+
                         loginButton.textContent =
                             "Login";
                     }
@@ -842,8 +1099,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (complaintsContainer) {
 
-        /* Protect dashboard */
-
         if (!isAdminLoggedIn()) {
 
             window.location.replace(
@@ -855,105 +1110,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         let allComplaints = [];
-
-
-        /* =====================================================
-           STATUS HELPERS
-        ===================================================== */
-
-        function normalizeStatus(status) {
-
-            const value =
-                String(status || "")
-                    .trim()
-                    .toLowerCase();
-
-
-            if (
-                value === "under review" ||
-                value === "under_review" ||
-                value === "review"
-            ) {
-                return "Under Review";
-            }
-
-
-            if (
-                value === "in progress" ||
-                value === "in_progress" ||
-                value === "progress"
-            ) {
-                return "In Progress";
-            }
-
-
-            if (
-                value === "resolved" ||
-                value === "resolve"
-            ) {
-                return "Resolved";
-            }
-
-
-            return "Submitted";
-        }
-
-
-        function getStatusClass(status) {
-
-            const normalized =
-                normalizeStatus(status);
-
-
-            if (normalized === "Under Review") {
-                return "status-under-review";
-            }
-
-
-            if (normalized === "In Progress") {
-                return "status-in-progress";
-            }
-
-
-            if (normalized === "Resolved") {
-                return "status-resolved";
-            }
-
-
-            return "status-submitted";
-        }
-
-
-        /* =====================================================
-           DATE FORMAT
-        ===================================================== */
-
-        function formatDate(dateValue) {
-
-            if (!dateValue) {
-                return "—";
-            }
-
-            const date =
-                new Date(dateValue);
-
-
-            if (Number.isNaN(date.getTime())) {
-                return String(dateValue);
-            }
-
-
-            return date.toLocaleString(
-                "en-IN",
-                {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit"
-                }
-            );
-        }
 
 
         /* =====================================================
@@ -981,9 +1137,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 let data = {};
 
+
                 try {
-                    data = await response.json();
+
+                    data =
+                        await response.json();
+
                 } catch (jsonError) {
+
                     data = {};
                 }
 
@@ -1012,6 +1173,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     allComplaints
                 );
 
+
                 updateDashboardStats(
                     allComplaints
                 );
@@ -1022,6 +1184,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     "Load complaints error:",
                     error
                 );
+
 
                 complaintsContainer.innerHTML = `
                     <tr>
@@ -1045,7 +1208,8 @@ document.addEventListener("DOMContentLoaded", () => {
             complaints
         ) {
 
-            if (!complaints ||
+            if (
+                !complaints ||
                 complaints.length === 0
             ) {
 
@@ -1128,16 +1292,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
                                 <td>
                                     <div class="class-info">
+
                                         <strong>
                                             ${escapeHtml(
                                                 year
                                             )}
                                         </strong>
+
                                         <span>
                                             ${escapeHtml(
                                                 branch
                                             )}
                                         </span>
+
                                     </div>
                                 </td>
 
@@ -1154,9 +1321,11 @@ document.addEventListener("DOMContentLoaded", () => {
                                 </td>
 
                                 <td>
-                                    <span class="status-badge ${getStatusClass(
-                                        status
-                                    )}">
+                                    <span
+                                        class="status-badge ${getStatusClass(
+                                            status
+                                        )}"
+                                    >
                                         ${escapeHtml(
                                             status
                                         )}
@@ -1170,6 +1339,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 </td>
 
                                 <td>
+
                                     <button
                                         type="button"
                                         class="view-btn"
@@ -1179,6 +1349,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                     >
                                         View
                                     </button>
+
                                 </td>
 
                             </tr>
@@ -1192,7 +1363,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /* =====================================================
-           ATTACH VIEW BUTTONS
+           VIEW BUTTONS
         ===================================================== */
 
         function attachViewButtons() {
@@ -1230,7 +1401,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /* =====================================================
-           OPEN COMPLAINT MODAL
+           OPEN MODAL
         ===================================================== */
 
         async function openComplaintModal(
@@ -1249,9 +1420,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 let data = {};
 
+
                 try {
-                    data = await response.json();
+
+                    data =
+                        await response.json();
+
                 } catch (jsonError) {
+
                     data = {};
                 }
 
@@ -1272,52 +1448,65 @@ document.addEventListener("DOMContentLoaded", () => {
                     data;
 
 
-                /* Fill modal */
+                const modal =
+                    document.getElementById(
+                        "complaintModal"
+                    );
+
 
                 const modalComplaintId =
                     document.getElementById(
                         "modalComplaintId"
                     );
 
+
                 const modalRollNo =
                     document.getElementById(
                         "modalRollNo"
                     );
+
 
                 const modalYear =
                     document.getElementById(
                         "modalYear"
                     );
 
+
                 const modalBranch =
                     document.getElementById(
                         "modalBranch"
                     );
+
 
                 const modalCategory =
                     document.getElementById(
                         "modalCategory"
                     );
 
+
                 const modalRecipient =
                     document.getElementById(
                         "modalRecipient"
                     );
+
 
                 const modalDate =
                     document.getElementById(
                         "modalDate"
                     );
 
+
                 const modalStatus =
                     document.getElementById(
                         "modalStatus"
                     );
 
+
                 const statusSelect =
                     document.getElementById(
                         "statusSelect"
                     );
+
 
                 const modalMessage =
                     document.getElementById(
@@ -1326,6 +1515,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 if (modalComplaintId) {
+
                     modalComplaintId.textContent =
                         complaint.complaint_id ||
                         complaint.id ||
@@ -1334,6 +1524,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 if (modalRollNo) {
+
                     modalRollNo.textContent =
                         complaint.roll_no ||
                         "—";
@@ -1341,6 +1532,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 if (modalYear) {
+
                     modalYear.textContent =
                         complaint.year ||
                         "—";
@@ -1348,6 +1540,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 if (modalBranch) {
+
                     modalBranch.textContent =
                         complaint.branch ||
                         "—";
@@ -1355,6 +1548,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 if (modalCategory) {
+
                     modalCategory.textContent =
                         complaint.category ||
                         "—";
@@ -1362,6 +1556,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 if (modalRecipient) {
+
                     modalRecipient.textContent =
                         complaint.recipient ||
                         complaint.sent_to ||
@@ -1370,6 +1565,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 if (modalDate) {
+
                     modalDate.textContent =
                         formatDate(
                             complaint.created_at
@@ -1396,24 +1592,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 if (statusSelect) {
+
                     statusSelect.value =
                         normalizedStatus;
                 }
 
 
                 if (modalMessage) {
+
                     modalMessage.textContent =
                         complaint.message ||
                         "No complaint description.";
                 }
-
-
-                /* Save currently opened complaint */
-
-                const modal =
-                    document.getElementById(
-                        "complaintModal"
-                    );
 
 
                 if (modal) {
@@ -1424,9 +1614,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         complaintId;
 
 
-                    modal.classList.add("show");
+                    modal.classList.add(
+                        "show"
+                    );
 
-                    modal.style.display = "flex";
+
+                    modal.style.display =
+                        "flex";
                 }
 
             } catch (error) {
@@ -1435,6 +1629,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     "Open complaint error:",
                     error
                 );
+
 
                 alert(
                     error.message ||
@@ -1445,7 +1640,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /* =====================================================
-           CLOSE COMPLAINT MODAL
+           CLOSE MODAL
         ===================================================== */
 
         function closeComplaintModal() {
@@ -1458,9 +1653,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (modal) {
 
-                modal.classList.remove("show");
+                modal.classList.remove(
+                    "show"
+                );
 
-                modal.style.display = "none";
+
+                modal.style.display =
+                    "none";
             }
         }
 
@@ -1508,7 +1707,9 @@ document.addEventListener("DOMContentLoaded", () => {
             "keydown",
             (event) => {
 
-                if (event.key === "Escape") {
+                if (
+                    event.key === "Escape"
+                ) {
 
                     closeComplaintModal();
                 }
@@ -1517,7 +1718,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /* =====================================================
-           UPDATE COMPLAINT STATUS
+           UPDATE STATUS
         ===================================================== */
 
         const updateStatusButton =
@@ -1537,10 +1738,12 @@ document.addEventListener("DOMContentLoaded", () => {
                             "complaintModal"
                         );
 
+
                     const statusSelect =
                         document.getElementById(
                             "statusSelect"
                         );
+
 
                     const messageBox =
                         document.getElementById(
@@ -1563,6 +1766,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (!complaintId) {
 
                         if (messageBox) {
+
                             messageBox.textContent =
                                 "Complaint ID not found.";
                         }
@@ -1574,6 +1778,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (!status) {
 
                         if (messageBox) {
+
                             messageBox.textContent =
                                 "Please select a status.";
                         }
@@ -1583,6 +1788,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                     if (messageBox) {
+
                         messageBox.textContent =
                             "Updating...";
                     }
@@ -1601,12 +1807,15 @@ document.addEventListener("DOMContentLoaded", () => {
                                 )}/status`,
                                 {
                                     method: "PUT",
+
                                     headers: {
                                         "Content-Type":
                                             "application/json"
                                     },
+
                                     body: JSON.stringify({
-                                        status: status
+                                        status:
+                                            status
                                     })
                                 }
                             );
@@ -1614,10 +1823,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         let data = {};
 
+
                         try {
+
                             data =
                                 await response.json();
+
                         } catch (jsonError) {
+
                             data = {};
                         }
 
@@ -1639,21 +1852,17 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
 
 
-                        /* Refresh dashboard */
-
                         await loadComplaints();
 
 
-                        /*
-                           Keep modal open briefly so the
-                           success message can be seen.
-                        */
+                        setTimeout(
+                            () => {
 
-                        setTimeout(() => {
+                                closeComplaintModal();
 
-                            closeComplaintModal();
-
-                        }, 700);
+                            },
+                            700
+                        );
 
                     } catch (error) {
 
@@ -1661,6 +1870,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             "Status update error:",
                             error
                         );
+
 
                         if (messageBox) {
 
@@ -1782,7 +1992,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
-            renderComplaints(filtered);
+            renderComplaints(
+                filtered
+            );
         }
 
 
@@ -1877,24 +2089,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             if (totalComplaints) {
+
                 totalComplaints.textContent =
                     complaints.length;
             }
 
 
             if (submittedCount) {
+
                 submittedCount.textContent =
                     submitted;
             }
 
 
             if (reviewCount) {
+
                 reviewCount.textContent =
                     underReview;
             }
 
 
             if (resolvedCount) {
+
                 resolvedCount.textContent =
                     resolved;
             }
@@ -1902,7 +2118,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /* =====================================================
-           REFRESH BUTTON
+           REFRESH
         ===================================================== */
 
         const refreshButton =
@@ -1919,11 +2135,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
         }
 
-
-        /*
-           Some dashboard versions may use a button
-           with class .refresh-btn instead.
-        */
 
         const refreshButtons =
             document.querySelectorAll(
@@ -1963,6 +2174,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             "adminLoggedIn"
                         );
 
+
                         window.location.replace(
                             "admin-login.html"
                         );
@@ -1973,7 +2185,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /* =====================================================
-           INITIAL DASHBOARD LOAD
+           LOAD DASHBOARD
         ===================================================== */
 
         loadComplaints();
@@ -1981,7 +2193,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       STUDENT LOGOUT SUPPORT
+       STUDENT LOGOUT
     ========================================================= */
 
     const studentLogoutButtons =
@@ -1997,17 +2209,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 "click",
                 () => {
 
-                    sessionStorage.removeItem(
+                    localStorage.removeItem(
                         "studentRollNumber"
                     );
+
 
                     sessionStorage.removeItem(
                         "complaintId"
                     );
 
+
                     sessionStorage.removeItem(
                         "lastComplaintId"
                     );
+
 
                     window.location.replace(
                         "login.html"
@@ -2019,14 +2234,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       FIX SUBMIT COMPLAINT NAVIGATION
+       SUBMIT COMPLAINT NAVIGATION
     ========================================================= */
-
-    /*
-       If a student is already logged in, clicking
-       "Submit Complaint" should ALWAYS open contact.html,
-       never login.html.
-    */
 
     const submitComplaintLinks =
         document.querySelectorAll(
@@ -2044,7 +2253,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             if (
-                text.includes("submit complaint")
+                text.includes(
+                    "submit complaint"
+                )
             ) {
 
                 link.setAttribute(
