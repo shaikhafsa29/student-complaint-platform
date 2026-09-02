@@ -1,34 +1,37 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
 
+    <meta charset="UTF-8">
 
-<meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+    <title>Complaint Submitted | VEMU Voice</title>
 
-<title>Complaint Submitted | VEMU Voice</title>
-
-<link rel="stylesheet" href="style.css">
-
+    <link rel="stylesheet"
+          href="style.css">
 
 </head>
+
 
 <body>
 
 
 <!-- =========================================================
-     NAVBAR
+     NAVIGATION
 ========================================================= -->
 
 <nav class="navbar">
 
-    <a href="index.html" class="logo">
+    <a href="index.html"
+       class="logo">
+
         VEMU<span>VOICE</span>
+
     </a>
+
 
     <div class="nav-links">
 
@@ -52,182 +55,114 @@
             Admin
         </a>
 
-        <!-- MODE BUTTON -->
-
-        <button
-            class="appearance-button"
-            id="appearanceButton"
-            type="button"
-        >
-            Mode
-        </button>
-
-    </div>
-
-    <!-- =====================================================
-         THEME MENU
-    ====================================================== -->
-
-    <div
-        class="theme-menu"
-        id="themeMenu"
-    >
-
-        <div class="theme-menu-header">
-
-            <strong>
-                Choose Mode
-            </strong>
-
-            <button
-                class="theme-close"
-                id="themeClose"
-                type="button"
-            >
-                ×
-            </button>
-
-        </div>
-
-
-        <button
-            class="theme-option"
-            data-theme="campus"
-            type="button"
-        >
-
-            <span class="theme-preview campus-preview"></span>
-
-            <span>
-
-                <strong>
-                    Campus
-                </strong>
-
-                <small>
-                    Clean & bright
-                </small>
-
-            </span>
-
-        </button>
-
-
-        <button
-            class="theme-option"
-            data-theme="midnight"
-            type="button"
-        >
-
-            <span class="theme-preview midnight-preview"></span>
-
-            <span>
-
-                <strong>
-                    Midnight
-                </strong>
-
-                <small>
-                    Dark & modern
-                </small>
-
-            </span>
-
-        </button>
-
-
-        <button
-            class="theme-option"
-            data-theme="aurora"
-            type="button"
-        >
-
-            <span class="theme-preview aurora-preview"></span>
-
-            <span>
-
-                <strong>
-                    Aurora
-                </strong>
-
-                <small>
-                    Soft & elegant
-                </small>
-
-            </span>
-
-        </button>
-
     </div>
 
 </nav>
+
 
 
 <!-- =========================================================
      SUCCESS PAGE
 ========================================================= -->
 
-<main class="success-page">
-
-    <div class="success-card">
-
-        <div class="success-icon">
-            ✓
-        </div>
+<main class="complaint-page">
 
 
-        <h1>
-            Complaint Submitted Successfully!
-        </h1>
+    <div class="form-card">
 
 
-        <p class="success-description">
-
-            Thank you for bringing this issue to our attention.
-            Your complaint has been recorded securely.
-
-        </p>
+        <div class="success-box">
 
 
-        <div class="complaint-id-box">
+            <!-- SUCCESS ICON -->
 
-            <span>
-                YOUR COMPLAINT ID
-            </span>
+            <div class="success-icon">
 
-            <strong id="complaintId">
-                Loading...
-            </strong>
+                ✓
 
-            <small>
+            </div>
+
+
+            <!-- SUCCESS TITLE -->
+
+            <h2>
+
+                Complaint Submitted Successfully!
+
+            </h2>
+
+
+            <!-- SUCCESS DESCRIPTION -->
+
+            <p>
+
+                Thank you for bringing this issue to our attention.
+                Your complaint has been recorded securely.
+
+            </p>
+
+
+            <!-- COMPLAINT ID -->
+
+            <div class="complaint-id">
+
+                <span>
+
+                    YOUR COMPLAINT ID
+
+                </span>
+
+
+                <strong id="complaintId">
+
+                    Loading...
+
+                </strong>
+
+            </div>
+
+
+            <!-- SAVE MESSAGE -->
+
+            <p class="save-note">
+
                 Please save this ID to track your complaint.
-            </small>
+
+            </p>
+
+
+            <!-- ACTION BUTTONS -->
+
+            <div class="hero-buttons">
+
+
+                <a href="track.html"
+                   class="primary-btn">
+
+                    Track Complaint →
+
+                </a>
+
+
+                <a href="index.html"
+                   class="secondary-btn">
+
+                    Back to Home
+
+                </a>
+
+
+            </div>
+
 
         </div>
 
-
-        <div class="success-actions">
-
-            <a
-                href="track.html"
-                class="primary-btn"
-            >
-                Track Complaint →
-            </a>
-
-
-            <a
-                href="index.html"
-                class="secondary-btn"
-            >
-                Back to Home
-            </a>
-
-        </div>
 
     </div>
 
+
 </main>
+
 
 
 <!-- =========================================================
@@ -237,14 +172,17 @@
 <footer>
 
     <p>
+
         © 2026 VEMU Voice • Student Support Platform
+
     </p>
 
 </footer>
 
 
+
 <!-- =========================================================
-     SCRIPT
+     JAVASCRIPT
 ========================================================= -->
 
 <script src="script.js"></script>
