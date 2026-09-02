@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Student Login | VEMU Voice</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -54,6 +52,7 @@
             <input
                 type="text"
                 id="studentRollNumber"
+                name="studentRollNumber"
                 placeholder="Enter your Roll Number"
                 maxlength="50"
                 autocomplete="off"
@@ -62,14 +61,13 @@
 
             <div
                 id="studentLoginError"
-                class="form-error"
-            ></div>
+                class="form-error">
+            </div>
 
             <button
                 type="submit"
                 id="studentLoginBtn"
-                class="btn btn-primary full-width"
-            >
+                class="btn btn-primary full-width">
                 Continue
             </button>
 
@@ -79,24 +77,6 @@
 
 </main>
 
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-    /*
-     * If the student is already logged in,
-     * do not show the login card again.
-     */
-    const savedRollNumber =
-        sessionStorage.getItem("studentRollNumber");
-
-    if (savedRollNumber) {
-        window.location.replace("contact.html");
-        return;
-    }
-
-});
-</script>
 
 <script src="script.js"></script>
 
