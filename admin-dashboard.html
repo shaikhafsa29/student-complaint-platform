@@ -8,7 +8,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Admin Dashboard | VemuVoice</title>
+    <title>Admin Dashboard | Complaint Management</title>
 
     <link rel="stylesheet"
           href="admin-dashboard.css">
@@ -25,7 +25,6 @@
 
 <aside class="sidebar">
 
-
     <div class="sidebar-logo">
 
         <div class="logo-icon">
@@ -33,15 +32,8 @@
         </div>
 
         <div>
-
-            <h2>
-                VemuVoice
-            </h2>
-
-            <span>
-                Admin Panel
-            </span>
-
+            <h2>VemuVoice</h2>
+            <span>Admin Panel</span>
         </div>
 
     </div>
@@ -53,7 +45,6 @@
            class="nav-item active">
 
             <span>📊</span>
-
             Dashboard
 
         </a>
@@ -63,7 +54,6 @@
            class="nav-item">
 
             <span>🏠</span>
-
             Main Website
 
         </a>
@@ -73,7 +63,6 @@
 
     <div class="sidebar-bottom">
 
-
         <div class="admin-profile">
 
             <div class="admin-avatar">
@@ -82,22 +71,17 @@
 
             <div>
 
-                <strong>
-                    Administrator
-                </strong>
+                <strong>Administrator</strong>
 
-                <span>
-                    System Admin
-                </span>
+                <span>System Admin</span>
 
             </div>
 
         </div>
 
 
-        <button
-            id="logoutButton"
-            class="logout-btn">
+        <button id="logoutButton"
+                class="logout-btn">
 
             🚪 Logout
 
@@ -116,7 +100,7 @@
 <main class="main-content">
 
 
-    <!-- TOPBAR -->
+    <!-- TOP BAR -->
 
     <header class="topbar">
 
@@ -137,9 +121,8 @@
         </div>
 
 
-        <button
-            id="refreshComplaints"
-            class="refresh-btn">
+        <button id="refreshComplaints"
+                class="refresh-btn">
 
             🔄 Refresh
 
@@ -177,6 +160,7 @@
         </div>
 
 
+
         <div class="stat-card">
 
             <div class="stat-icon submitted">
@@ -196,6 +180,7 @@
             </div>
 
         </div>
+
 
 
         <div class="stat-card">
@@ -219,6 +204,29 @@
         </div>
 
 
+
+        <div class="stat-card">
+
+            <div class="stat-icon progress">
+                🟣
+            </div>
+
+            <div>
+
+                <span>
+                    In Progress
+                </span>
+
+                <strong id="progressCount">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
         <div class="stat-card">
 
             <div class="stat-icon resolved">
@@ -239,7 +247,6 @@
 
         </div>
 
-
     </section>
 
 
@@ -251,20 +258,29 @@
     <section class="complaints-section">
 
 
+        <!-- SECTION HEADER -->
+
         <div class="section-header">
 
-            <h2>
-                All Complaints
-            </h2>
+            <div>
 
-            <p>
-                Review and manage submitted complaints.
-            </p>
+                <h2>
+                    All Complaints
+                </h2>
+
+                <p>
+                    Review and manage submitted complaints.
+                </p>
+
+            </div>
 
         </div>
 
 
-        <!-- SEARCH + FILTER -->
+
+        <!-- =================================================
+             SEARCH + FILTER
+        ================================================= -->
 
         <div class="controls">
 
@@ -278,11 +294,12 @@
                 <input
                     type="text"
                     id="searchComplaint"
-                    placeholder="Search Complaint ID..."
+                    placeholder="Search Complaint ID or Roll No..."
                     autocomplete="off"
                 >
 
             </div>
+
 
 
             <div class="filter-box">
@@ -316,6 +333,7 @@
                 </select>
 
             </div>
+
 
         </div>
 
@@ -376,10 +394,9 @@
 
                         <td
                             colspan="8"
-                            class="empty-table">
-
+                            class="empty-table"
+                        >
                             Loading complaints...
-
                         </td>
 
                     </tr>
@@ -390,9 +407,7 @@
 
         </div>
 
-
     </section>
-
 
 </main>
 
@@ -409,8 +424,9 @@
     <div class="modal-content">
 
 
-        <div class="modal-header">
+        <!-- MODAL HEADER -->
 
+        <div class="modal-header">
 
             <div>
 
@@ -425,9 +441,8 @@
             </div>
 
 
-            <button
-                id="closeModal"
-                class="close-modal">
+            <button id="closeModal"
+                    class="close-modal">
 
                 ×
 
@@ -437,10 +452,11 @@
 
 
 
-        <!-- INFORMATION -->
+        <!-- =================================================
+             COMPLAINT INFORMATION
+        ================================================= -->
 
         <div class="complaint-info-grid">
-
 
             <div class="info-item">
 
@@ -471,7 +487,7 @@
             <div class="info-item">
 
                 <span>
-                    Class / Branch
+                    Classroom / Branch
                 </span>
 
                 <strong id="modalBranch">
@@ -510,7 +526,7 @@
             <div class="info-item">
 
                 <span>
-                    Submitted
+                    Submitted Date
                 </span>
 
                 <strong id="modalDate">
@@ -519,12 +535,13 @@
 
             </div>
 
-
         </div>
 
 
 
-        <!-- STATUS -->
+        <!-- =================================================
+             STATUS MANAGEMENT
+        ================================================= -->
 
         <div class="status-management">
 
@@ -547,7 +564,6 @@
                 <label for="statusSelect">
                     Change Status
                 </label>
-
 
                 <select id="statusSelect">
 
@@ -572,16 +588,16 @@
 
                 <button
                     id="updateStatusButton"
-                    class="update-status-btn">
+                    class="update-status-btn"
+                >
 
                     ✓ Update Status
 
                 </button>
 
 
-                <p
-                    id="statusUpdateMessage"
-                    class="status-update-message">
+                <p id="statusUpdateMessage"
+                   class="status-update-message">
                 </p>
 
             </div>
@@ -590,7 +606,9 @@
 
 
 
-        <!-- DESCRIPTION -->
+        <!-- =================================================
+             DESCRIPTION
+        ================================================= -->
 
         <div class="description-box">
 
@@ -611,7 +629,12 @@
 
 
 
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
 <script src="script.js"></script>
+
 
 </body>
 
