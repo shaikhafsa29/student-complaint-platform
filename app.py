@@ -4,6 +4,7 @@ import sqlite3
 import uuid
 import os
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from pathlib import Path
 
 # =========================================================
@@ -24,14 +25,12 @@ def add_cors_headers(response):
 # PROJECT PATHS
 # =========================================================
 
-# Root directory where frontend HTML, CSS, JS, and backend app.py reside
 PROJECT_DIR = Path(__file__).resolve().parent
 
 # =========================================================
 # DATABASE CONFIGURATION
 # =========================================================
 
-# Railway Volume support or local database file
 RAILWAY_VOLUME = os.environ.get("RAILWAY_VOLUME_MOUNT_PATH")
 
 if RAILWAY_VOLUME:
@@ -55,14 +54,15 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+
 def init_and_migrate_db():
     database_directory = os.path.dirname(DATABASE)
+
     if database_directory:
         os.makedirs(database_directory, exist_ok=True)
 
     conn = get_db_connection()
 
-    # Create table if not exists with all required columns
     conn.execute("""
         CREATE TABLE IF NOT EXISTS complaints (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -77,23 +77,27 @@ def init_and_migrate_db():
             created_at TEXT NOT NULL
         )
     """)
+
     conn.commit()
 
-    # Safely migrate existing databases if columns are missing
     cursor = conn.execute("PRAGMA table_info(complaints)")
     columns = [row["name"] for row in cursor.fetchall()]
 
     if "roll_no" not in columns:
-        conn.execute("ALTER TABLE complaints ADD COLUMN roll_no TEXT DEFAULT ''")
+        conn.execute(
+            "ALTER TABLE complaints ADD COLUMN roll_no TEXT DEFAULT ''"
+        )
         conn.commit()
 
     if "recipient" not in columns:
-        conn.execute("ALTER TABLE complaints ADD COLUMN recipient TEXT DEFAULT 'Class Teacher'")
+        conn.execute(
+            "ALTER TABLE complaints ADD COLUMN recipient TEXT DEFAULT 'Class Teacher'"
+        )
         conn.commit()
 
     conn.close()
 
-# Initialize / migrate on startup
+
 init_and_migrate_db()
 
 # =========================================================
@@ -104,11 +108,14 @@ init_and_migrate_db()
 def home():
     return send_from_directory(PROJECT_DIR, "index.html")
 
+
 @app.route("/<path:filename>")
 def serve_static(filename):
     file_path = PROJECT_DIR / filename
+
     if file_path.is_file():
         return send_from_directory(PROJECT_DIR, filename)
+
     return send_from_directory(PROJECT_DIR, "index.html")
 
 # =========================================================
@@ -118,6 +125,7 @@ def serve_static(filename):
 @app.route("/api/student/login", methods=["POST"])
 def student_login():
     data = request.get_json(silent=True)
+
     if not data:
         return jsonify({
             "success": False,
@@ -125,6 +133,7 @@ def student_login():
         }), 400
 
     roll_no = str(data.get("roll_no", "")).strip().upper()
+
     if not roll_no:
         return jsonify({
             "success": False,
@@ -144,6 +153,7 @@ def student_login():
 @app.route("/api/admin/login", methods=["POST"])
 def admin_login():
     data = request.get_json(silent=True)
+
     if not data:
         return jsonify({
             "success": False,
@@ -171,6 +181,7 @@ def admin_login():
 @app.route("/api/complaints", methods=["POST"])
 def submit_complaint():
     data = request.get_json(silent=True)
+
     if not data:
         return jsonify({
             "success": False,
@@ -184,7 +195,6 @@ def submit_complaint():
     recipient = str(data.get("recipient", "")).strip()
     message = str(data.get("message", "")).strip()
 
-    # Validation
     if not roll_no:
         return jsonify({
             "success": False,
@@ -197,8 +207,12 @@ def submit_complaint():
             "message": "Please fill in all required fields"
         }), 400
 
-    # Validate recipient
-    allowed_recipients = ["Class Teacher", "HOD", "Principal"]
+    allowed_recipients = [
+        "Class Teacher",
+        "HOD",
+        "Principal"
+    ]
+
     if recipient not in allowed_recipients:
         return jsonify({
             "success": False,
@@ -207,9 +221,14 @@ def submit_complaint():
 
     # Generate unique complaint ID
     complaint_id = f"CMP-{uuid.uuid4().hex[:8].upper()}"
-    created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # Store complaint time in India Standard Time (IST)
+    created_at = datetime.now(
+        ZoneInfo("Asia/Kolkata")
+    ).isoformat(timespec="seconds")
 
     conn = get_db_connection()
+
     try:
         conn.execute("""
             INSERT INTO complaints
@@ -236,13 +255,17 @@ def submit_complaint():
             "Submitted",
             created_at
         ))
+
         conn.commit()
+
     except sqlite3.IntegrityError:
         conn.close()
+
         return jsonify({
             "success": False,
             "message": "Could not generate unique complaint ID. Please try again."
         }), 500
+
     finally:
         conn.close()
 
@@ -262,6 +285,7 @@ def submit_complaint():
 @app.route("/api/complaints", methods=["GET"])
 def get_complaints():
     conn = get_db_connection()
+
     complaints = conn.execute("""
         SELECT
             id,
@@ -277,9 +301,14 @@ def get_complaints():
         FROM complaints
         ORDER BY id DESC
     """).fetchall()
+
     conn.close()
 
-    complaint_list = [dict(complaint) for complaint in complaints]
+    complaint_list = [
+        dict(complaint)
+        for complaint in complaints
+    ]
+
     return jsonify(complaint_list), 200
 
 # =========================================================
@@ -291,6 +320,7 @@ def track_complaint(complaint_id):
     complaint_id = complaint_id.strip().upper()
 
     conn = get_db_connection()
+
     complaint = conn.execute("""
         SELECT
             id,
@@ -306,6 +336,7 @@ def track_complaint(complaint_id):
         FROM complaints
         WHERE complaint_id = ?
     """, (complaint_id,)).fetchone()
+
     conn.close()
 
     if complaint is None:
@@ -323,11 +354,15 @@ def track_complaint(complaint_id):
 # ADMIN VIEW COMPLAINT DETAILS
 # =========================================================
 
-@app.route("/api/admin/complaints/<complaint_id>/view", methods=["GET", "POST"])
+@app.route(
+    "/api/admin/complaints/<complaint_id>/view",
+    methods=["GET", "POST"]
+)
 def admin_view_complaint(complaint_id):
     complaint_id = complaint_id.strip().upper()
 
     conn = get_db_connection()
+
     complaint = conn.execute("""
         SELECT
             id,
@@ -343,6 +378,7 @@ def admin_view_complaint(complaint_id):
         FROM complaints
         WHERE complaint_id = ?
     """, (complaint_id,)).fetchone()
+
     conn.close()
 
     if complaint is None:
@@ -363,6 +399,7 @@ def admin_view_complaint(complaint_id):
 
 def _perform_status_update(complaint_id):
     complaint_id = complaint_id.strip().upper()
+
     data = request.get_json(silent=True)
 
     if not data:
@@ -372,7 +409,13 @@ def _perform_status_update(complaint_id):
         }), 400
 
     new_status = str(data.get("status", "")).strip()
-    allowed_statuses = ["Submitted", "Under Review", "In Progress", "Resolved"]
+
+    allowed_statuses = [
+        "Submitted",
+        "Under Review",
+        "In Progress",
+        "Resolved"
+    ]
 
     if new_status not in allowed_statuses:
         return jsonify({
@@ -381,12 +424,16 @@ def _perform_status_update(complaint_id):
         }), 400
 
     conn = get_db_connection()
+
     complaint = conn.execute("""
-        SELECT complaint_id FROM complaints WHERE complaint_id = ?
+        SELECT complaint_id
+        FROM complaints
+        WHERE complaint_id = ?
     """, (complaint_id,)).fetchone()
 
     if complaint is None:
         conn.close()
+
         return jsonify({
             "success": False,
             "message": "Complaint not found."
@@ -396,7 +443,11 @@ def _perform_status_update(complaint_id):
         UPDATE complaints
         SET status = ?
         WHERE complaint_id = ?
-    """, (new_status, complaint_id))
+    """, (
+        new_status,
+        complaint_id
+    ))
+
     conn.commit()
 
     updated_complaint = conn.execute("""
@@ -414,6 +465,7 @@ def _perform_status_update(complaint_id):
         FROM complaints
         WHERE complaint_id = ?
     """, (complaint_id,)).fetchone()
+
     conn.close()
 
     return jsonify({
@@ -422,11 +474,19 @@ def _perform_status_update(complaint_id):
         "complaint": dict(updated_complaint)
     }), 200
 
-@app.route("/api/complaints/<complaint_id>/status", methods=["PUT"])
+
+@app.route(
+    "/api/complaints/<complaint_id>/status",
+    methods=["PUT"]
+)
 def update_status(complaint_id):
     return _perform_status_update(complaint_id)
 
-@app.route("/api/admin/complaints/<complaint_id>/status", methods=["PUT"])
+
+@app.route(
+    "/api/admin/complaints/<complaint_id>/status",
+    methods=["PUT"]
+)
 def update_status_admin_alias(complaint_id):
     return _perform_status_update(complaint_id)
 
@@ -453,7 +513,12 @@ def page_not_found(error):
             "success": False,
             "message": "API endpoint not found"
         }), 404
-    return send_from_directory(PROJECT_DIR, "index.html")
+
+    return send_from_directory(
+        PROJECT_DIR,
+        "index.html"
+    )
+
 
 @app.errorhandler(500)
 def internal_server_error(error):
@@ -468,4 +533,9 @@ def internal_server_error(error):
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(debug=False, host="0.0.0.0", port=port)
+
+    app.run(
+        debug=False,
+        host="0.0.0.0",
+        port=port
+    )
