@@ -12,97 +12,79 @@
 
 <body>
 
-<nav class="navbar">
-
-    <div class="nav-container">
-
+    <!-- Navigation containing ONLY Home, Submit Complaint, Track Complaint -->
+    <nav class="navbar">
         <a href="index.html" class="logo">
-            VEMU <span>VOICE</span>
+            VEMU<span>VOICE</span>
         </a>
 
         <div class="nav-links">
-
-            <a href="index.html">
-                Home
-            </a>
-
-            <a href="contact.html">
-                Submit Complaint
-            </a>
-
-            <a href="track.html">
-                Track Complaint
-            </a>
-
+            <a href="index.html">Home</a>
+            <a href="contact.html">Submit Complaint</a>
+            <a href="track.html">Track Complaint</a>
         </div>
-
-    </div>
-
-</nav>
+    </nav>
 
 
-<main class="success-page">
+    <main class="complaint-page">
 
-    <section class="success-card">
+        <section class="form-intro">
 
-        <div class="success-icon">
-            ✓
-        </div>
+            <p class="badge">✓ SUBMISSION COMPLETE</p>
 
-        <p class="section-label">
-            SUCCESS
-        </p>
+            <h1>Complaint Submitted</h1>
 
-        <h1>
-            Complaint Submitted
-        </h1>
+            <p>
+                Your concern has been submitted successfully and registered in the system.
+            </p>
 
-        <p class="success-message">
-            Your complaint has been successfully submitted.
-        </p>
+        </section>
 
 
-        <div class="complaint-id-box">
+        <section class="form-card">
 
-            <span>
-                Your Complaint ID
-            </span>
+            <div class="success-box">
 
-            <strong id="successComplaintId">
-                Loading...
-            </strong>
+                <div class="success-icon">✓</div>
 
-        </div>
+                <h2>Thank You for Speaking Up</h2>
 
+                <p>
+                    Your complaint has been forwarded to the selected authority for review.
+                </p>
 
-        <p class="success-info">
-            Please save this Complaint ID. You can use it later
-            to track the status of your complaint.
-        </p>
+                <div class="complaint-id">
+                    <span>YOUR UNIQUE COMPLAINT ID</span>
+                    <strong id="displayComplaintId">CMP-XXXXXXXX</strong>
+                </div>
 
+                <p class="save-note">
+                    ⚠️ Please copy and save this Complaint ID. You will need it to track your complaint's progress.
+                </p>
 
-        <div class="success-actions">
+                <div class="hero-buttons" style="justify-content: center; margin-top: 25px;">
+                    <a id="trackComplaintBtn" href="track.html" class="primary-btn">
+                        Track This Complaint 🔍
+                    </a>
 
-            <a
-                href="track.html"
-                class="btn btn-primary">
-                Track Complaint
-            </a>
+                    <a href="contact.html" class="secondary-btn">
+                        Submit Another Concern
+                    </a>
+                </div>
 
-            <a
-                href="index.html"
-                class="btn btn-secondary">
-                Go Home
-            </a>
+            </div>
 
-        </div>
+        </section>
 
-    </section>
-
-</main>
+    </main>
 
 
-<script src="script.js"></script>
+    <footer>
+        <p>© 2026 VEMU Voice • Student Support Platform</p>
+    </footer>
+
+    <script src="script.js"></script>
 
 </body>
+
 </html>
