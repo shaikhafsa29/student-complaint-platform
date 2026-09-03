@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Student Login | VEMU Voice</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<nav class="navbar">
-    <div class="nav-container">
-
+    <nav class="navbar">
         <a href="index.html" class="logo">
-            VEMU <span>VOICE</span>
+            VEMU<span>VOICE</span>
         </a>
 
         <div class="nav-links">
@@ -23,57 +24,74 @@
             <a href="track.html">Track Complaint</a>
             <a href="admin-login.html">Admin</a>
         </div>
-
-    </div>
-</nav>
+    </nav>
 
 
-<main class="center-page">
+    <main class="admin-login-page">
 
-    <section class="login-card">
+        <section class="admin-login-card">
 
-        <div class="card-icon">🎓</div>
+            <div class="admin-icon">🎓</div>
 
-        <p class="section-label">STUDENT ACCESS</p>
+            <p class="badge">STUDENT PORTAL</p>
 
-        <h1>Student Login</h1>
+            <h1>Student Login</h1>
 
-        <p class="card-description">
-            Enter your Roll Number to continue to the complaint form.
-        </p>
+            <p class="admin-description">
+                Enter your Roll Number to continue. Your name is not required.
+            </p>
 
-        <form id="studentLoginForm">
 
-            <label for="studentRollNumber">
-                Roll Number
-            </label>
+            <form id="studentLoginForm">
 
-            <input
-                type="text"
-                id="studentRollNumber"
-                name="studentRollNumber"
-                placeholder="Enter your Roll Number"
-                maxlength="50"
-                autocomplete="off"
-                required
+                <div class="input-group">
+
+                    <label for="studentRollNumber">
+                        Roll No.
+                    </label>
+
+                    <input
+                        type="text"
+                        id="studentRollNumber"
+                        placeholder="Example: 23CS001"
+                        autocomplete="off"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="privacy-note" style="text-align: left; margin-bottom: 20px;">
+                    🔒 Enter your Roll No. once to submit or track your complaints.
+                </div>
+
+
+                <button type="submit" class="submit-btn">
+                    Continue to Submit Complaint →
+                </button>
+
+            </form>
+
+
+            <div
+                id="studentLoginError"
+                class="login-error hidden"
             >
+                Please enter a valid Roll Number.
+            </div>
 
-            <div id="studentLoginError" class="form-error"></div>
+        </section>
 
-            <button
-                type="submit"
-                id="studentLoginBtn"
-                class="btn btn-primary full-width">
-                Continue
-            </button>
+    </main>
 
-        </form>
 
-    </section>
+    <footer>
+        <p>© 2026 VEMU Voice • Student Support Platform</p>
+    </footer>
 
-</main>
 
-<script src="script.js"></script>
+    <script src="script.js"></script>
 
 </body>
+
 </html>
